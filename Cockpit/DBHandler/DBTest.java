@@ -5,14 +5,20 @@ public class DBTest{
     
     DBHandler handler = new DBHandler();
     
-//    handler.createTable();
+    handler.createTable();
 //    handler.insert("Christer", "Not SCADA", (float) 234.25);
-    handler.viewTable();
-    System.out.println();
+//    handler.insert("Craig", "SCADA", (float) 1728);
+//    handler.insert("Austin", "SCADA", (float) 1.56);
     
-    handler.setHeaders("Systemasdasd", "Item", "Value", "TimeStamp");
-    handler.viewTable();
+    System.out.println(handler.getSystem("Craigwq"));
+//    handler.writeFile(handler.getTable(),"tmp.csv");
+//    
+//    handler.setHeaders("Sysasdasd", null, "Val", null);//"TimeStamp");
+//    handler.viewTable();
+//    
+//    System.out.println();
 //    handler.viewDate("2017-02-05");
+    handler.closeDB();
   }
   
 }

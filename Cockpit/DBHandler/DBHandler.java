@@ -3,6 +3,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.IOException;
 
 public class DBHandler {
   
@@ -51,7 +54,6 @@ public class DBHandler {
       stmt.close();
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//      System.exit(0);
     }
   }
   
@@ -67,7 +69,6 @@ public class DBHandler {
       stmt.close();
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//      System.exit(0);
     }
   }
   
@@ -77,7 +78,7 @@ public class DBHandler {
     try {
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:"+ dbName);
-      System.out.println("Opened " + dbName + " successfully");
+//      System.out.println("Opened " + dbName + " successfully");
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
 //      System.exit(0);
@@ -90,64 +91,77 @@ public class DBHandler {
       else c.close();
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//      System.exit(0);
     }
   }
   
-  public void viewTable(){
-    
-    Statement stmt = null;
-    
+  public String getTable(){
     String query = "select * from System";
-    
-    try {
-      stmt = c.createStatement();
-      ResultSet rs = stmt.executeQuery(query);
-      printResults(rs);
-    } catch (SQLException e ) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-    } 
+    return runQuery(query);
   }
   
   //date in the form of 2017-02-05
-  public void viewDate(String date){
+  public String getDate(String date){
+    String query = "select * from System where DATE(TimeStamp) = \'" + date + "\'";
+    return runQuery(query);
+  }
+  
+  public String getSystem(String sys){
+    String query = "select * from System where System = \'" + sys + "\'";
+    return runQuery(query);
+  }
+  
+  private String runQuery(String query){
     
     Statement stmt = null;
-    
-    String query =
-      "select * from System where DATE(TimeStamp) = \'" + date + "\'";
     
     try {
       stmt = c.createStatement();
       ResultSet rs = stmt.executeQuery(query);
-      printResults(rs);
+      return getResults(rs);
     } catch (SQLException e ) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
-    } 
+      return null;
+    }
   }
   
-  public void printResults(ResultSet rs){
-    System.out.println(sysHeader + "\t" + itemHeader +
-                       "\t" + valueHeader + "\t" + timeHeader);
+  private String getResults(ResultSet rs){
+    String output = sysHeader + "," + itemHeader +
+      "," + valueHeader + "," + timeHeader + "\n";
     try{
       while (rs.next()) {
         String sys = rs.getString("System");
         String item = rs.getString("Item");
         float value = rs.getFloat("Value");
         String time = rs.getString("TimeStamp");
-        
-        System.out.println(sys + "\t" + item +
-                           "\t" + value + "\t" + time);
+        output = output + sys + "," + item +
+          "," + value + "," + time + "\n";
       }
     }
-    catch (SQLException e ) {}
+    catch (SQLException e ) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+    return output;
+  }
+  
+  public void writeFile(String myString, String file){
+    Scanner scanner = new Scanner(myString);
+    
+    try{
+      PrintWriter writer = new PrintWriter(file, "UTF-8");
+      while (scanner.hasNextLine()) {
+        writer.println(scanner.nextLine());
+      }
+      
+      writer.close();
+    } catch (IOException e){}
+    scanner.close();
   }
   
   public void setHeaders(String sys, String item, String value, String time){
-    sysHeader = sys;
-    itemHeader = item;
-    valueHeader = value;
-    timeHeader = time;
+    if(sys != null) sysHeader = sys;
+    if(item != null) itemHeader = item;
+    if(value != null) valueHeader = value;
+    if(time != null) timeHeader = time;
   }
   
 }
