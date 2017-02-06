@@ -10,9 +10,17 @@ public class DBHandler {
   private Connection c;
   private String dbName;
   
+  private String sysHeader;
+  private String itemHeader;
+  private String valueHeader;
+  private String timeHeader;
+  
   public DBHandler() {
     stmt = null;
     c = null;
+    
+    setHeaders("System", "Item", "Value", "TimeStamp");
+    
     dbName = "SCADA.db";
     connectDB();
   }
@@ -20,6 +28,9 @@ public class DBHandler {
   public DBHandler(String name) {
     stmt = null;
     c = null;
+    
+    setHeaders("System", "Item", "Value", "TimeStamp");
+    
     dbName = name;
     connectDB();
   }
@@ -82,38 +93,61 @@ public class DBHandler {
 //      System.exit(0);
     }
   }
-
-
-
-
-
-
-
-  public void viewTable() throws SQLException {
-      
-      Statement stmt = null;
-      
-      String query =
-        "select System, Item, Value, " +
-        "from System";
-      
-      try {
-        stmt = c.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        while (rs.next()) {
-          String coffeeName = rs.getString("COF_NAME");
-          int supplierID = rs.getInt("SUP_ID");
-          float price = rs.getFloat("PRICE");
-          int sales = rs.getInt("SALES");
-          int total = rs.getInt("TOTAL");
-          System.out.println(coffeeName + "\t" + supplierID +
-                             "\t" + price + "\t" + sales +
-                             "\t" + total);
-        }
-      } catch (SQLException e ) {
-        System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      } finally {
-        if (stmt != null) { stmt.close(); }
+  
+  public void viewTable(){
+    
+    Statement stmt = null;
+    
+    String query = "select * from System";
+    
+    try {
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery(query);
+      printResults(rs);
+    } catch (SQLException e ) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    } 
+  }
+  
+  //date in the form of 2017-02-05
+  public void viewDate(String date){
+    
+    Statement stmt = null;
+    
+    String query =
+      "select * from System where DATE(TimeStamp) = \'" + date + "\'";
+    
+    try {
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery(query);
+      printResults(rs);
+    } catch (SQLException e ) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    } 
+  }
+  
+  public void printResults(ResultSet rs){
+    System.out.println(sysHeader + "\t" + itemHeader +
+                       "\t" + valueHeader + "\t" + timeHeader);
+    try{
+      while (rs.next()) {
+        String sys = rs.getString("System");
+        String item = rs.getString("Item");
+        float value = rs.getFloat("Value");
+        String time = rs.getString("TimeStamp");
+        
+        System.out.println(sys + "\t" + item +
+                           "\t" + value + "\t" + time);
       }
     }
+    catch (SQLException e ) {}
   }
+  
+  public void setHeaders(String sys, String item, String value, String time){
+    sysHeader = sys;
+    itemHeader = item;
+    valueHeader = value;
+    timeHeader = time;
+  }
+  
+}
