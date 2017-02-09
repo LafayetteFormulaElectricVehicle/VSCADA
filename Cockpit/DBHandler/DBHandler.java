@@ -18,6 +18,8 @@ public class DBHandler {
   private String valueHeader;
   private String timeHeader;
   
+  private String hello = "Hello World";
+  
   public DBHandler() {
     stmt = null;
     c = null;
@@ -137,7 +139,7 @@ public class DBHandler {
           "," + value + "," + time + "\n";
       }
     }
-    catch (SQLException e ) {
+    catch (SQLException e ){
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
     return output;
@@ -162,6 +164,10 @@ public class DBHandler {
     if(item != null) itemHeader = item;
     if(value != null) valueHeader = value;
     if(time != null) timeHeader = time;
+  }
+  
+  public String getHelloWorld(){
+    return hello;
   }
   
 }

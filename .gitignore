@@ -1,3 +1,4 @@
 #all files to be ignored
 *.class
 *.java~
+*.db
