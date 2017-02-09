@@ -8,4 +8,8 @@ public class Vehicle {
   
   public Vehicle(){}
   
+  public void addDist(Double dist){
+    distTraveled += dist;
+  }
+  
 }

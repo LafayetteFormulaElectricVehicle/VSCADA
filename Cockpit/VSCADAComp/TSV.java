@@ -20,42 +20,58 @@ public class TSV {
   private Integer numPacks = 4;
   
   private ArrayList<Double> cellVoltage;
+  private ArrayList<Double> cellTemp;
   private ArrayList<Double> packCurrent;
+  private ArrayList<Double> packTemp;
   
   public TSV(){
-    cellVoltage = new ArrayList<Double>(numPacks);
+    cellVoltage = new ArrayList<Double>(numCells);
+    cellTemp = new ArrayList<Double>(numCells);
+    
     packCurrent = new ArrayList<Double>(numPacks);
+    packTemp = new ArrayList<Double>(numPacks);
   }
   
-  public Double getCellVoltage(int cell){
-    if(cell < 0 || cell > numCells) return -1.0;
-    else return cellVoltage.get(cell);
-  }
   public void setCellVoltage(int cell, Double val){
     cellVoltage.set(cell, val);
   }
   
-  public Double getPackCurrent(int pack){
-    if(pack < 0 || pack > numPacks) return -1.0;
-    else return packCurrent.get(pack);
+  public void setCellTemp(int cell, Double val){
+    cellTemp.set(cell, val);
   }
+  
   public void setPackCurrent(int pack, Double val){
     packCurrent.set(pack, val);
   }
   
-  public Double getTotalVoltage(){
-    Double ans = 0.0;
-    for(int i=0; i< numPacks; i++) ans += cellVoltage.get(i);
-    return ans;
+  public void setPackTemp(int pack, Double val){
+    packTemp.set(pack, val);
   }
   
-  public Double getTotalCurrent(){
-    Double ans = 0.0;
-    for(int i=0; i< numPacks; i++) ans += packCurrent.get(i);
-    return ans;
-  }
+//  
+//  public Double getCellVoltage(int cell){
+//    if(cell < 0 || cell > numCells) return -1.0;
+//    else return cellVoltage.get(cell);
+//  } 
+//  public Double getPackCurrent(int pack){
+//    if(pack < 0 || pack > numPacks) return -1.0;
+//    else return packCurrent.get(pack);
+//  }
+//  
+//  public Double getTotalVoltage(){
+//    Double ans = 0.0;
+//    for(int i=0; i< numPacks; i++) ans += cellVoltage.get(i);
+//    return ans;
+//  }
+//  
+//  public Double getTotalCurrent(){
+//    Double ans = 0.0;
+//    for(int i=0; i< numPacks; i++) ans += packCurrent.get(i);
+//    return ans;
+//  }
   
-  public Double getTotalPower(){
-    return getTotalVoltage() * getTotalCurrent();
-  }
+//  public Double getTotalPower(){
+//    return getTotalVoltage() * getTotalCurrent();
+//  }
+  
 }

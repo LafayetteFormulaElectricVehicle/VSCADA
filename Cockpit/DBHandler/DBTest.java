@@ -34,6 +34,7 @@ public class DBTest{
     System.out.println(Parser.parse(test3));
     System.out.println(Parser.parse(test4));
     
+    System.out.println(handler.getDate("2017-02-08"));
     
     handler.closeDB();
   }
