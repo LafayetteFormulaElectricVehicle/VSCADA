@@ -29,7 +29,7 @@ public class DBTest{
      Dyno test3 = new Dyno();
      Vehicle test4 = new Vehicle();
      
-     System.out.println(Parser.parse(test1));
+     System.out.println(Parser.parse(test1));cd 
      System.out.println(Parser.parse(test2));
      System.out.println(Parser.parse(test3));
      System.out.println(Parser.parse(test4));
