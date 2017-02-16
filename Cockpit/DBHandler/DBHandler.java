@@ -6,17 +6,13 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.io.PrintWriter;
 import java.io.IOException;
-//import java.io.FileReader;
-//import java.io.BufferedReader;
-import java.util.Scanner;
 import java.io.File;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 //.read example.sql 
 
 public class DBHandler {
   
-  private Statement stmt;
   private Connection c;
   private String dbName;
   
@@ -26,42 +22,18 @@ public class DBHandler {
   private String timeHeader;
   
   public DBHandler() {
-    stmt = null;
     c = null;
     
-    setHeaders("System", "Item", "Value", "TimeStamp");
     
     dbName = "SCADA.db";
     connectDB();
   }
   
   public DBHandler(String name) {
-    stmt = null;
     c = null;
-    
-    setHeaders("System", "Item", "Value", "TimeStamp");
     
     dbName = name;
     connectDB();
-  }
-  
-  public void createTable(String name) {
-    stmt = null;
-    try {
-      stmt = c.createStatement();
-      
-      String sql = "CREATE TABLE IF NOT EXISTS " +  name + "(" +
-        "ID Integer PRIMARY KEY AUTOINCREMENT," +
-        "System varchar(255)NOT NULL," +
-        "Item varchar(255)NOT NULL," +
-        "Value FLOAT NOT NULL," +
-        "TimeStamp DATE DEFAULT(datetime('now', 'localtime')))";
-      
-      stmt.executeUpdate(sql);
-      stmt.close();
-    } catch (Exception e) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-    }
   }
   
   public void insert(String sys, String item, float value) {
@@ -70,18 +42,6 @@ public class DBHandler {
       sys + "\", \"" + item + "\", \"" + value + "\") ";
     
     runSQL(sql);
-//    stmt = null;
-//    try {
-//      stmt = c.createStatement();
-//      
-//      String sql = "INSERT INTO System" +
-//        "(System, Item, Value) VALUES (\"" +
-//        sys + "\", \"" + item + "\", \"" + value + "\") ";
-//      stmt.executeUpdate(sql);
-//      stmt.close();
-//    } catch (Exception e) {
-//      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//    }
   }
   
   public void connectDB(){
@@ -97,10 +57,15 @@ public class DBHandler {
   }
   
   public void checkDB(){
-    readSQLFile("../SQLSchema/Dyno.sql");
-    readSQLFile("../SQLSchema/TSI.sql");
-    readSQLFile("../SQLSchema/TSV.sql");
-//    readSQLFile("../SQLSchema/test.sql");
+    if(!checkExists("SensorLabels")){
+      readSQLFile("../SQLSchema/SensorLabels.sql");
+      readSQLFile("../SQLSchema/Config.sql");
+    }
+    readSQLFile("../SQLSchema/ErrorMessages.sql");
+  }
+  
+  public Boolean checkExists(String table){
+    return getTable(table) != null;
   }
   
   public void readSQLFile(String fileName){
@@ -127,23 +92,23 @@ public class DBHandler {
     }
   }
   
-  public ArrayList<String> getSchema(String fileName){
-    ArrayList<String> out = new ArrayList<String>();
-    try{
-      Scanner sc = new Scanner(new File(fileName));
-      sc.nextLine();
-      while (sc.hasNextLine())
-      {
-        out.add(sc.next());
-        sc.nextLine();
-      }
-    }
-    catch(Exception e){
-    }
-    return out;
-  }
+//  public ArrayList<String> getSchema(String fileName){
+//    ArrayList<String> out = new ArrayList<String>();
+//    try{
+//      Scanner sc = new Scanner(new File(fileName));
+//      sc.nextLine();
+//      while (sc.hasNextLine())
+//      {
+//        out.add(sc.next());
+//        sc.nextLine();
+//      }
+//    }
+//    catch(Exception e){
+//    }
+//    return out;
+//  }
   
-  public void closeDB() {
+  public void closeDB(){
     try {
       if (c.isClosed()) System.out.println("No open DB");
       else c.close();
@@ -226,13 +191,6 @@ public class DBHandler {
       writer.close();
     } catch (IOException e){}
     scanner.close();
-  }
-  
-  public  void setHeaders(String sys, String item, String value, String time){
-    if(sys != null) sysHeader = sys;
-    if(item != null) itemHeader = item;
-    if(value != null) valueHeader = value;
-    if(time != null) timeHeader = time;
   }
   
 }

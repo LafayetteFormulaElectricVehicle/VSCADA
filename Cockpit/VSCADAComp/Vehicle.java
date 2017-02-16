@@ -3,7 +3,7 @@ package VSCADAComp;
 public class Vehicle {
   
   private Double distTraveled;
-  private Double cSpeed;
+//  private Double cSpeed;
   
   public Vehicle(){}
   

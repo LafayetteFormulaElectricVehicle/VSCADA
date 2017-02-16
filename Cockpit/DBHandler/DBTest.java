@@ -1,7 +1,5 @@
-import VSCADAComp.*;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.util.ArrayList;
+//import VSCADAComp.*;
+//import java.util.ArrayList;
 
 public class DBTest{
 
@@ -9,9 +7,7 @@ public class DBTest{
 //    System.out.println("Hello World!");
     
     DBHandler handler = new DBHandler();
-    ArrayList<String> out = handler.getSchema("../SQLSchema/TSV.sql");
-    
-    for(String s : out) System.out.println(s);
+    handler.readSQLFile("../SQLSchema/test.sql");
 //    
 //    handler.createTable("AustinTable");
 //    handler.insert("Christer", "Not SCADA", (float) 234.25);
@@ -19,7 +15,7 @@ public class DBTest{
 //    for(int i=0; i<1000; i++) handler.insert("Austin", "SCADA", (float) 1.56);
 //    
 //    System.out.println(handler.getSystem("Craig"));
-//    handler.writeFile(handler.getTable(),"tmp.csv");
+//    handler.writeFile(handlrm er.getTable(),"tmp.csv");
 //    
 //    handler.setHeaders("Sysasdasd", null, "Val", null);//"TimeStamp");
 //    handler.viewTable();
