@@ -14,13 +14,12 @@ import java.util.ArrayList;
  */
 
 public class TSV {
-  private String sysName = "TSV";
   
   private Integer numCells = 4;
-  private Integer numPacks = 4;
-  
   private ArrayList<Double> cellVoltage;
   private ArrayList<Double> cellTemp;
+  
+  private Integer numPacks = 4;
   private ArrayList<Double> packCurrent;
   private ArrayList<Double> packTemp;
   

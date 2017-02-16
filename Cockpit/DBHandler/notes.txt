@@ -1,0 +1,5 @@
+ErrorTable{System, Item, Error Message, TimeStamp}
+1 Table for each major subsystem
+	UI for table alters
+cooling sys
+

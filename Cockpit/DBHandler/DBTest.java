@@ -1,19 +1,23 @@
 import VSCADAComp.*;
-
-import com.google.gson.Gson;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.util.ArrayList;
 
 public class DBTest{
-  
+
   public static void main(String[] args){
 //    System.out.println("Hello World!");
     
     DBHandler handler = new DBHandler();
+    ArrayList<String> out = handler.getSchema("../SQLSchema/TSV.sql");
     
-    handler.createTable();
+    for(String s : out) System.out.println(s);
+//    
+//    handler.createTable("AustinTable");
 //    handler.insert("Christer", "Not SCADA", (float) 234.25);
 //    handler.insert("Craig", "SCADA", (float) 1728);
-//    handler.insert("Austin", "SCADA", (float) 1.56);
-    
+//    for(int i=0; i<1000; i++) handler.insert("Austin", "SCADA", (float) 1.56);
+//    
 //    System.out.println(handler.getSystem("Craig"));
 //    handler.writeFile(handler.getTable(),"tmp.csv");
 //    
@@ -23,20 +27,23 @@ public class DBTest{
 //    System.out.println();
 //    handler.viewDate("2017-02-05");
     
-    Gson g = new Gson();
-    TSV test1 = new TSV();
-    TSI test2 = new TSI();
-    Dyno test3 = new Dyno();
-    Vehicle test4 = new Vehicle();
     
-    System.out.println(Parser.parse(test1));
-    System.out.println(Parser.parse(test2));
-    System.out.println(Parser.parse(test3));
-    System.out.println(Parser.parse(test4));
+    /*TSV test1 = new TSV();
+     TSI test2 = new TSI();
+     Dyno test3 = new Dyno();
+     Vehicle test4 = new Vehicle();
+     
+     System.out.println(Parser.parse(test1));
+     System.out.println(Parser.parse(test2));
+     System.out.println(Parser.parse(test3));
+     System.out.println(Parser.parse(test4));
+     
+     */
     
-    System.out.println(handler.getDate("2017-02-08"));
+//    System.out.println(handler.getDate("2017-02-09"));
     
-    handler.closeDB();
+//    handler.closeDB();
+    
   }
   
 }

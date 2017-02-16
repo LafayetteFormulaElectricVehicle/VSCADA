@@ -1,7 +1,7 @@
 package VSCADAComp;
 
 public class Dyno {
-  private String sysName = "Dyno";
+  
   private Double torque;
   private Double oilTemp;
   private Double coolantTemp;
