@@ -1,0 +1,32 @@
+Here to help. Only the first 3 words will be accepted for input.
+
+Valid Commands:
+
+add (a):
+	Add a new sensor to the system
+	Format: add <newName> <newUnits>
+
+cname:
+	Change a current sensors name field.
+	Format: cname <sensorName> <newName>
+
+cunits:
+	Change a current sensors units field.
+	Format: cunits <sensorName> <newUnits>
+
+delete (d):
+	Delete an entry, no confirmation, this is your only warning.
+	Format: delete <sensorName>
+
+help:
+	Provides the user with information for use.
+	Format: help
+
+list (l):
+	List all sensor names
+	Format: list			 (returns all)
+		list <stringToSearchFor> (returns all pattern)
+quit (q):
+	Quits the configuration editor
+	Format: quit
+

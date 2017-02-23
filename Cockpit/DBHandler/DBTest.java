@@ -1,14 +1,33 @@
 //import VSCADAComp.*;
-//import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class DBTest{
-
+  
   public static void main(String[] args){
 //    System.out.println("Hello World!");
     
-    DBHandler handler = new DBHandler();
-    handler.readSQLFile("../SQLSchema/test.sql");
+    DBHandler handler = new DBHandler("../SCADA.db");
+    
+    ArrayList<ArrayList<String>> out = handler.listSensors("cell");
+    
+    for(ArrayList<String> inner : out){
+      for(String s : inner){
+        System.out.print(s + " - ");
+      }
+      System.out.println();
+    }
+    
+//    handler.addSensor("Hello", "World");
+//    handler.updateSensorName("Hello", "Goodbye");
+//    handler.updateSensorUnits("Goodbye", "foo");
+//    handler.removeSensor("Goodbye");
+    
+//    System.out.println(handler.getAllSensors());
 //    
+//    handler.addSensor("Hello", "World!");
+//    
+//    System.out.println(handler.getAllSensors());
+    
 //    handler.createTable("AustinTable");
 //    handler.insert("Christer", "Not SCADA", (float) 234.25);
 //    handler.insert("Craig", "SCADA", (float) 1728);
@@ -22,19 +41,6 @@ public class DBTest{
 //    
 //    System.out.println();
 //    handler.viewDate("2017-02-05");
-    
-    
-    /*TSV test1 = new TSV();
-     TSI test2 = new TSI();
-     Dyno test3 = new Dyno();
-     Vehicle test4 = new Vehicle();
-     
-     System.out.println(Parser.parse(test1));cd 
-     System.out.println(Parser.parse(test2));
-     System.out.println(Parser.parse(test3));
-     System.out.println(Parser.parse(test4));
-     
-     */
     
 //    System.out.println(handler.getDate("2017-02-09"));
     
