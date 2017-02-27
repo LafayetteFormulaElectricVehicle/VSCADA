@@ -1,3 +1,5 @@
+package cockpit.database;
+
 import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
@@ -180,7 +182,7 @@ public class ConfigEditor{
   private void getHelp(){
     System.out.println();
     try{
-      Scanner help = new Scanner(new File("help.txt"));
+      Scanner help = new Scanner(new File("cockpit/database/help.txt"));
       while(help.hasNextLine()) System.out.println(help.nextLine());
     }
     catch(java.io.FileNotFoundException e){
