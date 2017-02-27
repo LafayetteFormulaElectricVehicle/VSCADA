@@ -36,18 +36,16 @@ public class main {
             return gson.toJson(packet);
         });
 
-        get("/api/name?name", (req, res) -> {
+        get("/api/name", (req, res) -> {
+            System.out.println("IN NAME");
+            System.out.println(req.queryMap().get("name").value());
             printReq(req);
-            req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
-            try (InputStream is = req.raw().getPart("uploaded_file").getInputStream()) {
-                // Use the input stream to create a file
-            }
-            System.out.println(req.attributes());
-            return null;
+            return "in name";
         });
 
         notFound((req,res) -> {
             System.out.println("NOT FOUND");
+            System.out.println(req.queryMap().get("name").value());
             printReq(req);
             return "Not found";
         });
@@ -56,6 +54,7 @@ public class main {
 
     private static void printReq(Request req) {
         System.out.println(req.url());
+        System.out.println(req.pathInfo());
         System.out.println(req.attributes());
         System.out.println(req.params());
         System.out.println(req.headers());
