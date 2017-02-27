@@ -39,14 +39,14 @@ public class main {
         get("/api/name", (req, res) -> {
             System.out.println("IN NAME");
             System.out.println(req.queryMap().get("name").value());
-            printReq(req);
+//            printReq(req);
             return "in name";
         });
 
         notFound((req,res) -> {
             System.out.println("NOT FOUND");
             System.out.println(req.queryMap().get("name").value());
-            printReq(req);
+//            printReq(req);
             return "Not found";
         });
 
