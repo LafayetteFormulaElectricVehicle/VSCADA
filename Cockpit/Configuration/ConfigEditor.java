@@ -10,9 +10,9 @@ public class ConfigEditor{
   private String[] sysTypes = {"DYNO", "TSI", "TSV", "MISC"};
   DBHandler handler;
   
-  public ConfigEditor(String dbPath){
+  public ConfigEditor(String dbPath, String sPath){
     sc = new Scanner(System.in);
-    handler = new DBHandler(dbPath);
+    handler = new DBHandler(dbPath, sPath);
     run();
   }
   
@@ -188,7 +188,7 @@ public class ConfigEditor{
   }
   
   public static void main(String[] args) {
-    ConfigEditor config = new ConfigEditor("../SCADA.db");
+    ConfigEditor config = new ConfigEditor("../SCADA.db", "../SQLSchema/");
     
 //    DBHandler handler = new DBHandler("../SCADA.db");
 //    System.out.println(handler.getAllSensors());
