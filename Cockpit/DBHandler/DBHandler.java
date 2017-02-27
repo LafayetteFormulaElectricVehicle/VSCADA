@@ -154,15 +154,55 @@ public class DBHandler {
   }
   
   //date in the form of 2017-02-05
-  public ArrayList<ArrayList<String>> getDate(String table, String date){
-    String query = "select * from " + table + " where DATE(TimeStamp) = \'" + date + "\'";
+  public ArrayList<ArrayList<String>> getInfo(String systems, String date1, String date2){
+    
+    String whereC;
+    String andC;
+    String sys;
+    String range;
+    
+    whereC = (systems != null || date1 != null || date2 != null) ? "WHERE " : "";
+    andC = (systems != null && (date1 != null || date2 != null)) ? " AND " : "";
+    
+    sys = parseSystems(systems);
+    
+    if(date1 == null){
+      if(date2 == null) range = "";
+      else range = "DATE(TimeStamp) = \"" + date2 + "\"";
+    }
+    else{
+      if(date2 == null) range = "DATE(TimeStamp) = \"" + date1 + "\"";
+      else range = "DATE(TimeStamp) >= \"" + date1 + "\" " +
+        "AND DATE(TimeStamp) <= \"" + date2 + "\"";
+    }
+    
+    String query = "select " +
+      "labels.ID AS \"Sensor ID\", " +
+      "labels.sensorName AS \"Sensor\", " +
+      "labels.sensorUnits AS \"Units\", " +
+      "labels.dataType AS \"Data Type\", " +
+      "labels.system AS \"System\", " +
+      "data.value AS \"Value\", " +
+      "data.TimeStamp AS \"TimeStamp\" " +
+      "from SensorLabels AS labels " +
+      "INNER JOIN Data AS data ON labels.ID=data.sensorID " +
+      whereC + sys + andC + range + ";";
+    
+    System.out.println(query);
     return runQuery(query);
   }
   
-  /*  public ArrayList<ArrayList<String>> getSystem(String table, String sys){
-   String query = "select * from " + table + " where System = \'" + sys + "\'";
-   return runQuery(query);
-   }*/
+  private String parseSystems(String systems){
+    if(systems == null) return "";
+    Scanner sc = new Scanner(systems);
+    sc.useDelimiter(",");
+    String out = "labels.system IN (";
+    while(sc.hasNext()){
+      out += "\"" + sc.next() + "\"";
+      if(sc.hasNext()) out += ", ";
+    }
+    return out + ")";
+  }
   
   /*************************************************************************************************
     * Configuration Functions

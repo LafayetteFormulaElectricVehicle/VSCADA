@@ -9,14 +9,31 @@ public class DBTest{
     
     DBHandler handler = new DBHandler("../SCADA.db");
     
-    String sql = "INSERT INTO Data (sensorID, value) VALUES (\"2\",\"foo\")";
-    handler.runSQL(sql);
-
-    sql = "INSERT INTO Data (sensorID, value) VALUES (\"2\",\"bar\")";
-    handler.runSQL(sql);
+    ArrayList<ArrayList<String>> out; // = handler.getInfo("2017-02-26", "2017-02-28");
     
-    sql = "INSERT INTO Data (sensorID, value) VALUES (\"24\",\"9000\")";
-    handler.runSQL(sql);
+    out = handler.getInfo(null,"2017-02-26", "2017-02-28");
+    par(out);
+    out = handler.getInfo("TSV", "2017-02-26", "2017-02-28");
+    par(out);
+    out = handler.getInfo("TSV",null, "2017-02-28");
+    par(out);
+    out = handler.getInfo("TSV",null, null);
+    par(out);
+    out = handler.getInfo("TSV,DYNO",null, null);
+    par(out);
+    out = handler.getInfo("TSV,DYNO", "2017-02-27", null);
+    par(out);
+    
+    
+    
+//    String sql = "INSERT INTO Data (sensorID, value) VALUES (\"17\",\"foo\")";
+//    handler.runSQL(sql);
+//
+//    sql = "INSERT INTO Data (sensorID, value) VALUES (\"18\",\"bar\")";
+//    handler.runSQL(sql);
+//    
+//    sql = "INSERT INTO Data (sensorID, value) VALUES (\"22\",\"900\")";
+//    handler.runSQL(sql);
     
 //    Subsystem s = new Subsystem("TSV");
 //    s.addSensor("1", "CellV1","V");
@@ -65,4 +82,16 @@ public class DBTest{
     handler.closeDB();
     
   }
+  
+  public static void par(ArrayList<ArrayList<String>> out){
+    if(out!=null) for(ArrayList<String> inner : out){
+      for(String s : inner){
+        System.out.print(s + " - ");
+      }
+      System.out.println();
+    }
+    System.out.println();
+    System.out.println();
+  }
+  
 }
