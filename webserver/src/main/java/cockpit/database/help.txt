@@ -1,0 +1,34 @@
+Valid Commands:
+
+add (a):
+	Add a new sensor to the system
+	Format: add <newName> <newUnits> <system> <newDataType>
+
+cname:
+	Change a current sensors name field.
+	Format: cname <sensorName> <newName>
+
+ctype:
+	Change a current sensors data type field;
+	Format: ctype <sensorName> <newType>
+
+cunits:
+	Change a current sensors units field.
+	Format: cunits <sensorName> <newUnits>
+
+delete (d):
+	Delete an entry, no confirmation, this is your only warning.
+	Format: delete <sensorName>
+
+help:
+	Provides the user with information for use.
+	Format: help
+
+list (l):
+	List all sensor names
+	Format: list			 (returns all)
+		list <stringToSearchFor> (returns all pattern)
+
+quit (q):
+	Quits the configuration editor
+	Format: quit
