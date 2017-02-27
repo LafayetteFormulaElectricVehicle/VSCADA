@@ -3,12 +3,14 @@ package VSCADAComp;
 public class Sensor {
   
   private String sName;
-  private String sUnits;
   private String sVal;
+  private String sUnits;
+  private String sID;
   
-  public Sensor(String name, String units){
+  public Sensor(String name, String units, String ID){
     sName = name;
     sUnits = units;
+    sID = ID;
   }
   
   public void setName(String newName){
@@ -21,6 +23,10 @@ public class Sensor {
   
   public void setValue(String newValue){
     sVal = newValue;
+  }
+  
+  public void setID(String newID){
+    sID = newID;
   }
   
 }

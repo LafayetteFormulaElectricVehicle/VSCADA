@@ -20,13 +20,13 @@ public class DBHandler {
   private String valueHeader;
   private String timeHeader;
   
-  public DBHandler() {
+  public DBHandler(){
     c = null;
     dbName = "SCADA.db";
     connectDB();
   }
   
-  public DBHandler(String name) {
+  public DBHandler(String name){
     c = null;
     dbName = name;
     connectDB();
@@ -49,11 +49,17 @@ public class DBHandler {
       readSQLFile("../SQLSchema/SensorLabels.sql");
       readSQLFile("../SQLSchema/Config.sql");
     }
+    readSQLFile("../SQLSchema/Data.sql");
     readSQLFile("../SQLSchema/ErrorMessages.sql");
   }
   
   public Boolean checkExists(String table){
     return getTable(table) != null;
+  }
+  
+  public ArrayList<ArrayList<String>> getTable(String table){
+    String query = "select * from " + table;
+    return runQuery(query);
   }
   
   public void readSQLFile(String fileName){
@@ -75,21 +81,21 @@ public class DBHandler {
     }
   }
   
-//  public ArrayList<String> getSchema(String fileName){
-//    ArrayList<String> out = new ArrayList<String>();
-//    try{
-//      Scanner sc = new Scanner(new File(fileName));
-//      sc.nextLine();
-//      while (sc.hasNextLine())
-//      {
-//        out.add(sc.next());
-//        sc.nextLine();
-//      }
-//    }
-//    catch(Exception e){
-//    }
-//    return out;
-//  }
+  public ArrayList<String> getSchema(String fileName){
+    ArrayList<String> out = new ArrayList<String>();
+    try{
+      Scanner sc = new Scanner(new File(fileName));
+      sc.nextLine();
+      while (sc.hasNextLine())
+      {
+        out.add(sc.next());
+        sc.nextLine();
+      }
+    }
+    catch(Exception e){
+    }
+    return out;
+  }
   
   public void closeDB(){
     try {
@@ -100,23 +106,7 @@ public class DBHandler {
     }
   }
   
-  public String getTable(String table){
-    String query = "select * from " + table;
-    return ""; //runQuery(query);
-  }
-  
-  //date in the form of 2017-02-05
-  public String getDate(String table, String date){
-    String query = "select * from " + table + " where DATE(TimeStamp) = \'" + date + "\'";
-    return ""; //runQuery(query);
-  }
-  
-  public String getSystem(String table, String sys){
-    String query = "select * from " + table + " where System = \'" + sys + "\'";
-    return ""; //runQuery(query);
-  }
-  
-  private void runSQL(String sql){
+  public void runSQL(String sql){
     Statement stmt = null;
     
     try {
@@ -129,17 +119,13 @@ public class DBHandler {
   }
   
   private ArrayList<ArrayList<String>> runQuery(String query){
-    
     Statement stmt = null;
-    
     try {
       stmt = c.createStatement();
       ResultSet rs = stmt.executeQuery(query);
-      
       return getResultsTable(rs);
-      
-      //return getResults(rs); HERE
-    } catch (SQLException e ) {
+    }
+    catch (SQLException e ) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
       return null;
     }
@@ -155,9 +141,7 @@ public class DBHandler {
       while (rs.next()) {
         inner = new ArrayList<String>();
         for (int i = 1; i <= columns; i++) {
-//          String columnValue = rs.getString(i);
           inner.add(rs.getString(i));
-//          System.out.print(columnValue + " " + md.getColumnName(i));
         }
         output.add(inner);
       }
@@ -169,28 +153,55 @@ public class DBHandler {
     return output;
   }
   
+  //date in the form of 2017-02-05
+  public ArrayList<ArrayList<String>> getDate(String table, String date){
+    String query = "select * from " + table + " where DATE(TimeStamp) = \'" + date + "\'";
+    return runQuery(query);
+  }
+  
+  /*  public ArrayList<ArrayList<String>> getSystem(String table, String sys){
+   String query = "select * from " + table + " where System = \'" + sys + "\'";
+   return runQuery(query);
+   }*/
+  
   /*************************************************************************************************
     * Configuration Functions
     *************************************************************************************************/
   
   public ArrayList<ArrayList<String>> listSensors(String expr){
-    String sql = "select sensorName from SensorLabels " +
-      "WHERE sensorName LIKE \'" + expr + "%\' " + 
+    String sql = "select sensorName, sensorUnits from SensorLabels " +
+      "WHERE sensorName LIKE \'" + expr + "%\' " +
       "ORDER BY sensorName COLLATE NOCASE";
     
     return runQuery(sql);
   }
   
-  public void addSensor(String sensorName, String sensorUnits){
-    String sql = "INSERT INTO SensorLabels " +
-      "(sensorName, dataType) VALUES (\"" +
-      sensorName + "\", \"" + sensorUnits + "\") ";
-    
-    runSQL(sql);
+  public Boolean checkSensorName(String name){
+    String sql = "select sensorName from SensorLabels " +
+      "WHERE sensorName = \"" + name + "\"";
+    ArrayList<ArrayList<String>> result = runQuery(sql);
+    for(ArrayList<String> inner : result){
+      if(inner.size() != 0) return false;
+    }
+    return true;
+  }
+  
+  public void addSensor(String sensorName, String sensorUnits, String sensorDataType, String sensorSys){
+    if(checkSensorName(sensorName)){
+      
+      String sql = "INSERT INTO SensorLabels " +
+        "(sensorName, sensorUnits, dataType, system) VALUES (\"" +
+        sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
+      
+      runSQL(sql);
+    }
+    else{
+      System.out.println("Sorry, a sensor with this name already exists!");
+    }
   }
   
   public void updateSensorName(String sensorName, String newName){
-    String sql = "UPDATE SensorLabels " + 
+    String sql = "UPDATE SensorLabels " +
       "SET sensorName=\'" + newName + "\' " +
       "WHERE sensorName=\'" + sensorName + "\';";
     
@@ -198,8 +209,16 @@ public class DBHandler {
   }
   
   public void updateSensorUnits(String sensorName, String newUnits){
-    String sql = "UPDATE SensorLabels " + 
-      "SET dataType=\'" + newUnits + "\' " +
+    String sql = "UPDATE SensorLabels " +
+      "SET sensorUnits=\'" + newUnits + "\' " +
+      "WHERE sensorName=\'" + sensorName + "\';";
+    
+    runSQL(sql);
+  }
+  
+  public void updateSensorDataType(String sensorName, String newType){
+    String sql = "UPDATE SensorLabels " +
+      "SET dataType=\'" + newType + "\' " +
       "WHERE sensorName=\'" + sensorName + "\';";
     
     runSQL(sql);
@@ -216,8 +235,8 @@ public class DBHandler {
     * Old Functions
     *************************************************************************************************/
   
-  //  private String getResults(ResultSet rs){
-//    
+//  private String getResults(ResultSet rs){
+//
 //    String output = "";
 //    try{
 //      while (rs.next()) {
@@ -232,15 +251,16 @@ public class DBHandler {
   
 //  public void writeFile(String myString, String file){
 //    Scanner scanner = new Scanner(myString);
-//    
+//
 //    try{
 //      PrintWriter writer = new PrintWriter(file, "UTF-8");
 //      while (scanner.hasNextLine()) {
 //        writer.println(scanner.nextLine());
 //      }
-//      
+//
 //      writer.close();
 //    } catch (IOException e){}
 //    scanner.close();
 //  }
+  
 }
