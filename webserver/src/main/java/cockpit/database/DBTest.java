@@ -1,32 +1,41 @@
 package cockpit.database;
 
+//import VSCADAComp.Subsystem;
+//import VSCADAComp.Parser;
+
+/* Compiling
+javac -cp ".:DBHandler/sqlite-jdbc-3.16.1.jar:VSCADAComp/gson-2.2.2.jar"
+  Configuration/*.java DBHandler/DBHandler.java
+  DBHandler/DBTest.java VSCADAComp/*.java -d exec/
+*/
 import java.util.ArrayList;
 
 public class DBTest{
 
-    public static void main(String[] args){
+  public static void main(String[] args){
 //    System.out.println("Hello World!");
 
-        DBHandler handler = new DBHandler("../SCADA.db");
+    DBHandler handler = new DBHandler("../SCADA.db","../SQLSchema/");
+//
+    ArrayList<ArrayList<String>> out; // = handler.getInfo("2017-02-26", "2017-02-28");
 
-        ArrayList<ArrayList<String>> out; // = handler.getInfo("2017-02-26", "2017-02-28");
+//    out = handler.getInfo(null,"2017-02-26", "2017-02-28");
+//    par(out);
+//    out = handler.getInfo("TSV", "2017-02-26", "2017-02-28");
+//    par(out);
+//    out = handler.getInfo("TSV",null, "2017-02-28");
+//    par(out);
+//    out = handler.getInfo("TSV",null, null);
+//    par(out);
+//    out = handler.getInfo("TSV,DYNO",null, null);
+//    par(out);
+//    out = handler.getInfo("TSV,DYNO", "2017-02-27", null);
+//    par(out);
+     out = handler.getInfo(null,null, null);
+     par(out);
 
-        out = handler.getInfo(null,"2017-02-26", "2017-02-28");
-        par(out);
-        out = handler.getInfo("TSV", "2017-02-26", "2017-02-28");
-        par(out);
-        out = handler.getInfo("TSV",null, "2017-02-28");
-        par(out);
-        out = handler.getInfo("TSV",null, null);
-        par(out);
-        out = handler.getInfo("TSV,DYNO",null, null);
-        par(out);
-        out = handler.getInfo("TSV,DYNO", "2017-02-27", null);
-        par(out);
 
-
-
-//    String sql = "INSERT INTO Data (sensorID, value) VALUES (\"17\",\"foo\")";
+//    String sql = "INSERT INTO Data (sensorID, value) VALUES (\"24\",\"9000\")";
 //    handler.runSQL(sql);
 //
 //    sql = "INSERT INTO Data (sensorID, value) VALUES (\"18\",\"bar\")";
@@ -79,19 +88,19 @@ public class DBTest{
 
 //    System.out.println(handler.getDate("2017-02-09"));
 
-        handler.closeDB();
+    handler.closeDB();
 
-    }
+  }
 
-    public static void par(ArrayList<ArrayList<String>> out){
-        if(out!=null) for(ArrayList<String> inner : out){
-            for(String s : inner){
-                System.out.print(s + " - ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
+  public static void par(ArrayList<ArrayList<String>> out){
+    if(out!=null) for(ArrayList<String> inner : out){
+      for(String s : inner){
+        System.out.print(s + " - ");
+      }
+      System.out.println();
     }
+    System.out.println();
+    System.out.println();
+  }
 
 }
