@@ -15,7 +15,7 @@ public class DBTest{
   public static void main(String[] args){
 //    System.out.println("Hello World!");
 
-    DBHandler handler = new DBHandler("../SCADA.db","../SQLSchema/");
+    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
 //
     ArrayList<ArrayList<String>> out; // = handler.getInfo("2017-02-26", "2017-02-28");
 
