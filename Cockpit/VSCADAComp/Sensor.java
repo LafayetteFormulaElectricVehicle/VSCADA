@@ -11,6 +11,7 @@ public class Sensor {
     sName = name;
     sUnits = units;
     sID = ID;
+    sVal = "NaN";
   }
   
   public void setName(String newName){

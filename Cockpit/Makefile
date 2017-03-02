@@ -7,7 +7,7 @@ SAVEDIR=exec
 #File to run
 F=DBTest
 
-all: clean run
+all: clean comp
 	
 #remove the @ signs to re-enable echo of commands
 comp: dir
@@ -16,7 +16,7 @@ comp: dir
 dir:
 	@mkdir -p $(SAVEDIR)
 
-run: comp
+run:
 	@cd $(SAVEDIR); \
 	java -cp $(ECLASSPATHS) $(F)
 

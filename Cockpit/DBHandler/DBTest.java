@@ -47,6 +47,24 @@ public class DBTest{
     s.addSensor("2", "CellV2","V");
     s.addSensor("5", "CellA2","A");
     s.addSensor("8", "CellT4","F");
+    
+    System.out.println(s.parse());
+    
+    s.updateValue("1","a");
+    s.updateValue("2","b");
+    s.updateValue("5","c");
+    s.updateValue("8,d");
+    
+    System.out.println();
+    
+    System.out.println(s.parse());
+    
+    System.out.println(s.removeSensor("8"));
+    
+    s.updateMultValues("1,foo,2,bar,5,hello,8,world,9");
+    
+    System.out.println();
+    
     System.out.println(s.parse());
     
 //    ArrayList<ArrayList<String>> out = handler.listSensors("cell");
