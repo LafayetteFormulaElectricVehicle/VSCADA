@@ -7,15 +7,18 @@ SAVEDIR=exec
 #File to run
 F=DBTest
 
-all: dir
-	javac -cp $(CLASSPATHS) $(DIRS) -d $(SAVEDIR)
+all: clean run
+	
+#remove the @ signs to re-enable echo of commands
+comp: dir
+	@javac -cp $(CLASSPATHS) $(DIRS) -d $(SAVEDIR)
 
 dir:
 	@mkdir -p $(SAVEDIR)
 
-run:
+run: comp
 	@cd $(SAVEDIR); \
 	java -cp $(ECLASSPATHS) $(F)
 
 clean:
-	rm -rf $(SAVEDIR)
+	@rm -rf $(SAVEDIR)

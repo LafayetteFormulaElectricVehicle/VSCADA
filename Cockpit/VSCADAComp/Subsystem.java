@@ -1,8 +1,7 @@
 package VSCADAComp;
 
-//import java.util.ArrayList;
+import com.google.gson.Gson;
 import VSCADAComp.Sensor;
-
 import java.util.HashMap;
 
 public class Subsystem {
@@ -20,6 +19,11 @@ public class Subsystem {
   public void addSensor(String ID, String name, String units){
 //    subSensors.add(new Sensor(name, units));
     subSensors.put(ID, new Sensor(name, units, ID));
+  }
+  
+  public String parse(){
+    Gson g = new Gson();
+    return g.toJson(this);
   }
   
 }
