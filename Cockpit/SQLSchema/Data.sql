@@ -1,5 +1,4 @@
 CREATE TABLE IF NOT EXISTS Data (
-  ID INTEGER PRIMARY KEY AUTOINCREMENT,
   sensorID INTEGER,
   value VARCHAR(150) NOT NULL,
   TimeStamp DATE DEFAULT(datetime('now', 'localtime')),

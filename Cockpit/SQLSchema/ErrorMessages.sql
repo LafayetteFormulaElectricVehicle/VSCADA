@@ -1,5 +1,4 @@
 CREATE TABLE IF NOT EXISTS ErrorMessages (
-  ID INTEGER PRIMARY KEY AUTOINCREMENT,
   sensorID INTEGER,
   message VARCHAR(150) NOT NULL,
   TimeStamp DATE DEFAULT(datetime('now', 'localtime')),

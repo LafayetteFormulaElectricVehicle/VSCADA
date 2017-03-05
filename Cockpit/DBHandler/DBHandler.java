@@ -1,3 +1,5 @@
+package DBHandler;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -205,6 +207,17 @@ public class DBHandler {
       if(sc.hasNext()) out += ", ";
     }
     return out + ")";
+  }
+  
+  public void insertData(String ID, String value){
+    String sql = "INSERT INTO Data (sensorID, value) VALUES (\"" + ID + "\",\"" + value + "\");";
+//    System.out.println(sql);
+    runSQL(sql);
+  }
+  
+  public void insertData(String IDVals){
+    String sql = "INSERT INTO Data (sensorID, value) VALUES " + IDVals + ";";
+    runSQL(sql);
   }
   
   /*************************************************************************************************

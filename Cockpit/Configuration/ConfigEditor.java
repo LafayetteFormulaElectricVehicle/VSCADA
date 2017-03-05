@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
 
+import DBHandler.DBHandler;
+
 public class ConfigEditor{
   
   Scanner sc;
