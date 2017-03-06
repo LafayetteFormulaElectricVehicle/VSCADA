@@ -1,6 +1,5 @@
 package cockpit.database;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -160,42 +159,62 @@ public class DBHandler {
   }
 
   //date in the form of 2017-02-05
-  public ArrayList<ArrayList<String>> getInfo(String systems, String date1, String date2){
+  public ArrayList<ArrayList<String>> getInfo(String IDs, String systems, String date1, String date2){
 
     String whereC;
     String andC;
+    String and2C;
+
     String sys;
     String range;
+    String idRange;
 
-    whereC = (systems != null || date1 != null || date2 != null) ? "WHERE " : "";
-    andC = (systems != null && (date1 != null || date2 != null)) ? " AND " : "";
+    whereC = (systems != null || date1 != null || date2 != null || IDs != null) ? " WHERE " : "";
+
+    andC = (IDs != null && (systems != null || date1 != null || date2 != null)) ? " AND " : "";
+    and2C = ((IDs != null || systems != null) && (date1 != null || date2 != null)) ? " AND " : "";
 
     sys = parseSystems(systems);
 
+    if(IDs != null) idRange ="labels.ID IN (" + parseCSV(IDs) + ")";
+    else idRange = "";
+
     if(date1 == null){
       if(date2 == null) range = "";
-      else range = "DATE(TimeStamp) = \"" + date2 + "\"";
+      else range = "DATETIME(TimeStamp) = \"" + date2 + "\"";
     }
     else{
-      if(date2 == null) range = "DATE(TimeStamp) = \"" + date1 + "\"";
-      else range = "DATE(TimeStamp) >= \"" + date1 + "\" " +
-        "AND DATE(TimeStamp) <= \"" + date2 + "\"";
+      if(date2 == null) range = "DATETIME(TimeStamp) = \"" + date1 + "\"";
+      else range = "DATETIME(TimeStamp) >= \"" + date1 + "\" " +
+              "AND DATETIME(TimeStamp) <= \"" + date2 + "\"";
     }
 
     String query = "select " +
-      "labels.ID AS \"Sensor ID\", " +
-      "labels.sensorName AS \"Sensor\", " +
-      "labels.sensorUnits AS \"Units\", " +
-      "labels.dataType AS \"Data Type\", " +
-      "labels.system AS \"System\", " +
-      "data.value AS \"Value\", " +
-      "data.TimeStamp AS \"TimeStamp\" " +
-      "from SensorLabels AS labels " +
-      "INNER JOIN Data AS data ON labels.ID=data.sensorID " +
-      whereC + sys + andC + range + ";";
+            "labels.ID AS \"Sensor ID\", " +
+            "labels.sensorName AS \"Sensor\", " +
+            "labels.sensorUnits AS \"Units\", " +
+            "labels.dataType AS \"Data Type\", " +
+            "labels.system AS \"System\", " +
+            "data.value AS \"Value\", " +
+            "data.TimeStamp AS \"TimeStamp\" " +
+            "from SensorLabels AS labels " +
+            "INNER JOIN Data AS data ON labels.ID=data.sensorID" +
+            whereC + idRange + andC + sys + and2C + range + ";";
 
-    // System.out.println(query);
+//    System.out.println(query + "\n\n");
+//    return null;
     return runQuery(query);
+  }
+
+  private String parseCSV(String csv){
+    String out = "";
+    Scanner sc = new Scanner(csv);
+    sc.useDelimiter(",");
+    while(sc.hasNext()){
+      out += "\"" + sc.next() + "\"";
+      if(sc.hasNext()) out += ", ";
+    }
+    return out;
   }
 
   private String parseSystems(String systems){
@@ -210,21 +229,33 @@ public class DBHandler {
     return out + ")";
   }
 
+  public void insertData(String ID, String value){
+    String sql = "INSERT INTO Data (sensorID, value) VALUES (\"" + ID + "\",\"" + value + "\");";
+//    System.out.println(sql);
+    runSQL(sql);
+  }
+
+  public void insertData(String IDVals){
+    if(IDVals == null) return;
+    String sql = "INSERT INTO Data (sensorID, value) VALUES " + IDVals + ";";
+    runSQL(sql);
+  }
+
   /*************************************************************************************************
-    * Configuration Functions
-    *************************************************************************************************/
+   * Configuration Functions
+   *************************************************************************************************/
 
   public ArrayList<ArrayList<String>> listSensors(String expr){
     String sql = "select sensorName, sensorUnits from SensorLabels " +
-      "WHERE sensorName LIKE \'" + expr + "%\' " +
-      "ORDER BY sensorName COLLATE NOCASE";
+            "WHERE sensorName LIKE \'" + expr + "%\' " +
+            "ORDER BY sensorName COLLATE NOCASE";
 
     return runQuery(sql);
   }
 
   public Boolean checkSensorName(String name){
     String sql = "select sensorName from SensorLabels " +
-      "WHERE sensorName = \"" + name + "\"";
+            "WHERE sensorName = \"" + name + "\"";
     ArrayList<ArrayList<String>> result = runQuery(sql);
     for(ArrayList<String> inner : result){
       if(inner.size() != 0) return false;
@@ -236,8 +267,8 @@ public class DBHandler {
     if(checkSensorName(sensorName)){
 
       String sql = "INSERT INTO SensorLabels " +
-        "(sensorName, sensorUnits, dataType, system) VALUES (\"" +
-        sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
+              "(sensorName, sensorUnits, dataType, system) VALUES (\"" +
+              sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
 
       runSQL(sql);
     }
@@ -248,24 +279,24 @@ public class DBHandler {
 
   public void updateSensorName(String sensorName, String newName){
     String sql = "UPDATE SensorLabels " +
-      "SET sensorName=\'" + newName + "\' " +
-      "WHERE sensorName=\'" + sensorName + "\';";
+            "SET sensorName=\'" + newName + "\' " +
+            "WHERE sensorName=\'" + sensorName + "\';";
 
     runSQL(sql);
   }
 
   public void updateSensorUnits(String sensorName, String newUnits){
     String sql = "UPDATE SensorLabels " +
-      "SET sensorUnits=\'" + newUnits + "\' " +
-      "WHERE sensorName=\'" + sensorName + "\';";
+            "SET sensorUnits=\'" + newUnits + "\' " +
+            "WHERE sensorName=\'" + sensorName + "\';";
 
     runSQL(sql);
   }
 
   public void updateSensorDataType(String sensorName, String newType){
     String sql = "UPDATE SensorLabels " +
-      "SET dataType=\'" + newType + "\' " +
-      "WHERE sensorName=\'" + sensorName + "\';";
+            "SET dataType=\'" + newType + "\' " +
+            "WHERE sensorName=\'" + sensorName + "\';";
 
     runSQL(sql);
   }
@@ -275,38 +306,5 @@ public class DBHandler {
 
     runSQL(sql);
   }
-
-
-  /*************************************************************************************************
-    * Old Functions
-    *************************************************************************************************/
-
-//  private String getResults(ResultSet rs){
-//
-//    String output = "";
-//    try{
-//      while (rs.next()) {
-//        output += rs.getString("sensorName") + "\n";
-//      }
-//    }
-//    catch (SQLException e ){
-//      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//    }
-//    return output;
-//  }
-
-//  public void writeFile(String myString, String file){
-//    Scanner scanner = new Scanner(myString);
-//
-//    try{
-//      PrintWriter writer = new PrintWriter(file, "UTF-8");
-//      while (scanner.hasNextLine()) {
-//        writer.println(scanner.nextLine());
-//      }
-//
-//      writer.close();
-//    } catch (IOException e){}
-//    scanner.close();
-//  }
 
 }
