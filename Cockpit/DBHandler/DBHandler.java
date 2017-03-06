@@ -159,26 +159,34 @@ public class DBHandler {
   }
   
   //date in the form of 2017-02-05
-  public ArrayList<ArrayList<String>> getInfo(String systems, String date1, String date2){
+  public ArrayList<ArrayList<String>> getInfo(String IDs, String systems, String date1, String date2){
     
     String whereC;
     String andC;
+    String and2C;
+    
     String sys;
     String range;
+    String idRange;
     
-    whereC = (systems != null || date1 != null || date2 != null) ? "WHERE " : "";
-    andC = (systems != null && (date1 != null || date2 != null)) ? " AND " : "";
+    whereC = (systems != null || date1 != null || date2 != null || IDs != null) ? " WHERE " : "";
+    
+    andC = (IDs != null && (systems != null || date1 != null || date2 != null)) ? " AND " : "";
+    and2C = ((IDs != null || systems != null) && (date1 != null || date2 != null)) ? " AND " : "";
     
     sys = parseSystems(systems);
     
+    if(IDs != null) idRange ="labels.ID IN (" + parseCSV(IDs) + ")";
+    else idRange = "";
+    
     if(date1 == null){
       if(date2 == null) range = "";
-      else range = "DATE(TimeStamp) = \"" + date2 + "\"";
+      else range = "DATETIME(TimeStamp) = \"" + date2 + "\"";
     }
     else{
-      if(date2 == null) range = "DATE(TimeStamp) = \"" + date1 + "\"";
-      else range = "DATE(TimeStamp) >= \"" + date1 + "\" " +
-        "AND DATE(TimeStamp) <= \"" + date2 + "\"";
+      if(date2 == null) range = "DATETIME(TimeStamp) = \"" + date1 + "\"";
+      else range = "DATETIME(TimeStamp) >= \"" + date1 + "\" " +
+        "AND DATETIME(TimeStamp) <= \"" + date2 + "\"";
     }
     
     String query = "select " +
@@ -190,11 +198,23 @@ public class DBHandler {
       "data.value AS \"Value\", " +
       "data.TimeStamp AS \"TimeStamp\" " +
       "from SensorLabels AS labels " +
-      "INNER JOIN Data AS data ON labels.ID=data.sensorID " +
-      whereC + sys + andC + range + ";";
+      "INNER JOIN Data AS data ON labels.ID=data.sensorID" +
+      whereC + idRange + andC + sys + and2C + range + ";";
     
-    // System.out.println(query);
+//    System.out.println(query + "\n\n");
+//    return null;
     return runQuery(query);
+  }
+  
+  private String parseCSV(String csv){
+    String out = "";
+    Scanner sc = new Scanner(csv);
+    sc.useDelimiter(",");
+    while(sc.hasNext()){
+      out += "\"" + sc.next() + "\"";
+      if(sc.hasNext()) out += ", ";
+    }
+    return out;
   }
   
   private String parseSystems(String systems){
@@ -216,6 +236,7 @@ public class DBHandler {
   }
   
   public void insertData(String IDVals){
+    if(IDVals == null) return;
     String sql = "INSERT INTO Data (sensorID, value) VALUES " + IDVals + ";";
     runSQL(sql);
   }

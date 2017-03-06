@@ -5,7 +5,7 @@ DIRS=Configuration/*.java DBHandler/*.java VSCADAComp/*.java
 SAVEDIR=exec
 
 #File to run
-F=DBTest
+F=DBHandler.DBTest
 
 all: clean comp
 	

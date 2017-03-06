@@ -1,6 +1,7 @@
 package DBHandler;
 
 import VSCADAComp.*;
+import java.util.ArrayList;
 //import VSCADAComp.Parser;
 
 /* Compiling
@@ -12,25 +13,80 @@ import java.util.ArrayList;
 
 public class DBTest{
   
-  
-  
   public static void main(String[] args){
-    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
-//    handler.insertData("1","123");
-    String file = "/home/lombardc/Desktop/output.txt";
-    CANReader tmp = new CANReader(file, handler);
+    DBHandler handler = new DBHandler("../SCADA.db","../SQLSchema/");
+    SCADASystem scada = new SCADASystem(handler);
+    scada.addSensor("1");
+    scada.addSensor("2");
+    scada.addSensor("3");
+    scada.addSensor("4");
+    scada.addSensor("5");
+    scada.addSensor("6");
+    scada.addSensor("7");
+    scada.addSensor("8");
+    scada.addSensor("9");
+    scada.addSensor("10");
     
-    Thread thr = new Thread(tmp);
-    thr.start();
-    while(true){
-      try{
-        thr.sleep(1000);
-        tmp.writeToDB();
-      }
-      catch(java.lang.InterruptedException e){}
-    }
-    
+    scada.openCAN();
   }
+  
+  
+//  public static void main(String[] args){
+//    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
+//    
+//    SCADASystem s = new SCADASystem(handler);
+//    s.addSensor("1");
+//    s.addSensor("8");
+//    s.addSensor("5");
+//    s.addSensor("2");
+//    
+//    s.parse();
+//    
+//    s.updateValue("1","a");
+//    s.updateValue("2,b");
+//    s.updateMultValues("5,c,8,d");
+//    
+//    s.parse();
+//    
+//    ArrayList<ArrayList<String>> out; // = handler.getInfo("1,2,3", null, "2017-02-26", "2017-02-28");
+//    out = handler.getInfo(null, null, null, null);
+//    par(out);
+//    out = handler.getInfo("1,2,5", null, null, null);
+//    par(out);
+//    out = handler.getInfo("1,2,5", "TSV", null, null);
+//    par(out);
+//    out = handler.getInfo("1,2,5", "TSV", "2017-03-05 22:46:50", null);
+//    par(out);
+//    out = handler.getInfo("1,2,5", "TSV", "2017-03-05 22:46:50", "2017-03-05 22:48:35");
+//    par(out);
+//    
+//    out = handler.getInfo(null, "TSV", null, null);
+//    par(out);
+//    out = handler.getInfo(null, "TSV", "2017-03-05 22:46:50", null);
+//    par(out);
+//    out = handler.getInfo(null, "TSV", "2017-03-05 22:46:50", "2017-03-05 22:48:35");
+//    par(out);
+//    
+////      par(out);
+//    
+//    ArrayList<String> id = new ArrayList<String>();
+//    ArrayList<String> val = new ArrayList<String>();
+//    id.add("1");
+//    id.add("2");
+//    id.add("5");
+//    id.add("8");
+//    
+//    val.add("e");
+//    val.add("f");
+//    val.add("g");
+//    val.add("h");
+//    
+//    s.updateMultValues(id, val);
+//    
+//    s.parse();
+//    
+////      s.writeToDB();
+//  }
   
   
   
@@ -73,7 +129,7 @@ public class DBTest{
    s.addSensor("5", "CellA2","A");
    s.addSensor("8", "CellT4","F");
    
-   System.out.println(s.parse());
+   s.parse();
    
    s.updateValue("1","a");
    s.updateValue("2","b");
@@ -82,7 +138,7 @@ public class DBTest{
    
    System.out.println();
    
-   System.out.println(s.parse());
+   s.parse();
    
    System.out.println(s.removeSensor("8"));
    
@@ -90,7 +146,7 @@ public class DBTest{
    
    System.out.println();
    
-   System.out.println(s.parse());
+   s.parse();
    
    //    ArrayList<ArrayList<String>> out = handler.listSensors("cell");
    //
