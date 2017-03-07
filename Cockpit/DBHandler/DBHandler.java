@@ -245,6 +245,11 @@ public class DBHandler {
     * Configuration Functions
     *************************************************************************************************/
   
+  public ArrayList<ArrayList<String>> getIDs(){
+    String sql = "select id from SensorLabels;";
+    return runQuery(sql);
+  }
+  
   public ArrayList<ArrayList<String>> listSensors(String expr){
     String sql = "select sensorName, sensorUnits from SensorLabels " +
       "WHERE sensorName LIKE \'" + expr + "%\' " +
@@ -263,18 +268,17 @@ public class DBHandler {
     return true;
   }
   
-  public void addSensor(String sensorName, String sensorUnits, String sensorDataType, String sensorSys){
-    if(checkSensorName(sensorName)){
+  public void addSensor(String id, String sensorName, String sensorUnits, String sensorDataType, String sensorSys){
+//    if(checkSensorName(sensorName)){
       
       String sql = "INSERT INTO SensorLabels " +
-        "(sensorName, sensorUnits, dataType, system) VALUES (\"" +
+        "(id, sensorName, sensorUnits, dataType, system) VALUES (\"" + id + "\", \"" + 
         sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
-      
       runSQL(sql);
-    }
-    else{
-      System.out.println("Sorry, a sensor with this name already exists!");
-    }
+//    }
+//    else{
+//      System.out.println("Sorry, a sensor with this name already exists!");
+//    }
   }
   
   public void updateSensorName(String sensorName, String newName){
@@ -303,7 +307,6 @@ public class DBHandler {
   
   public void removeSensor(String sensorName){
     String sql = "DELETE FROM SensorLabels WHERE sensorName=\'" + sensorName + "\'";
-    
     runSQL(sql);
   }
   

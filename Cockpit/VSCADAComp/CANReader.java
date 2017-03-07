@@ -52,7 +52,7 @@ public class CANReader implements Runnable{
     try{
       sc = new Scanner(line);
       sc.next();
-      String id = sc.next();
+      String id = "" + new BigInteger(sc.next(), 16).intValue();
       sc.next();
       String totalVal = "";
       while(sc.hasNext()) totalVal+= sc.next();
