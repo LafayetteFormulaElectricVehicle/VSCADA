@@ -9,6 +9,14 @@ import java.math.BigInteger;
 import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.math.BigInteger;
+
+import cockpit.database.DBHandler;
+
 public class Can implements Runnable{
 
     String file;
@@ -18,7 +26,6 @@ public class Can implements Runnable{
     ArrayList<String> ids;
     ArrayList<String> values;
     Scanner sc;
-
 
     public Can(String fileName, SCADASystem system){
         file = fileName;
@@ -54,7 +61,7 @@ public class Can implements Runnable{
         try{
             sc = new Scanner(line);
             sc.next();
-            String id = sc.next();
+            String id = "" + new BigInteger(sc.next(), 16).intValue();
             sc.next();
             String totalVal = "";
             while(sc.hasNext()) totalVal+= sc.next();

@@ -11,11 +11,11 @@ import java.io.IOException;
 public class main {
 
     public static void main(String[] args) {
-        //SparkServer sparkServer = new SparkServer();
-        Server s = new Server();
-        Client c = new Client();
-        c.connect("127.0.0.1", 3002);
-        c.send("bob");
+        SparkServer sparkServer = new SparkServer();
+//        Server s = new Server();
+//        Client c = new Client();
+//        c.connect("127.0.0.1", 3002);
+//        c.send("bob");
     }
 
 }

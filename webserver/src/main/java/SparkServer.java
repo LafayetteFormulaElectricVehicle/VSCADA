@@ -13,6 +13,8 @@ public class SparkServer implements Runnable{
     Thread t;
     Gson gson;
 
+    private static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SparkServer.class.getName());
+
     public SparkServer() {
         port(3000);
         t = new Thread(this, "SparkServer");
@@ -22,7 +24,7 @@ public class SparkServer implements Runnable{
 
     public void run() {
         staticFiles.location("/");
-
+        LOG.info("Server started on port 3000");
 
         get("/",(req,res) -> {
             res.redirect("/app/home.html");
