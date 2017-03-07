@@ -4,7 +4,10 @@
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import spark.QueryParamsMap;
 import spark.Request;
+
+import cockpit.database.*;
 
 import static spark.Spark.*;
 
@@ -12,6 +15,7 @@ public class SparkServer implements Runnable{
 
     Thread t;
     Gson gson;
+    DBHandler handler;
 
     private static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SparkServer.class.getName());
 
@@ -19,6 +23,7 @@ public class SparkServer implements Runnable{
         port(3000);
         t = new Thread(this, "SparkServer");
         gson = new GsonBuilder().setPrettyPrinting().create();
+        handler = new DBHandler("SCADA.db","SQLSCHEME/");
         t.start();
     }
 
@@ -32,12 +37,18 @@ public class SparkServer implements Runnable{
             return null;
         });
 
-        get("/data", (req, res) -> {
-            DataPacket packet = new DataPacket();
-            System.out.println(gson.toJson(packet));
-            res.type("text/json");
-            res.header("Access-Control-Allow-Origin","*");
-            return gson.toJson(packet);
+        get("/dbquery", (req, res) -> {
+            QueryParamsMap q = req.queryMap();
+            String id = q.get("id").value() != null ? q.get("id").value() : null;
+            String sys = q.get("sys").value() != null ? q.get("sys").value() : null;
+            String startDate = q.get("startDate").value() != null ? q.get("startDate").value() : null;
+            String endDate = q.get("endDate").value() != null ? q.get("endDate").value() : null;
+            System.out.println(id);
+            System.out.println(sys);
+            System.out.println(startDate);
+            System.out.println(endDate);
+            //System.out.println(gson.toJson(handler.getInfo(id,sys,startDate,endDate)));
+            return gson.toJson(handler.getInfo(id, sys, startDate, endDate));
         });
 
         get("/api/name", (req, res) -> {
@@ -47,9 +58,19 @@ public class SparkServer implements Runnable{
             return "in name";
         });
 
+        get("/data", (req, res) -> {
+            DataPacket packet = new DataPacket();
+            System.out.println(gson.toJson(packet));
+            res.type("text/json");
+            res.header("Access-Control-Allow-Origin","*");
+            return gson.toJson(packet);
+        });
+
+
+
         notFound((req,res) -> {
-            System.out.println("NOT FOUND");
-            System.out.println(req.queryMap().get("name").value());
+            System.out.println("IN NOT FOUND");
+            //System.out.println(req.queryMap().get("name").value());
 //            printReq(req);
             return "Not found";
         });

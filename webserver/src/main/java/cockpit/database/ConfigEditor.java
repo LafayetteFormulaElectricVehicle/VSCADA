@@ -224,7 +224,7 @@ public class ConfigEditor{
   private void getHelp(){
     System.out.println();
     try{
-      Scanner help = new Scanner(new File("../Configuration/help.txt"));
+      Scanner help = new Scanner(new File("help.txt"));
       while(help.hasNextLine()) System.out.println(help.nextLine());
     }
     catch(java.io.FileNotFoundException e){
@@ -232,7 +232,7 @@ public class ConfigEditor{
   }
   
   public static void main(String[] args) {
-    ConfigEditor config = new ConfigEditor("../SCADA.db", "../SQLSchema/");
+    ConfigEditor config = new ConfigEditor("SCADA.db", "SQLSchema/");
     
 //    DBHandler handler = new DBHandler("../SCADA.db");
 //    System.out.println(handler.getAllSensors());

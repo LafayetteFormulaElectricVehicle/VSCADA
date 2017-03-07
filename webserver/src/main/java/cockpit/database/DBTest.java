@@ -26,7 +26,7 @@ public class DBTest{
 //    scada.addSensor("9");
 //    scada.addSensor("10");
     
-    scada.openCAN();
+//    scada.openCAN();
   }
   
   
