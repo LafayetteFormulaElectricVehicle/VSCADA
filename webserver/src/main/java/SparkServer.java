@@ -58,13 +58,13 @@ public class SparkServer implements Runnable{
             return "in name";
         });
 
-        get("/data", (req, res) -> {
-            DataPacket packet = new DataPacket();
-            System.out.println(gson.toJson(packet));
-            res.type("text/json");
-            res.header("Access-Control-Allow-Origin","*");
-            return gson.toJson(packet);
-        });
+//        get("/data", (req, res) -> {
+//            DataPacket packet = new DataPacket();
+//            System.out.println(gson.toJson(packet));
+//            res.type("text/json");
+//            res.header("Access-Control-Allow-Origin","*");
+//            return gson.toJson(packet);
+//        });
 
 
 
