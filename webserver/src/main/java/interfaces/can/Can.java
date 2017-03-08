@@ -17,7 +17,7 @@ import java.math.BigInteger;
 
 import cockpit.database.DBHandler;
 
-public class Can implements Runnable{
+public class CAN implements Runnable{
 
     String file;
     Boolean endReached;
@@ -27,7 +27,7 @@ public class Can implements Runnable{
     ArrayList<String> values;
     Scanner sc;
 
-    public Can(String fileName, SCADASystem system){
+    public CAN(String fileName, SCADASystem system){
         file = fileName;
         endReached = false;
         sys = system;

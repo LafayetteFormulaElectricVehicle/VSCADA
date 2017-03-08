@@ -1,6 +1,6 @@
 package cockpit.database;
 
-import com.google.gson.Gson;
+import interfaces.can.CAN;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -138,7 +138,7 @@ public class SCADASystem{
 
     public void openCAN(){
         String file = "/home/lombardc/Desktop/output.txt";
-        interfaces.can.Can tmp = new interfaces.can.Can(file, this);
+        CAN tmp = new CAN(file, this);
         Thread thr = new Thread(tmp);
         SCADATimer t = new SCADATimer(1000, this);
         Thread thr2 = new Thread(t);
