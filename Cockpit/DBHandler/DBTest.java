@@ -14,20 +14,12 @@ import java.util.ArrayList;
 public class DBTest{
   
   public static void main(String[] args){
-    DBHandler handler = new DBHandler("../SCADA.db","../SQLSchema/");
-    SCADASystem scada = new SCADASystem(handler);
-//    scada.addSensor("1");
-//    scada.addSensor("2");
-//    scada.addSensor("3");
-//    scada.addSensor("4");
-//    scada.addSensor("5");
-//    scada.addSensor("6");
-//    scada.addSensor("7");
-//    scada.addSensor("8");
-//    scada.addSensor("9");
-//    scada.addSensor("10");
+    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
     
-    scada.openCAN();
+    SCADASystem scada = new SCADASystem(handler, null, "/Users/CraigLombardo/Desktop/output.txt");
+    Thread thr = new Thread(scada);
+    thr.start();
+    
   }
   
   

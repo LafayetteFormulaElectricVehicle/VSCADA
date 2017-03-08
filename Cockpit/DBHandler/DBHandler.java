@@ -270,11 +270,11 @@ public class DBHandler {
   
   public void addSensor(String id, String sensorName, String sensorUnits, String sensorDataType, String sensorSys){
 //    if(checkSensorName(sensorName)){
-      
-      String sql = "INSERT INTO SensorLabels " +
-        "(id, sensorName, sensorUnits, dataType, system) VALUES (\"" + id + "\", \"" + 
-        sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
-      runSQL(sql);
+    
+    String sql = "INSERT INTO SensorLabels " +
+      "(id, sensorName, sensorUnits, dataType, system) VALUES (\"" + id + "\", \"" + 
+      sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
+    runSQL(sql);
 //    }
 //    else{
 //      System.out.println("Sorry, a sensor with this name already exists!");

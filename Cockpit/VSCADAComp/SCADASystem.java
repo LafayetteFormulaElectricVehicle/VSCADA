@@ -1,7 +1,8 @@
 package VSCADAComp;
 
 import com.google.gson.Gson;
-
+import javafx.application.Application;
+import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,18 +18,29 @@ import DBHandler.DBHandler;
  * @version 1.0
  * @since   2017-03-01
  */
-public class SCADASystem{
+public class SCADASystem implements Runnable{
   
   private HashMap<String, String> sensors;
   private DBHandler handler;
-  
+  private SCADAViewer view;
+  private String file;
   /**
    * This Constructor serves as the creation of a new subsystem.
    * @param name The name of the desired subsystem.
    */
-  public SCADASystem(DBHandler dbhandler){
+  public SCADASystem(DBHandler dbhandler, SCADAViewer viewer, String CANfile){
     handler = dbhandler;
+    getAllSensors();
+    view = viewer;
+    file = CANfile;
+  }
+  
+  public void getAllSensors(){
     sensors = new HashMap<String, String>();
+    ArrayList<ArrayList<String>> info = handler.getIDs();
+    for(ArrayList<String> arr : info){
+      addSensor(arr.get(0));
+    }
   }
   
   /**
@@ -137,15 +149,34 @@ public class SCADASystem{
     }
   }
   
-  public void openCAN(){
-    String file = "/Users/CraigLombardo/Desktop/output.txt";
+  public HashMap<String, String> getMap(){
+    return sensors;
+  }
+  
+  public void run(){
+//    String file = "/Users/CraigLombardo/Desktop/output.txt";
     CANReader tmp = new CANReader(file, this);
     Thread thr = new Thread(tmp);
-    SCADATimer t = new SCADATimer(1000, this);
+    
+    SCADATimer t = new SCADATimer(1000, this, view);
     Thread thr2 = new Thread(t);
+    
     thr.start();
     thr2.start();
     while(true){}
+  }
+  
+  public static void main(String[] args){
+    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
+    
+    SCADAViewer test = new SCADAViewer();
+    try{
+      test.init();
+    }
+    catch(Exception e){}
+    SCADASystem scada = new SCADASystem(handler, null, "/Users/CraigLombardo/Desktop/output.txt");
+    Thread thr = new Thread(scada);
+    thr.start();
   }
   
 }
