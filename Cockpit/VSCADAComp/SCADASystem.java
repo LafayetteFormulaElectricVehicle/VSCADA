@@ -138,7 +138,7 @@ public class SCADASystem{
   }
   
   public void openCAN(){
-    String file = "/home/lombardc/Desktop/output.txt";
+    String file = "/Users/CraigLombardo/Desktop/output.txt";
     CANReader tmp = new CANReader(file, this);
     Thread thr = new Thread(tmp);
     SCADATimer t = new SCADATimer(1000, this);
