@@ -34,7 +34,10 @@ public class SCADAViewer extends Application {
   GridPane grid;
   int row = 4;
   Boolean updateMe = false;
-  DBHandler handler;
+  private DBHandler handler;
+  
+  String file = "/Users/CraigLombardo/Desktop/output.txt";
+  Boolean rel = true;
   
   HashMap<String, Label> sensors;
   
@@ -70,22 +73,21 @@ public class SCADAViewer extends Application {
     
     primaryStage.setScene(scene);
     
-    Label userName = new Label("Sensor ID:");
     grid.add(new Label("Sensor ID:"), 0, 0);
-    grid.add(new Label("Sensor Value:"), 1, 0);
-    grid.add(quit, 2, 0);
+    grid.add(new Label("Sensor Name:"), 1, 0);
+    grid.add(new Label("Sensor Value:"), 2, 0);
+    grid.add(quit, 3, 0);
     
-    handler = new DBHandler("SCADA.db","SQLSchema/");
-    
-    sys = new SCADASystem(handler, null, "/Users/CraigLombardo/Desktop/output.txt");
-    createMapping(sys.getMap());
+    handler = new DBHandler((rel ? "" : "../") + "SCADA.db",(rel ? "" : "../") + "SQLSchema/");
+//    
+//    sys = new SCADASystem(handler, null, file);
+//    createMapping(sys.getMap());
     
     root.setContent(grid);
     primaryStage.show();
     
-    handler = new DBHandler("SCADA.db","SQLSchema/");
-    
-    sys = new SCADASystem(handler, this, "/Users/CraigLombardo/Desktop/output.txt");
+    sys = new SCADASystem(handler, file);
+    createMapping(handler.getIDNames());
     Thread thr = new Thread(sys);
     thr.start();
     
@@ -104,16 +106,17 @@ public class SCADAViewer extends Application {
     
   }
   
-  public void createMapping(HashMap<String, String> map){
-    String key;
-    String val;
-    for (Map.Entry<String, String> entry : map.entrySet()){
-      key = entry.getKey();
-      val = entry.getValue();
-      Label tmp = new Label(val);
-      sensors.put(key, tmp);
-      grid.add(new Label(key), 0, row);
-      grid.add(tmp, 1, row++);
+  public void createMapping(ArrayList<ArrayList<String>> info){
+    String id;
+    String name;
+    for (ArrayList<String> r : info){
+      id = r.get(0);
+      name = r.get(1);
+      Label tmp = new Label("");
+      sensors.put(id, tmp);
+      grid.add(new Label("0x" + Integer.toHexString(Integer.parseInt(id))), 0, row);
+      grid.add(new Label(name), 1, row);
+      grid.add(tmp, 2, row++);
     }
   }
   

@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Data (
-  sensorID INTEGER,
+  sensorID INTEGER NOT NULL,
   value VARCHAR(150) NOT NULL,
   TimeStamp DATE DEFAULT(datetime('now', 'localtime')),
   FOREIGN KEY(sensorID) REFERENCES SensorLabels(ID) ON DELETE CASCADE

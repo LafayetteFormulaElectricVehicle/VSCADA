@@ -231,7 +231,7 @@ public class DBHandler {
   
   public void insertData(String ID, String value){
     String sql = "INSERT INTO Data (sensorID, value) VALUES (\"" + ID + "\",\"" + value + "\");";
-//    System.out.println(sql);
+
     runSQL(sql);
   }
   
@@ -245,8 +245,13 @@ public class DBHandler {
     * Configuration Functions
     *************************************************************************************************/
   
+  public ArrayList<ArrayList<String>> getIDNames(){
+    String sql = "select ID, sensorName from SensorLabels;";
+    return runQuery(sql);
+  }
+  
   public ArrayList<ArrayList<String>> getIDs(){
-    String sql = "select id from SensorLabels;";
+    String sql = "select ID from SensorLabels;";
     return runQuery(sql);
   }
   

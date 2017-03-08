@@ -22,16 +22,14 @@ public class SCADASystem implements Runnable{
   
   private HashMap<String, String> sensors;
   private DBHandler handler;
-  private SCADAViewer view;
   private String file;
   /**
    * This Constructor serves as the creation of a new subsystem.
    * @param name The name of the desired subsystem.
    */
-  public SCADASystem(DBHandler dbhandler, SCADAViewer viewer, String CANfile){
+  public SCADASystem(DBHandler dbhandler, String CANfile){
     handler = dbhandler;
     getAllSensors();
-    view = viewer;
     file = CANfile;
   }
   
@@ -158,7 +156,7 @@ public class SCADASystem implements Runnable{
     CANReader tmp = new CANReader(file, this);
     Thread thr = new Thread(tmp);
     
-    SCADATimer t = new SCADATimer(1000, this, view);
+    SCADATimer t = new SCADATimer(1000, this);
     Thread thr2 = new Thread(t);
     
     thr.start();
@@ -174,7 +172,7 @@ public class SCADASystem implements Runnable{
       test.init();
     }
     catch(Exception e){}
-    SCADASystem scada = new SCADASystem(handler, null, "/Users/CraigLombardo/Desktop/output.txt");
+    SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
     Thread thr = new Thread(scada);
     thr.start();
   }

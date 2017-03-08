@@ -16,9 +16,14 @@ public class DBTest{
   public static void main(String[] args){
     DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
     
-    SCADASystem scada = new SCADASystem(handler, null, "/Users/CraigLombardo/Desktop/output.txt");
+    SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
+    
     Thread thr = new Thread(scada);
     thr.start();
+    
+    ArrayList<ArrayList<String>> out = handler.getInfo(null,"TSV",null,null);
+    par(out);
+    while(true){}
     
   }
   
