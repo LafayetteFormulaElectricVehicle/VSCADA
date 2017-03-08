@@ -1,23 +1,53 @@
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellV1", "V", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellV2", "V", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellV3", "V", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellV4", "V", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellT1", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellT2", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellT3", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("cellT4", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packA1", "A", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packA2", "A", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packA3", "A", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packA4", "A", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packT1", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packT2", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packT3", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("packT4", "C", "FLOAT", "TSV");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("torque", "N*m", "FLOAT", "DYNO");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("oilTemp", "C", "FLOAT", "DYNO");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("coolantTemp", "C", "FLOAT", "DYNO");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("coolantFR", "ft/s", "FLOAT", "DYNO");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("RPM", "r/m", "FLOAT", "DYNO");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("totalVoltage", "V", "FLOAT", "TSI");
-INSERT INTO SensorLabels (sensorName, sensorUnits, dataType, system) VALUES ("totalCurrent", "A", "FLOAT", "TSI");
+INSERT INTO SensorLabels (ID, sensorName, sensorUnits, dataType, system) VALUES
+('256', 'Pack 1 state', 'V', 'FLOAT', 'TSV'),
+('257', 'Pack 1 voltage', 'V', 'FLOAT', 'TSV'),
+('258', 'Pack 1 current', 'V', 'FLOAT', 'TSV'),
+('259', 'Pack 1 SOC', 'V', 'FLOAT', 'TSV'),
+('260', 'Pack 1 Coulombs', 'V', 'FLOAT', 'TSV'),
+('272', 'Pack 1 cell status 1', 'V', 'FLOAT', 'TSV'),
+('273', 'Pack 1 cell status 2', 'V', 'FLOAT', 'TSV'),
+('274', 'Pack 1 cell status 3', 'V', 'FLOAT', 'TSV'),
+('275', 'Pack 1 cell status 4', 'V', 'FLOAT', 'TSV'),
+('276', 'Pack 1 cell status 5', 'V', 'FLOAT', 'TSV'),
+('277', 'Pack 1 cell status 6', 'V', 'FLOAT', 'TSV'),
+('278', 'Pack 1 cell status 7', 'V', 'FLOAT', 'TSV'),
+('288', 'Pack 1 cell voltage 1', 'V', 'FLOAT', 'TSV'),
+('289', 'Pack 1 cell voltage 2', 'V', 'FLOAT', 'TSV'),
+('290', 'Pack 1 cell voltage 3', 'V', 'FLOAT', 'TSV'),
+('291', 'Pack 1 cell voltage 4', 'V', 'FLOAT', 'TSV'),
+('292', 'Pack 1 cell voltage 5', 'V', 'FLOAT', 'TSV'),
+('293', 'Pack 1 cell voltage 6', 'V', 'FLOAT', 'TSV'),
+('294', 'Pack 1 cell voltage 7', 'V', 'FLOAT', 'TSV'),
+('304', 'Pack 1 cell temp 1', 'V', 'FLOAT', 'TSV'),
+('305', 'Pack 1 cell temp 2', 'V', 'FLOAT', 'TSV'),
+('306', 'Pack 1 cell temp 3', 'V', 'FLOAT', 'TSV'),
+('307', 'Pack 1 cell temp 4', 'V', 'FLOAT', 'TSV'),
+('308', 'Pack 1 cell temp 5', 'V', 'FLOAT', 'TSV'),
+('309', 'Pack 1 cell temp 6', 'V', 'FLOAT', 'TSV'),
+('310', 'Pack 1 cell temp 7', 'V', 'FLOAT', 'TSV'),
+('512', 'Pack 2 state', 'V', 'FLOAT', 'TSV'),
+('513', 'Pack 2 voltage', 'V', 'FLOAT', 'TSV'),
+('514', 'Pack 2 current', 'V', 'FLOAT', 'TSV'),
+('515', 'Pack 2 SOC', 'V', 'FLOAT', 'TSV'),
+('516', 'Pack 2 Coulombs', 'V', 'FLOAT', 'TSV'),
+('528', 'Pack 2 cell status 1', 'V', 'FLOAT', 'TSV'),
+('529', 'Pack 2 cell status 2', 'V', 'FLOAT', 'TSV'),
+('530', 'Pack 2 cell status 3', 'V', 'FLOAT', 'TSV'),
+('531', 'Pack 2 cell status 4', 'V', 'FLOAT', 'TSV'),
+('532', 'Pack 2 cell status 5', 'V', 'FLOAT', 'TSV'),
+('533', 'Pack 2 cell status 6', 'V', 'FLOAT', 'TSV'),
+('534', 'Pack 2 cell status 7', 'V', 'FLOAT', 'TSV'),
+('544', 'Pack 2 cell voltage 1', 'V', 'FLOAT', 'TSV'),
+('545', 'Pack 2 cell voltage 2', 'V', 'FLOAT', 'TSV'),
+('546', 'Pack 2 cell voltage 3', 'V', 'FLOAT', 'TSV'),
+('547', 'Pack 2 cell voltage 4', 'V', 'FLOAT', 'TSV'),
+('548', 'Pack 2 cell voltage 5', 'V', 'FLOAT', 'TSV'),
+('549', 'Pack 2 cell voltage 6', 'V', 'FLOAT', 'TSV'),
+('550', 'Pack 2 cell voltage 7', 'V', 'FLOAT', 'TSV'),
+('560', 'Pack 2 cell temp 1', 'V', 'FLOAT', 'TSV'),
+('561', 'Pack 2 cell temp 2', 'V', 'FLOAT', 'TSV'),
+('562', 'Pack 2 cell temp 3', 'V', 'FLOAT', 'TSV'),
+('563', 'Pack 2 cell temp 4', 'V', 'FLOAT', 'TSV'),
+('564', 'Pack 2 cell temp 5', 'V', 'FLOAT', 'TSV'),
+('565', 'Pack 2 cell temp 6', 'V', 'FLOAT', 'TSV'),
+('566', 'Pack 2 cell temp 7', 'V', 'FLOAT', 'TSV');
