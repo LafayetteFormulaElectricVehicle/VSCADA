@@ -272,13 +272,13 @@ public class DBHandler {
     }
     return true;
   }
-  
+
   public void addSensor(String id, String sensorName, String sensorUnits, String sensorDataType, String sensorSys){
 //    if(checkSensorName(sensorName)){
-      
+
       String sql = "INSERT INTO SensorLabels " +
-        "(id, sensorName, sensorUnits, dataType, system) VALUES (\"" + id + "\", \"" + 
-        sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
+            "(id, sensorName, sensorUnits, dataType, system) VALUES (\"" + id + "\", \"" +
+            sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
       runSQL(sql);
 //    }
 //    else{
