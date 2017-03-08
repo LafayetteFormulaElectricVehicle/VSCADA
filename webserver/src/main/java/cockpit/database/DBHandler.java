@@ -249,6 +249,11 @@ public class DBHandler {
     String sql = "select id from SensorLabels;";
     return runQuery(sql);
   }
+
+  public ArrayList<ArrayList<String>> getRecent() {
+      String sql = "select * from Data where timestamp = (select max(timestamp) from Data);";
+      return runQuery(sql);
+  }
   
   public ArrayList<ArrayList<String>> listSensors(String expr){
     String sql = "select sensorName, sensorUnits from SensorLabels " +

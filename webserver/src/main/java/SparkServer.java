@@ -47,8 +47,13 @@ public class SparkServer implements Runnable{
             System.out.println(sys);
             System.out.println(startDate);
             System.out.println(endDate);
-            //System.out.println(gson.toJson(handler.getInfo(id,sys,startDate,endDate)));
+//            System.out.println(gson.toJson(handler.getInfo(id,sys,startDate,endDate)));
             return gson.toJson(handler.getInfo(id, sys, startDate, endDate));
+        });
+
+        get("/dbquery/recent", (req,res)-> {
+            //select * from Data where timestamp = (select max(timestamp) from Data);
+            return gson.toJson(handler.getRecent());
         });
 
         get("/api/name", (req, res) -> {
@@ -86,5 +91,7 @@ public class SparkServer implements Runnable{
         System.out.println(req.scheme());
         System.out.println(req.body());
     }
+
+
 
 }
