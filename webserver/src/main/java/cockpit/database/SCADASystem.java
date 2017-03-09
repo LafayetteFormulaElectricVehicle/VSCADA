@@ -1,6 +1,6 @@
 package cockpit.database;
 
-import interfaces.can.CAN;
+import interfaces.can.Can;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -138,7 +138,7 @@ public class SCADASystem{
 
     public void openCAN(){
         String file = "/home/lombardc/Desktop/output.txt";
-        CAN tmp = new CAN(file, this);
+        Can tmp = new Can(file, this);
         Thread thr = new Thread(tmp);
         SCADATimer t = new SCADATimer(1000, this);
         Thread thr2 = new Thread(t);
