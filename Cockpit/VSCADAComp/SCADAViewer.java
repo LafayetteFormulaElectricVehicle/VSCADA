@@ -36,8 +36,8 @@ public class SCADAViewer extends Application {
   Boolean updateMe = false;
   private DBHandler handler;
   
-  String file = "/Users/CraigLombardo/Desktop/output.txt";
-  Boolean rel = true;
+  String file = "/home/pi/Desktop/output.txt";
+  Boolean rel = false;
   
   HashMap<String, Label> sensors;
   
