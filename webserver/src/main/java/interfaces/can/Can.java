@@ -1,21 +1,12 @@
 package interfaces.can;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.math.BigInteger;
-
-import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.math.BigInteger;
-
-import cockpit.database.DBHandler;
 
 public class Can implements Runnable{
 

@@ -53,7 +53,7 @@ public class SparkServer implements Runnable{
 
         get("/dbquery/recent", (req,res)-> {
             //select * from Data where timestamp = (select max(timestamp) from Data);
-            return gson.toJson(handler.getRecent());
+            return null;//return gson.toJson(handler.getRecent());
         });
 
         get("/api/name", (req, res) -> {

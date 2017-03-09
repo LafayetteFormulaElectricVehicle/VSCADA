@@ -14,7 +14,7 @@ public class DBTest{
   
   public static void main(String[] args){
     DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
-    SCADASystem scada = new SCADASystem(handler);
+    SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
 //    scada.addSensor("1");
 //    scada.addSensor("2");
 //    scada.addSensor("3");
