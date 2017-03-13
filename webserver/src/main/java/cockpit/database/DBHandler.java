@@ -170,8 +170,8 @@ public class DBHandler {
     String idRange;
 
     whereC = (systems != null || date1 != null || date2 != null || IDs != null) ? " WHERE " : "";
-
-    andC = (IDs != null && (systems != null || date1 != null || date2 != null)) ? " AND " : "";
+    andC = (IDs != null && systems != null) ? " AND " : "";
+    // andC = (IDs != null && (systems != null || date1 != null || date2 != null)) ? " AND " : "";
     and2C = ((IDs != null || systems != null) && (date1 != null || date2 != null)) ? " AND " : "";
 
     sys = parseSystems(systems);
@@ -201,7 +201,7 @@ public class DBHandler {
             "INNER JOIN Data AS data ON labels.ID=data.sensorID" +
             whereC + idRange + andC + sys + and2C + range + ";";
 
-//    System.out.println(query + "\n\n");
+   System.out.println(query + "\n\n");
 //    return null;
     return runQuery(query);
   }

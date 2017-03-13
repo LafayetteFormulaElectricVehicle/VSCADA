@@ -1,104 +1,113 @@
-    package cockpit.database;
+package cockpit.database;
 
-    import javax.swing.*;
+import javax.swing.*;
 
-    import java.awt.*;
-    import java.util.ArrayList;
-    import java.util.Map;
-    import java.util.HashMap;
-    import java.awt.Dimension;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-    import java.awt.event.ActionEvent;
-    import java.awt.event.ActionListener;
 
-    public class SCADAViewer extends JFrame {
+public class SCADAViewer extends JPanel {
 
-        private JPanel grid;
-        private DBHandler handler;
+    private JPanel cards;
+    private Container pane;
 
-        private String file = "/Users/CraigLombardo/Desktop/output.txt";
-        private Boolean rel = true;
+    private DBHandler handler;
 
-        private HashMap<String, JLabel> sensors;
+    private String file = "/Users/CraigLombardo/Desktop/output.txt";
 
-        private SCADASystem sys;
+    private HashMap<String, JLabel> sensors;
 
-        public SCADAViewer() {
-            Dimension d = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            setTitle("SCADA Viewer");
-            setSize((int) d.getWidth()/2, (int) d.getHeight());
-            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            init();
-            setVisible(true);
-        }
+    private SCADASystem sys;
 
-        public static void main(String[] args) {
-            SCADAViewer test = new SCADAViewer();
-        }
+    private String[] comboBoxItems = {"Maintenance Mode", "Charging Mode", "stuff"};
 
-        public void init() {
-            sensors = new HashMap<String, JLabel>();
-            grid = new JPanel(new GridLayout(0, 4));
-            JButton quit = new JButton("Quit");
+    private ArrayList<JComponent> components;
 
-            quit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
+    public int currentView = 0;
+
+    public SCADAViewer() {
+        JFrame frame = new JFrame("SCADA Viewer");
+        frame.setPreferredSize(new Dimension(400, 400));
+        frame.setMinimumSize(new Dimension(300, 300));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        sensors = new HashMap<String, JLabel>();
+        components = new ArrayList<JComponent>();
+        handler = new DBHandler("SCADA.db", "SQLSchema/");
+        sys = new SCADASystem(handler, file);
+
+        Thread thr = new Thread(sys);
+        thr.start();
+
+        pane = frame.getContentPane();
+        addComponentsToPane();
+
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SCADAViewer test = new SCADAViewer();
+    }
+
+    public void addComponentsToPane() {
+        JPanel comboBoxPane = new JPanel();
+
+        JComboBox<String> comboBox = new JComboBox<String>(comboBoxItems);
+
+        comboBox.setMaximumSize(comboBox.getPreferredSize());
+
+        comboBox.setEditable(false);
+
+        comboBox.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        CardLayout cl = (CardLayout) (cards.getLayout());
+                        cl.show(cards, comboBox.getSelectedItem().toString());
+                        currentView = comboBox.getSelectedIndex();
+                    }
                 }
-            });
+        );
 
-    //        primaryStage.setScene(scene);
+//        comboBox.addItemListener(new ItemListener() {
+//            public void itemStateChanged(ItemEvent evt) {
+//                CardLayout cl = (CardLayout) (cards.getLayout());
+//                cl.show(cards, (String) evt.getItem());
+//            }
+//        });
 
-            grid.add(new JLabel("Sensor ID:"));
-            grid.add(new JLabel("Sensor Name:"));
-            grid.add(new JLabel("Sensor Value:"));
-            grid.add(quit);
+        comboBoxPane.add(comboBox);
 
-            handler = new DBHandler("SCADA.db", "SQLSchema/");
-            sys = new SCADASystem(handler, file);
-            createMapping(handler.getIDNames());
-            Thread thr = new Thread(sys);
-            thr.start();
+        JButton quit = new JButton("Quit");
 
-            add(grid);
+        quit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
-    //        Thread thr = new Thread(sys);
-    //        thr.start();
-    //
-    //        //Timer here
-    //
-            updateNow();
+        comboBoxPane.add(quit);
 
-            Timer displayTimer = new Timer(1000, listener);
-            displayTimer.start();
+        components.add(new MaintenanceView(handler, sys, this, 0).getPane());
+        components.add(new JLabel("Hi"));
+        components.add(new JLabel("Hi"));
+
+        cards = new JPanel(new CardLayout());
+        for(int i=0; i<components.size(); i++){
+            cards.add(components.get(i), comboBoxItems[i]);
         }
 
-        public void createMapping(ArrayList<ArrayList<String>> info) {
-            String id;
-            String name;
-            for (ArrayList<String> r : info) {
-                id = r.get(0);
-                name = r.get(1);
-                JLabel tmp = new JLabel("");
-                sensors.put(id, tmp);
-                grid.add(new JLabel("0x" + Integer.toHexString(Integer.parseInt(id))));
-                grid.add(new JLabel(name));
-                grid.add(tmp);
-                grid.add(new JLabel(""));
-            }
-        }
+        pane.add(comboBoxPane, BorderLayout.PAGE_START);
+        pane.add(cards, BorderLayout.CENTER);
+    }
 
-        private void updateNow(){
-            for (Map.Entry<String, String> entry : sys.getMap().entrySet()) {
-                sensors.get(entry.getKey()).setText(entry.getValue());
-            }
-        }
-
-        ActionListener listener = new ActionListener(){
-            public void actionPerformed(ActionEvent event){
-                updateNow();
-            }
-        };
+    public void init() {
 
     }
+
+
+}
