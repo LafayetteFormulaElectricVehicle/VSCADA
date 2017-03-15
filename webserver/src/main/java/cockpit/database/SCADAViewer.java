@@ -16,28 +16,34 @@ public class SCADAViewer extends JPanel {
 
     private DBHandler handler;
 
-    private String file = "/Users/CraigLombardo/Desktop/output.txt";
+    private String file;
 
     private HashMap<String, JLabel> sensors;
 
     private SCADASystem sys;
 
-    private String[] comboBoxItems = {"Maintenance Mode", "Charging Mode", "stuff"};
+//    private String[] comboBoxItems = {"Maintenance Mode", "Charging Mode", "stuff"};
+//
+//    private ArrayList<JComponent> components;
 
-    private ArrayList<JComponent> components;
+    private JComboBox<String> comboBox;
 
     public int currentView = 0;
 
-    public SCADAViewer() {
+    public SCADAViewer(DBHandler h, SCADASystem s, String f) {
         JFrame frame = new JFrame("SCADA Viewer");
-        frame.setPreferredSize(new Dimension(400, 400));
+        frame.setPreferredSize(new Dimension(600, 600));
         frame.setMinimumSize(new Dimension(300, 300));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         sensors = new HashMap<String, JLabel>();
-        components = new ArrayList<JComponent>();
-        handler = new DBHandler("SCADA.db", "SQLSchema/");
-        sys = new SCADASystem(handler, file);
+//        components = new ArrayList<JComponent>();
+        handler = h;
+        sys = s;
+
+        file = f;
+
+        cards = new JPanel(new CardLayout());
 
         Thread thr = new Thread(sys);
         thr.start();
@@ -49,14 +55,12 @@ public class SCADAViewer extends JPanel {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SCADAViewer test = new SCADAViewer();
-    }
+
 
     public void addComponentsToPane() {
         JPanel comboBoxPane = new JPanel();
 
-        JComboBox<String> comboBox = new JComboBox<String>(comboBoxItems);
+            comboBox = new JComboBox<String>();
 
         comboBox.setMaximumSize(comboBox.getPreferredSize());
 
@@ -92,22 +96,33 @@ public class SCADAViewer extends JPanel {
 
         comboBoxPane.add(quit);
 
-        components.add(new MaintenanceView(handler, sys, this, 0).getPane());
-        components.add(new JLabel("Hi"));
-        components.add(new JLabel("Hi"));
-
-        cards = new JPanel(new CardLayout());
-        for(int i=0; i<components.size(); i++){
-            cards.add(components.get(i), comboBoxItems[i]);
-        }
+//        components.add(new MaintenanceView(handler, sys, this, 0).getPane());
+//        components.add(new JLabel("Hi"));
+//        components.add(new JLabel("Hi"));
+//
+//        cards = new JPanel(new CardLayout());
+//        for(int i=0; i<components.size(); i++){
+//            cards.add(components.get(i), comboBoxItems[i]);
+//        }
 
         pane.add(comboBoxPane, BorderLayout.PAGE_START);
         pane.add(cards, BorderLayout.CENTER);
     }
 
-    public void init() {
-
+    public void addCard(JComponent card, String name){
+        comboBox.addItem(name);
+        cards.add(card, name);
     }
 
+    public static void main(String[] args) {
+        String file = "/Users/CraigLombardo/Desktop/output.txt";
+        DBHandler handler = new DBHandler("SCADA.db", "SQLSchema/");
+        SCADASystem sys = new SCADASystem(handler, file);
+        SCADAViewer test = new SCADAViewer(handler, sys, file);
 
+        test.addCard(new MaintenanceView(test.handler, sys, test, 0).getPane(), "Maintenance View");
+        test.addCard(new JLabel("Hello"), "Hello");
+        test.addCard(new JLabel("World"), "World");
+        test.addCard(new CustomView(test.handler, sys, test, 3).getPane(), "Custom View");
+    }
 }

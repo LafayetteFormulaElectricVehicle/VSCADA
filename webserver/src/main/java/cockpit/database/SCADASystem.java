@@ -165,17 +165,4 @@ public class SCADASystem implements Runnable{
         while(true){}
     }
 
-    public static void main(String[] args){
-        DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
-
-        SCADAViewer test = new SCADAViewer();
-        try{
-            test.init();
-        }
-        catch(Exception e){}
-        SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
-        Thread thr = new Thread(scada);
-        thr.start();
-    }
-
 }
