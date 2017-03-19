@@ -109,7 +109,7 @@ INSERT INTO SensorLabels (ID, sensorName, sensorUnits, system) VALUES
 (115,"Throttle position","V","TSI"),
 (116,"TSV Voltage","V","TSI"),
 (117,"TSV Current","V","TSI"),
-(240,"Cooling state","V","Cooling"),
-(241,"outlet fluid temp","V","Cooling"),
-(242,"fluid flow rate","V","Cooling"),
-(243,"inlet fluid temp","V","Cooling")
+(240,"Cooling state","V","COOLING"),
+(241,"outlet fluid temp","V","COOLING"),
+(242,"fluid flow rate","V","COOLING"),
+(243,"inlet fluid temp","V","COOLING")

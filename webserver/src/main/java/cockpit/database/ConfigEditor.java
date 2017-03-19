@@ -1,3 +1,4 @@
+/*
 package cockpit.database;
 
 import java.util.Scanner;
@@ -239,3 +240,4 @@ public class ConfigEditor{
   }
   
 }
+*/

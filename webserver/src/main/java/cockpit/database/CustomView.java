@@ -4,15 +4,13 @@ package cockpit.database;
  * Created by CraigLombardo on 3/14/17.
  */
 
-import java.awt.*;
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-
-import java.util.Iterator;
 
 public class CustomView extends JPanel {
 
@@ -93,9 +91,6 @@ public class CustomView extends JPanel {
     private void updateNow(HashMap<String, String> sysMap) {
         if (view == viewer.currentView && !createLabels) {
             for (Map.Entry<String, String> entry : sysMap.entrySet()) {
-//                JLabel tmp = sensors.get(entry.getKey());
-//                System.out.println(entry.getKey() + " : " + tmp);
-
                 sensors.get(entry.getKey()).setText(entry.getValue());
             }
         }
@@ -169,7 +164,7 @@ public class CustomView extends JPanel {
         CustomTuple checkedTuple;
 
         for (int i = 0; i < items.size(); i++) {
-            if (createLabels){
+            if (createLabels) {
                 JLabel tmp = new JLabel("");
                 sensors.put("" + itemTuples.get(i).tID, tmp);
             }
@@ -258,7 +253,6 @@ public class CustomView extends JPanel {
             tIDString = iS;
             tName = n;
         }
-
     }
 }
 
