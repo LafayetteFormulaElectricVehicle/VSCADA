@@ -101,15 +101,15 @@ public class CustomView extends JPanel {
         int row = 2;
         String id;
         String name;
-        int idVal;
+        String hexVal;
         String idString;
 
         for (ArrayList<String> r : info) {
             id = r.get(0);
             name = r.get(1);
 
-            idVal = Integer.parseInt(id);
-            idString = "0x" + (idVal <= 255 ? "0" : "") + Integer.toHexString(idVal);
+            hexVal = Integer.toHexString(Integer.parseInt(id));
+            idString = "0x000".substring(0, 5 - hexVal.length()) + hexVal;
 
             JCheckBox check = new JCheckBox();
             items.add(check);

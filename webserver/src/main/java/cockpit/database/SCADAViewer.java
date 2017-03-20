@@ -14,7 +14,7 @@ public class SCADAViewer extends JPanel {
 
     public SCADAViewer() {
         JFrame frame = new JFrame("SCADA Viewer");
-        frame.setPreferredSize(new Dimension(650, 600));
+        frame.setPreferredSize(new Dimension(850, 600));
         frame.setMinimumSize(new Dimension(300, 300));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

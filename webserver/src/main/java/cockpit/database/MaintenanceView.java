@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by CraigLombardo on 3/12/17.
  */
 
-public class MaintenanceView extends JPanel{
+public class MaintenanceView {
 
     private GridBagLayout innerLayout;
     private GridBagConstraints innerConstraints;
@@ -82,7 +82,8 @@ public class MaintenanceView extends JPanel{
 
         String id;
         String name;
-        int idVal;
+        String hexVal;
+        String hexString;
 
         int row = 1;
         for (ArrayList<String> r : info) {
@@ -90,8 +91,11 @@ public class MaintenanceView extends JPanel{
             name = r.get(1);
             JLabel tmp = new JLabel("");
             sensors.put(id, tmp);
-            idVal = Integer.parseInt(id);
-            addComp(0, row, new JLabel("0x" + (idVal <= 255 ? "0" : "") + Integer.toHexString(idVal)));
+
+            hexVal = Integer.toHexString(Integer.parseInt(id));
+            hexString = "0x000".substring(0, 5 - hexVal.length()) + hexVal;
+
+            addComp(0, row, new JLabel(hexString));
             addComp(1, row, new JLabel(name));
             addComp(2, row++, tmp);
 
