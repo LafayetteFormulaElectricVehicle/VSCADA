@@ -40,7 +40,7 @@ public class SCADAViewer extends JPanel {
         test.addCard(new MaintenanceView(handler, sys, test, 0).getPane(), "Maintenance View");
         test.addCard(new QueryView().getPane(), "Query View");
         test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
-        test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
+//        test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
     }
 
     public void addComponentsToPane() {

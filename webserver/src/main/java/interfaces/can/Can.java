@@ -1,3 +1,4 @@
+/*
 package interfaces.can;
 
 import cockpit.database.SCADASystem;
@@ -92,4 +93,4 @@ public class Can implements Runnable{
 //    //HERE
 //    sys.updateValue(data);
 //  }
-}
+}*/

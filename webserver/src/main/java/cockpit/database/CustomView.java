@@ -60,10 +60,13 @@ public class CustomView extends JPanel {
 
         createButtons();
         addComp(0, 1, new JLabel("  "), itemsPanel, itemsConstraints, itemsLayout);
-        addComp(1, 1, new JLabel("  Sensor ID:  "), itemsPanel, itemsConstraints, itemsLayout);
-        addComp(2, 1, new JLabel("  Sensor Name:  "), itemsPanel, itemsConstraints, itemsLayout);
+        addComp(1, 1, new JLabel("  Sensor Tag:  "), itemsPanel, itemsConstraints, itemsLayout);
+        addComp(2, 1, new JLabel("  Sensor Desc:  "), itemsPanel, itemsConstraints, itemsLayout);
+        addComp(3, 1, new JLabel("  Sensor Units:  "), itemsPanel, itemsConstraints, itemsLayout);
 
-        createItems(handler.getIDNames());
+        createItems(handler.getIDDescUnitsTag());
+
+        createNewSelectedInfo();
 
         scrollPanelItems = new JScrollPane(itemsPanel);
         scrollPanelItems.getVerticalScrollBar().setUnitIncrement(20);
@@ -88,10 +91,11 @@ public class CustomView extends JPanel {
         displayTimer.start();
     }
 
-    private void updateNow(HashMap<String, String> sysMap) {
-        if (view == viewer.currentView && !createLabels) {
-            for (Map.Entry<String, String> entry : sysMap.entrySet()) {
-                sensors.get(entry.getKey()).setText(entry.getValue());
+    private void updateNow(HashMap<Integer, Sensor> sysMap) {
+        if (view == viewer.currentView) {
+            for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
+//                System.out.println("sys "+entry.getKey());
+                sensors.get("" + entry.getKey()).setText(entry.getValue().getValue());
             }
         }
     }
@@ -101,22 +105,28 @@ public class CustomView extends JPanel {
         int row = 2;
         String id;
         String name;
+        String units;
         String hexVal;
         String idString;
+
+        String tag;
 
         for (ArrayList<String> r : info) {
             id = r.get(0);
             name = r.get(1);
+            units = r.get(2);
+            tag = r.get(3);
 
             hexVal = Integer.toHexString(Integer.parseInt(id));
             idString = "0x000".substring(0, 5 - hexVal.length()) + hexVal;
 
             JCheckBox check = new JCheckBox();
             items.add(check);
-            itemTuples.add(new CustomTuple(id, idString, name));
+            itemTuples.add(new CustomTuple(id, idString, name, units, tag));
             addComp(0, row, check, itemsPanel, itemsConstraints, itemsLayout);
-            addComp(1, row, new JLabel(idString), itemsPanel, itemsConstraints, itemsLayout);
-            addComp(2, row++, new JLabel(name), itemsPanel, itemsConstraints, itemsLayout);
+            addComp(1, row, new JLabel(tag), itemsPanel, itemsConstraints, itemsLayout);
+            addComp(2, row, new JLabel(name), itemsPanel, itemsConstraints, itemsLayout);
+            addComp(3, row++, new JLabel(units), itemsPanel, itemsConstraints, itemsLayout);
 
         }
     }
@@ -144,7 +154,7 @@ public class CustomView extends JPanel {
                 }
         );
 
-        JButton update = new JButton("Update");
+        JButton update = new JButton("Update View");
         update.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -170,9 +180,10 @@ public class CustomView extends JPanel {
             }
             if (items.get(i).isSelected()) {
                 checkedTuple = itemTuples.get(i);
-                addComp(0, i + 1, new JLabel(checkedTuple.tIDString), selectedPanel, selectedConstraints, selectedLayout);
+                addComp(0, i + 1, new JLabel(checkedTuple.tTag), selectedPanel, selectedConstraints, selectedLayout);
                 addComp(1, i + 1, new JLabel(checkedTuple.tName), selectedPanel, selectedConstraints, selectedLayout);
                 addComp(2, i + 1, sensors.get(checkedTuple.tID), selectedPanel, selectedConstraints, selectedLayout);
+                addComp(3, i + 1, new JLabel(checkedTuple.tUnits), selectedPanel, selectedConstraints, selectedLayout);
             }
         }
 
@@ -206,9 +217,11 @@ public class CustomView extends JPanel {
         //    selectedConstraints.weighty = 1;
         selectedPanel = new JPanel(selectedLayout);
 
-        addComp(0, 0, new JLabel("  Sensor ID:  "), selectedPanel, selectedConstraints, selectedLayout);
-        addComp(1, 0, new JLabel("  Sensor Name:  "), selectedPanel, selectedConstraints, selectedLayout);
+        addComp(0, 0, new JLabel("  Sensor Tag:  "), selectedPanel, selectedConstraints, selectedLayout);
+        addComp(1, 0, new JLabel("  Sensor Desc.:  "), selectedPanel, selectedConstraints, selectedLayout);
         addComp(2, 0, new JLabel("  Sensor Value:  "), selectedPanel, selectedConstraints, selectedLayout);
+        addComp(3, 0, new JLabel("  Sensor Units:  "), selectedPanel, selectedConstraints, selectedLayout);
+
     }
 
     public void createConstraints() {
@@ -247,12 +260,17 @@ public class CustomView extends JPanel {
         private String tID;
         private String tIDString;
         private String tName;
+        private String tUnits;
+        private String tTag;
 
-        private CustomTuple(String i, String iS, String n) {
+        private CustomTuple(String i, String iS, String n, String u, String t) {
             tID = i;
             tIDString = iS;
             tName = n;
+            tUnits = u;
+            tTag = t;
         }
     }
+
 }
 

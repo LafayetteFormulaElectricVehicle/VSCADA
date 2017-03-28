@@ -50,47 +50,20 @@ public class CANReader implements Runnable{
     }
 
     public void parseLine(String line){
+        ArrayList<String> out = new ArrayList<String>();
         try{
             sc = new Scanner(line);
             sc.next();
-            String id = "" + new BigInteger(sc.next(), 16).intValue();
+            int id = new BigInteger(sc.next(), 16).intValue();
             sc.next();
             String totalVal = "";
-            while(sc.hasNext()) totalVal+= sc.next();
-            String value = "" + new BigInteger(totalVal, 16).intValue();
-            sys.updateValue(id, value);
+
+            while(sc.hasNext()) out.add(sc.next());
+            sys.updateData(id, out);
         }
         catch(Exception e){
             System.out.println("Bad format");
         }
 
     }
-//
-//  public void writeToDB(){
-//    int len = values.size();
-//    if(len == 0) return;
-//
-//    String data = "";
-//
-//    for(int i=0; i<len; i++){
-//      data += "(" + ids.remove(0) + ", " + values.remove(0) + ")";
-//      if(i != len-1) data += ", ";
-//    }
-//    handler.insertData(data);
-//  }
-
-//  public void update(){
-//    int len = values.size();
-//    if(len == 0) return;
-//    System.out.println("chirp");
-//    String data = "";
-//
-//    for(int i=0; i<len; i++){
-//      data += ids.remove(0) + "," + values.remove(0);
-//      if(i != len-1) data += ",";
-//    }
-////    System.out.println(data);
-//    //HERE
-//    sys.updateValue(data);
-//  }
 }

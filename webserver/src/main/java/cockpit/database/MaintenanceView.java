@@ -38,7 +38,7 @@ public class MaintenanceView {
         this.viewer = viewer;
         view = viewNumber;
 
-        createMapping(handler.getIDNames());
+        createMapping(handler.getIDDescUnitsTag());
 
         scrollPanel = new JScrollPane(innerPanel);
         pane.add(scrollPanel, BorderLayout.CENTER);
@@ -57,18 +57,19 @@ public class MaintenanceView {
         return scrollPanel;
     }
 
-    private void updateNow(HashMap<String, String> sysMap) {
+    private void updateNow(HashMap<Integer, Sensor> sysMap) {
         if (view == viewer.currentView) {
-            for (Map.Entry<String, String> entry : sysMap.entrySet()) {
-                sensors.get(entry.getKey()).setText(entry.getValue());
+            for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
+                sensors.get("" + entry.getKey()).setText(entry.getValue().getValue());
             }
         }
     }
 
     public void createHeader() {
-        addComp(0, 0, new JLabel("Sensor ID:"));
-        addComp(1, 0, new JLabel("Sensor Name:"));
-        addComp(2, 0, new JLabel("Sensor Value:"));
+        addComp(0, 0, new JLabel("  Sensor Tag  "));
+        addComp(1, 0, new JLabel("  Sensor Desc  "));
+        addComp(2, 0, new JLabel("  Sensor Value  "));
+        addComp(3, 0, new JLabel("  Sensor Units  "));
     }
 
     public void createMapping(ArrayList<ArrayList<String>> info) {
@@ -82,6 +83,8 @@ public class MaintenanceView {
 
         String id;
         String name;
+        String units;
+        String tag;
         String hexVal;
         String hexString;
 
@@ -89,16 +92,18 @@ public class MaintenanceView {
         for (ArrayList<String> r : info) {
             id = r.get(0);
             name = r.get(1);
+            units = r.get(2);
+            tag = r.get(3);
             JLabel tmp = new JLabel("");
             sensors.put(id, tmp);
 
-            hexVal = Integer.toHexString(Integer.parseInt(id));
-            hexString = "0x000".substring(0, 5 - hexVal.length()) + hexVal;
+//            hexVal = Integer.toHexString(Integer.parseInt(id));
+//            hexString = "0x000".substring(0, 5 - hexVal.length()) + hexVal;
 
-            addComp(0, row, new JLabel(hexString));
+            addComp(0, row, new JLabel(tag));
             addComp(1, row, new JLabel(name));
-            addComp(2, row++, tmp);
-
+            addComp(2, row, tmp);
+            addComp(3, row++, new JLabel(units));
         }
         updateNow(sys.getMap());
     }

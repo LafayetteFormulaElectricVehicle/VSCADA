@@ -24,28 +24,28 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DynamicLineAndTimeSeriesChart.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/DynamicLineAndTimeSeriesChart.java">
+    <leaf>
+      <file leaf-file-name="SCADASystem.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADASystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1260">
-              <caret line="84" column="0" lean-forward="true" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+            <state relative-caret-position="1605">
+              <caret line="107" column="5" lean-forward="false" selection-start-line="107" selection-start-column="5" selection-end-line="107" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#793#794#0" expanded="true" />
-                <element signature="e#830#831#0" expanded="true" />
-                <element signature="e#1840#1841#0" expanded="true" />
-                <element signature="e#1870#1871#0" expanded="true" />
+                <element signature="e#2945#2946#0" expanded="true" />
+                <element signature="e#2975#2976#0" expanded="true" />
+                <element signature="e#3244#3245#0" expanded="true" />
+                <element signature="e#3287#3288#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SCADAViewer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewer.java">
+      <file leaf-file-name="MaintenanceView.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/MaintenanceView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+            <state relative-caret-position="165">
+              <caret line="11" column="23" lean-forward="false" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -65,36 +65,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>JScroll</find>
-      <find>addInnerComp</find>
-      <find>JScro</find>
-      <find>addInner</find>
-      <find>addExis</find>
-      <find>&quot;0&quot;</find>
+      <find>sensors</find>
+      <find>System.out.</find>
+      <find>Sensor I</find>
+      <find>Sensor Name</find>
+      <find>parseSyste</find>
+      <find>id</find>
+      <find>sensor</find>
+      <find>Sensor</find>
+      <find>updateNow</find>
+      <find>get</find>
+      <find>getID</find>
+      <find>run</find>
+      <find>SCadaV</find>
+      <find>CANReader</find>
+      <find>sys.</find>
+      <find>updateN</find>
+      <find>bad F</find>
+      <find>insertData</find>
+      <find>updateDa</find>
+      <find>updateData</find>
+      <find>Here</find>
+      <find>sensors.put</find>
+      <find>createNew</find>
       <find>createNewSelectedIn</find>
-      <find>vali</find>
-      <find>Tree</find>
-      <find>delete</find>
-      <find>TreeSe</find>
-      <find>sensors.remove(&quot;0x001&quot;);</find>
-      <find>cRow</find>
-      <find>.entru</find>
-      <find>dele</find>
-      <find>insert</find>
-      <find>valid</find>
-      <find>getPan</find>
-      <find>createItem</find>
-      <find>0x00</find>
-      <find>&quot;0x</find>
-      <find>librar</find>
-      <find>lastValue</find>
-      <find>series</find>
-      <find>thread</find>
-      <find>timer</find>
-      <find>displayTimer</find>
-      <find>final</find>
-      <find>main</find>
-      <find>this.</find>
+      <find>updateSelection</find>
+      <find>createNewSel</find>
+      <find>CustomTuple</find>
+      <find>itemTuples</find>
+      <find>checkedTu</find>
+      <find>updateNo</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;</replace>
@@ -102,6 +102,9 @@
       <replace>Boolean Check= true;</replace>
       <replace>isNumber</replace>
       <replace>COOLING</replace>
+      <replace>GraphView</replace>
+      <replace>graphOptions4</replace>
+      <replace>graphOptions[3]</replace>
     </replaceStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -124,17 +127,13 @@
         <option value="$PROJECT_DIR$/src/Cockpit/DBHandler/DBHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/DBHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/Subsystem.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/Sensor.java" />
         <option value="$PROJECT_DIR$/src/main/java/Server.java" />
         <option value="$PROJECT_DIR$/src/main/java/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SCADATimer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/Parser.java" />
         <option value="$PROJECT_DIR$/src/main/java/main.java" />
         <option value="$PROJECT_DIR$/src/main/java/interfaces/can/CAN.java" />
         <option value="$PROJECT_DIR$/src/main/java/SCADAViewer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/interfaces/can/Can.java" />
         <option value="$PROJECT_DIR$/src/main/java/interfaces/can/UART.java" />
-        <option value="$PROJECT_DIR$/src/main/java/interfaces/can/CANReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/DBTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/SparkServer.java" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewer2.java" />
@@ -144,21 +143,27 @@
         <option value="$PROJECT_DIR$/src/main/java/View.java" />
         <option value="$PROJECT_DIR$/src/main/java/SCADAMode.java" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SCADAMode.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SCADASystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/QueryView.java" />
         <option value="$PROJECT_DIR$/SQLSchema/Parameters.sql" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/ConfigEditor.java" />
         <option value="$PROJECT_DIR$/SQLSchema/ConfigurationSetup.sql" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SensorInfo.java" />
-        <option value="$PROJECT_DIR$/SQLSchema/SensorSetup.sql" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/DBHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/ConfigurationView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/CustomView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/GraphView.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/MaintenanceView.java" />
         <option value="$PROJECT_DIR$/src/main/java/cockpit/database/DynamicLineAndTimeSeriesChart.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/GraphView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/ConfigurationView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewer.java" />
+        <option value="$PROJECT_DIR$/SQLSchema/SensorLabels.sql" />
+        <option value="$PROJECT_DIR$/SQLSchema/SensorSetup.sql" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/BackupDBHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/Parser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/DBHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/interfaces/can/Can.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/Sensor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/interfaces/can/CANReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/CustomView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/MaintenanceView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cockpit/database/SCADASystem.java" />
       </list>
     </option>
   </component>
@@ -189,6 +194,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -290,6 +296,36 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="can" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webserver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webserver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="database" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -311,7 +347,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -322,12 +357,6 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/SQLSchema" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/cockpit/database" />
       <recent name="C:\Users\13wil\Desktop\VSCADA\webserver" />
@@ -335,8 +364,18 @@
       <recent name="C:\Users\Austin\Desktop\VSCADA\webserver\src\main\resources" />
       <recent name="C:\Users\Austin\Desktop\VSCADA\webserver\src\main\java" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cockpit.database" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/SQLSchema/OldSQL" />
+      <recent name="$PROJECT_DIR$/SQLSchema" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.DynamicLineAndTimeSeriesChart">
+  <component name="RunManager" selected="Application.SCADAViewer">
     <configuration default="false" name="SCADAViewer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="cockpit.database.SCADAViewer" />
@@ -667,9 +706,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.DynamicLineAndTimeSeriesChart" />
-        <item index="1" class="java.lang.String" itemvalue="Application.SCADAViewer" />
-        <item index="2" class="java.lang.String" itemvalue="Application.GraphView" />
+        <item index="0" class="java.lang.String" itemvalue="Application.SCADAViewer" />
+        <item index="1" class="java.lang.String" itemvalue="Application.GraphView" />
+        <item index="2" class="java.lang.String" itemvalue="Application.DynamicLineAndTimeSeriesChart" />
         <item index="3" class="java.lang.String" itemvalue="Application.ConfigurationView" />
         <item index="4" class="java.lang.String" itemvalue="Application.SCADAViewer2" />
       </list>
@@ -707,12 +746,12 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17155425" sideWeight="0.4984375" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26979473" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20436187" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22294022" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.398827" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -720,10 +759,10 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844576" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22727273" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="UnknownFeatures">
@@ -734,15 +773,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cockpit/database/ConfigurationView.java</url>
-          <line>466</line>
-          <properties />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="6" />
+      <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -751,23 +782,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/Dyno.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/GLV.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/Dashboard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="20" lean-forward="false" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TSI.java" />
-    <entry file="file://$PROJECT_DIR$/webserver.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/app/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -778,20 +792,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/DataPacket.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/TSV.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/package-info.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/Sensor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="31" column="1" lean-forward="false" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/Subsystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/package-info.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -803,13 +803,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
           <caret line="45" column="72" lean-forward="false" selection-start-line="45" selection-start-column="72" selection-end-line="45" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/Parser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="31" lean-forward="false" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -870,14 +863,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/DBTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="25" column="27" lean-forward="true" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/help.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -885,40 +870,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewerOld.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="38" column="28" lean-forward="true" selection-start-line="38" selection-start-column="28" selection-end-line="38" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/can/CANReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewerNewOld.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="33" column="28" lean-forward="false" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/can/Can.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="16" column="26" lean-forward="false" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewerNewOld.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/can/I2C.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -927,34 +879,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAMode.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/QueryView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="111" column="1" lean-forward="false" selection-start-line="111" selection-start-column="1" selection-end-line="111" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1206#1207#0" expanded="false" />
-            <element signature="e#1238#1239#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewerFX.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="29" column="26" lean-forward="false" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/ConfigEditor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="147" column="14" lean-forward="true" selection-start-line="147" selection-start-column="14" selection-end-line="147" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewerFX.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SensorInfo.java" />
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/awt/event/ActionListener.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -963,64 +888,186 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SQLSchema/ConfigurationSetup.sql" />
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="47" column="64" lean-forward="false" selection-start-line="47" selection-start-column="64" selection-end-line="47" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/DBTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="25" column="27" lean-forward="true" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/DynamicLineAndTimeSeriesChart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SQLSchema/OldSQL/Configurations.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SQLSchema/Configurations.sql" />
+    <entry file="file://$PROJECT_DIR$/SQLSchema/SampleQuery.sql" />
+    <entry file="file://$PROJECT_DIR$/SQLSchema/ErrorMessages.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SQLSchema/Data.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="90">
+          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SQLSchema/ConfigurationSetup.sql">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewerOld.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/Subsystem.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/BackupDBHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="18" lean-forward="false" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+        <state relative-caret-position="210">
+          <caret line="236" column="4" lean-forward="false" selection-start-line="236" selection-start-column="4" selection-end-line="239" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SQLSchema/Configurations.sql">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="31" lean-forward="true" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
+        <state relative-caret-position="180">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SQLSchema/SensorSetup.sql">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/util/Hashtable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="98" column="25" lean-forward="true" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="25" />
+        <state relative-caret-position="179">
+          <caret line="463" column="0" lean-forward="false" selection-start-line="463" selection-start-column="0" selection-end-line="463" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SQLSchema/SensorLabels.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="180">
+          <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SQLSchema/SensorSetup.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="66" lean-forward="true" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/ConfigurationView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="9" column="21" lean-forward="true" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
+          <folding>
+            <marker date="1490276914000" expanded="true" signature="92:284" ph="..." />
+            <marker date="1490276914000" expanded="true" signature="1409:1702" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="1747:2199" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="2238:2753" ph="{...}" />
+            <marker date="1490276914000" expanded="false" signature="2783:2794" ph=" { " />
+            <marker date="1490276914000" expanded="false" signature="2811:2817" ph=" }" />
+            <marker date="1490276914000" expanded="true" signature="2856:2970" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="3017:3334" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="3380:3666" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="3710:4016" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="4086:4296" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="4361:4546" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="4608:4778" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="4819:6157" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="5448:5632" ph="{...}" />
+            <marker date="1490276914000" expanded="false" signature="5516:5547" ph=" { " />
+            <marker date="1490276914000" expanded="false" signature="5584:5610" ph=" }" />
+            <marker date="1490276914000" expanded="false" signature="5926:5934" ph="&lt;~&gt;" />
+            <marker date="1490276914000" expanded="true" signature="6192:6560" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="6602:7100" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="7140:11399" ph="{...}" />
+            <marker date="1490276914000" expanded="false" signature="7258:7323" ph="(KeyAdapter) keyTyped(e) → {" />
+            <marker date="1490276914000" expanded="false" signature="7433:7448" ph="}" />
+            <marker date="1490276914000" expanded="true" signature="10460:10602" ph="{...}" />
+            <marker date="1490276914000" expanded="false" signature="10524:10551" ph=" { " />
+            <marker date="1490276914000" expanded="false" signature="10562:10584" ph=" }" />
+            <marker date="1490276914000" expanded="true" signature="10742:10889" ph="{...}" />
+            <marker date="1490276914000" expanded="false" signature="10806:10833" ph=" { " />
+            <marker date="1490276914000" expanded="false" signature="10849:10871" ph=" }" />
+            <marker date="1490276914000" expanded="true" signature="11033:11177" ph="{...}" />
+            <marker date="1490276914000" expanded="false" signature="11097:11124" ph=" { " />
+            <marker date="1490276914000" expanded="false" signature="11137:11159" ph=" }" />
+            <marker date="1490276914000" expanded="true" signature="11431:12216" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="12246:15211" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="13796:14012" ph="{...}" />
+            <marker date="1490276914000" expanded="false" signature="13872:13911" ph=" { " />
+            <marker date="1490276914000" expanded="false" signature="13948:13982" ph=" }" />
+            <marker date="1490276914000" expanded="false" signature="14261:14269" ph="&lt;~&gt;" />
+            <marker date="1490276914000" expanded="true" signature="15250:16049" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="16090:16279" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="16315:16451" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="16483:16710" ph="{...}" />
+            <marker date="1490276914000" expanded="true" signature="16618:16704" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/ConfigEditor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-177">
+          <caret line="147" column="14" lean-forward="true" selection-start-line="147" selection-start-column="14" selection-end-line="147" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/can/Can.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/DBHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="221" column="38" lean-forward="false" selection-start-line="221" selection-start-column="38" selection-end-line="221" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/CustomView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="111" column="74" lean-forward="true" selection-start-line="110" selection-start-column="12" selection-end-line="111" selection-end-column="74" />
+        <state relative-caret-position="42">
+          <caret line="220" column="0" lean-forward="true" selection-start-line="220" selection-start-column="0" selection-end-line="220" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#getInfo#0;class#DBHandler#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADASystem.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/Sensor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="32" column="21" lean-forward="false" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="21" />
+        <state relative-caret-position="258">
+          <caret line="28" column="19" lean-forward="true" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="19" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/can/CANReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1032,64 +1079,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="47" column="64" lean-forward="false" selection-start-line="47" selection-start-column="64" selection-end-line="47" selection-end-column="64" />
+        <state relative-caret-position="198">
+          <caret line="41" column="42" lean-forward="false" selection-start-line="41" selection-start-column="42" selection-end-line="41" selection-end-column="42" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/CustomView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="50" column="23" lean-forward="true" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
+          <folding>
+            <element signature="e#2826#2827#0" expanded="true" />
+            <element signature="e#2881#2882#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/QueryView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="30" column="40" lean-forward="true" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADASystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1605">
+          <caret line="107" column="5" lean-forward="false" selection-start-line="107" selection-start-column="5" selection-end-line="107" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2945#2946#0" expanded="true" />
+            <element signature="e#2975#2976#0" expanded="true" />
+            <element signature="e#3244#3245#0" expanded="true" />
+            <element signature="e#3287#3288#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/GraphView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="30" column="6" lean-forward="false" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/SCADAViewer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/ConfigurationView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="64" column="18" lean-forward="true" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="225">
+          <caret line="27" column="48" lean-forward="true" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/MaintenanceView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="14" column="17" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="17" />
+        <state relative-caret-position="165">
+          <caret line="11" column="23" lean-forward="false" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cockpit/database/DynamicLineAndTimeSeriesChart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1260">
-          <caret line="84" column="0" lean-forward="true" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#793#794#0" expanded="true" />
-            <element signature="e#830#831#0" expanded="true" />
-            <element signature="e#1840#1841#0" expanded="true" />
-            <element signature="e#1870#1871#0" expanded="true" />
           </folding>
         </state>
       </provider>

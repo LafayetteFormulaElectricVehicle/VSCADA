@@ -5,20 +5,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class DBHandler {
+public class BackupDBHandler {
 
     private Connection c;
     private String dbName;
 
     private String schemaPath = "../SQLSchema/";
 
-    public DBHandler() {
+    public BackupDBHandler() {
         c = null;
         dbName = "SCADA.db";
         connectDB();
     }
 
-    public DBHandler(String name, String sPath) {
+    public BackupDBHandler(String name, String sPath) {
         c = null;
         dbName = name;
         if (sPath != null) schemaPath = sPath;
@@ -136,7 +136,7 @@ public class DBHandler {
                 }
                 output.add(inner);
             }
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
@@ -225,23 +225,12 @@ public class DBHandler {
         runSQL(sql);
     }
 
-    public void insertDataTimes(String data){
-        if(data == null) return;
-        String sql = "INSERT INTO Data (sensorID, value, TimeStamp) VALUES " + data + ";";
-        runSQL(sql);
-    }
-
     /*************************************************************************************************
      * Configuration Functions
      *************************************************************************************************/
 
-    public ArrayList<ArrayList<String>> getSensorInfo() {
-        String sql = "select l.*, c.* from SensorLabels AS l INNER JOIN Configurations AS c ON l.ID=c.sensorID;";
-        return runQuery(sql);
-    }
-
-    public ArrayList<ArrayList<String>> getIDDescUnitsTag() {
-        String sql = "select ID, description, units, tag from SensorLabels;";
+    public ArrayList<ArrayList<String>> getIDNames() {
+        String sql = "select ID, sensorName from SensorLabels;";
         return runQuery(sql);
     }
 
@@ -250,10 +239,106 @@ public class DBHandler {
         return runQuery(sql);
     }
 
-    //If you change the database this method will fail you
-    public ArrayList<ArrayList<String>> getSensorcharacterization(){
-        String sql = "select * from SensorLabels;";
+    public ArrayList<ArrayList<String>> getSensorInfo() {
+        String sql = "select l.*, c.* from SensorLabels AS l INNER JOIN Configurations AS c ON l.ID=c.sensorID;";
         return runQuery(sql);
     }
+
+    public void updateSensor(Boolean isNew, String cID, String sName, String sUnits, String sys,
+                             String sLow, String sHigh, String cLow, String cHigh,
+                             String crit, String slope, String off) {
+
+        String sql1 = "";
+        String sql2 = "";
+
+        if (isNew) {
+            sql1 = "INSERT INTO SensorLabels " +
+                    "(ID, sensorName, sensorUnits, system) VALUES " +
+                    "('" + cID + "', '" + sName + "', '" + sUnits + "', '" + sys + "');";
+
+            sql2 = "INSERT INTO Configurations " +
+                    "(sensorID, stableLow, stableHigh, criticalLow, criticalHigh, criticality, slope, offset) VALUES " +
+                    "('" + cID + "', '" + sLow + "', '" + sHigh + "', '" + cLow + "', '" +
+                    cHigh + "', '" + crit + "', '" + slope + "', '" + off + "');";
+        } else {
+            sql1 = "UPDATE SensorLabels SET " +
+                    "sensorName='" + sName + "', sensorUnits='" + sUnits + "', system='" + sys + "' " +
+                    "WHERE ID='" + cID + "';";
+
+            sql2 = "UPDATE Configurations SET " +
+                    "stableLow='" + sLow + "', stableHigh='" + sHigh + "', " +
+                    "criticalLow='" + cLow + "', criticalHigh='" + cHigh + "', criticality='" + crit + "', " +
+                    "slope='" + slope + "', offset='" + off + "' WHERE sensorID='" + cID + "';";
+        }
+
+        runSQL(sql1);
+        runSQL(sql2);
+    }
+
+    public void removeSensor(String sensorID){
+        String sql = "DELETE FROM SensorLabels WHERE ID=\'" + sensorID + "\'";
+        runSQL(sql);
+    }
+
+/*
+  public ArrayList<ArrayList<String>> listSensors(String expr){
+    String sql = "select sensorName, sensorUnits from SensorLabels " +
+            "WHERE sensorName LIKE \'" + expr + "%\' " +
+            "ORDER BY sensorName COLLATE NOCASE";
+
+    return runQuery(sql);
+  }
+
+  public Boolean checkSensorName(String name){
+    String sql = "select sensorName from SensorLabels " +
+            "WHERE sensorName = \"" + name + "\"";
+    ArrayList<ArrayList<String>> result = runQuery(sql);
+    for(ArrayList<String> inner : result){
+      if(inner.size() != 0) return false;
+    }
+    return true;
+  }
+
+  public void addSensor(String id, String sensorName, String sensorUnits, String sensorDataType, String sensorSys){
+//    if(checkSensorName(sensorName)){
+
+    String sql = "INSERT INTO SensorLabels " +
+            "(id, sensorName, sensorUnits, dataType, system) VALUES (\"" + id + "\", \"" +
+            sensorName + "\", \"" + sensorUnits + "\", \"" + sensorDataType + "\", \"" + sensorSys + "\") ";
+    runSQL(sql);
+//    }
+//    else{
+//      System.out.println("Sorry, a sensor with this name already exists!");
+//    }
+  }
+
+  public void updateSensorName(String sensorName, String newName){
+    String sql = "UPDATE SensorLabels " +
+            "SET sensorName=\'" + newName + "\' " +
+            "WHERE sensorName=\'" + sensorName + "\';";
+
+    runSQL(sql);
+  }
+
+  public void updateSensorUnits(String sensorName, String newUnits){
+    String sql = "UPDATE SensorLabels " +
+            "SET sensorUnits=\'" + newUnits + "\' " +
+            "WHERE sensorName=\'" + sensorName + "\';";
+
+    runSQL(sql);
+  }
+
+  public void updateSensorDataType(String sensorName, String newType){
+    String sql = "UPDATE SensorLabels " +
+            "SET dataType=\'" + newType + "\' " +
+            "WHERE sensorName=\'" + sensorName + "\';";
+
+    runSQL(sql);
+  }
+
+  public void removeSensor(String sensorName){
+    String sql = "DELETE FROM SensorLabels WHERE sensorName=\'" + sensorName + "\'";
+    runSQL(sql);
+  }*/
 
 }

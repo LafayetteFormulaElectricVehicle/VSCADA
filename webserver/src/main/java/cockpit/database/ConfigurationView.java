@@ -1,8 +1,11 @@
+/*
 package cockpit.database;
 
+*/
 /**
  * Created by CraigLombardo on 3/18/17.
- */
+ *//*
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -158,10 +161,10 @@ public class ConfigurationView extends JPanel {
 
 //        JButton sensorButton;
         JLabel sensorLabel;
-        SensorInfo sensor;
+        Sensor sensor;
 
         for (ArrayList<String> s : info) {
-            sensor = new SensorInfo(s.get(0), s.get(1), s.get(3), s.get(2), s.get(10),
+            sensor = new Sensor(s.get(0), s.get(1), s.get(3), s.get(2), s.get(10),
                     s.get(11), s.get(9), s.get(5), s.get(6), s.get(7), s.get(8));
 
             JButton sensorButton = new JButton(sensor.hexID);
@@ -464,52 +467,17 @@ public class ConfigurationView extends JPanel {
         system.addItem("TSV");
     }
 
-    private class SensorInfo {
-
-        private String hexID;
-        private String intID;
-        private String name;
-        private String system;
-        private String units;
-        private String slope;
-        private String offset;
-        private String criticality;
-        private String stableLow;
-        private String stableHigh;
-        private String criticalLow;
-        private String criticalHigh;
-
-        public SensorInfo(String i, String n, String s, String u, String so, String o, String c, String sl, String sh, String cl, String ch) {
-            intID = i;
-
-            String buff = "" + Integer.toHexString(Integer.parseInt(i));
-
-            hexID = "0x000".substring(0, 5 - buff.length()) + buff;
-
-            name = n;
-            system = s;
-            units = u;
-            slope = so;
-            offset = o;
-            criticality = c;
-            stableLow = sl;
-            stableHigh = sh;
-            criticalLow = cl;
-            criticalHigh = ch;
-        }
-
-    }
-
     private class SensorTuple {
 
         JButton button;
         JLabel label;
-        SensorInfo info;
+        Sensor sensor;
 
-        public SensorTuple(JButton btn, JLabel lbl, SensorInfo inf) {
+        public SensorTuple(JButton btn, JLabel lbl, Sensor s) {
             button = btn;
             label = lbl;
-            info = inf;
+            sensor = s;
         }
     }
 }
+*/
