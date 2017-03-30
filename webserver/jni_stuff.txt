@@ -1,3 +1,7 @@
 javac Can.java
 javah Can
 gcc -o libhello.so Can.c -shared -fpic -I "$JAVA_HOME/include" -I "$JAVA_HOME/include/linux"
+java -Djava.library.path=. Can
+
+
+
