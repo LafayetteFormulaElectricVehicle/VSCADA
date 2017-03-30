@@ -1,12 +1,11 @@
 package cockpit.database;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by CraigLombardo on 3/12/17.
@@ -23,7 +22,7 @@ public class MaintenanceView {
     private DBHandler handler;
     private SCADASystem sys;
 
-    private HashMap<String, JLabel> sensors;
+    private HashMap<Integer, JLabel> sensors;
 
     private SCADAViewer viewer;
     private int view;
@@ -33,7 +32,7 @@ public class MaintenanceView {
         handler = dbHandler;
 
         pane = new JPanel();
-        sensors = new HashMap<String, JLabel>();
+        sensors = new HashMap<>();
 
         this.viewer = viewer;
         view = viewNumber;
@@ -60,7 +59,7 @@ public class MaintenanceView {
     private void updateNow(HashMap<Integer, Sensor> sysMap) {
         if (view == viewer.currentView) {
             for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
-                sensors.get("" + entry.getKey()).setText(entry.getValue().getValue());
+                sensors.get(entry.getKey()).setText(entry.getValue().getValue());
             }
         }
     }
@@ -94,18 +93,20 @@ public class MaintenanceView {
             name = r.get(1);
             units = r.get(2);
             tag = r.get(3);
-            JLabel tmp = new JLabel("");
-            sensors.put(id, tmp);
-
-//            hexVal = Integer.toHexString(Integer.parseInt(id));
-//            hexString = "0x000".substring(0, 5 - hexVal.length()) + hexVal;
 
             addComp(0, row, new JLabel(tag));
             addComp(1, row, new JLabel(name));
-            addComp(2, row, tmp);
+
+            JLabel valueField = new JLabel("");
+            sensors.put(Integer.parseInt(id), valueField);
+            addComp(2, row, valueField);
+
             addComp(3, row++, new JLabel(units));
         }
-        updateNow(sys.getMap());
+
+        HashMap<Integer, Sensor> m = sys.getMap();
+
+        updateNow(m);
     }
 
     public void addComp(int x, int y, Component comp) {

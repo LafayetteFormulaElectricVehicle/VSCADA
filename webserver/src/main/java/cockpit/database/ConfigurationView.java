@@ -4,6 +4,9 @@ package cockpit.database;
  * Created by CraigLombardo on 3/14/17.
  */
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.xml.internal.fastinfoset.algorithm.BooleanEncodingAlgorithm;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,6 +45,7 @@ public class ConfigurationView extends JPanel {
     private JComboBox<String> system;
     private JTextField units;
     private JComboBox<String> store;
+    private JButton duplicate;
 
     private HashMap<String, SensorTuple> sensors;
     private DBHandler handler;
@@ -166,15 +170,12 @@ public class ConfigurationView extends JPanel {
         Sensor sensor;
 
         int thisID;
+        cRow = ROW_START;
 
         for (ArrayList<String> s : info) {
             thisID = Integer.parseInt(s.get(0));
             if (cID < thisID) cID = thisID;
-
-//                public Sensor(int i, String t, int a, int o, int b, String d, String s, String u, int st) {
-
-
-                sensor = new Sensor(thisID, s.get(1), Integer.parseInt(s.get(2)),
+            sensor = new Sensor(thisID, s.get(1), Integer.parseInt(s.get(2)),
                     Integer.parseInt(s.get(3)), Integer.parseInt(s.get(4)), s.get(5), s.get(6),
                     s.get(7), Integer.parseInt(s.get(8)));
 
@@ -189,19 +190,20 @@ public class ConfigurationView extends JPanel {
 
             sensorLabel = new JLabel(sensor.getDescription());
 
+            addExistingItemsComp(0, 1, new JLabel(""));
+            addExistingItemsComp(0, cRow, sensorButton);
+            addExistingItemsComp(1, cRow++, sensorLabel);
+
             sensors.put(sensor.getTag(), new SensorTuple(sensorButton, sensorLabel, sensor));
 
         }
 
-        addExistingItemsComp(0, 1, new JLabel(""));
-        cRow = ROW_START;
-        SortedSet<String> keys = new TreeSet<String>(sensors.keySet());
-        for (String key : keys) {
-            SensorTuple s = sensors.get(key);
-
-            addExistingItemsComp(0, cRow, s.button);
-            addExistingItemsComp(1, cRow++, s.label);
-        }
+//        cRow = ROW_START;
+//        SortedSet<String> keys = new TreeSet<>(sensors.keySet());
+//        for (String key : keys) {
+//            SensorTuple s = sensors.get(key);
+//
+//        }
     }
 
     private void cleanItemInfo() {
@@ -214,6 +216,8 @@ public class ConfigurationView extends JPanel {
         system.setSelectedIndex(0);
         units.setText("");
         store.setSelectedIndex(0);
+
+        duplicate.setEnabled(false);
     }
 
     private void buttonPushed(String e) {
@@ -228,6 +232,8 @@ public class ConfigurationView extends JPanel {
         system.setSelectedItem(s.getSystem());
         units.setText(s.getUnits());
         store.setSelectedItem("" + s.getStore());
+
+        duplicate.setEnabled(true);
     }
 
     private void createNewItemsPane() {
@@ -285,18 +291,28 @@ public class ConfigurationView extends JPanel {
         addNewItemsComp(1, 6, description);
         addNewItemsComp(1, 7, new JLabel(" "));
 
-        addNewItemsComp(2, 5, new JLabel("  System  "));
-        addNewItemsComp(2, 6, system);
+        addNewItemsComp(2, 5, new JLabel("  Units  "));
+        addNewItemsComp(2, 6, units);
         addNewItemsComp(2, 7, new JLabel(" "));
 
-        addNewItemsComp(0, 8, new JLabel("  Units  "));
-        addNewItemsComp(0, 9, units);
+        addNewItemsComp(0, 8, new JLabel("  System  "));
+        addNewItemsComp(0, 9, system);
         addNewItemsComp(0, 10, new JLabel(" "));
 
         addNewItemsComp(1, 8, new JLabel("  Store  "));
         addNewItemsComp(1, 9, store);
         addNewItemsComp(1, 10, new JLabel(" "));
 
+        duplicate = new JButton("Duplicate Record");
+        duplicate.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        duplicateRecord();
+                    }
+                }
+        );
+
+        addNewItemsComp(2, 9, duplicate);
 
         JButton submit = new JButton("Add/Update");
         submit.addActionListener(
@@ -331,6 +347,13 @@ public class ConfigurationView extends JPanel {
         addNewItemsComp(2, 12, deleteButton);
 
         cleanItemInfo();
+    }
+
+    private void duplicateRecord(){
+        if(duplicate.isEnabled()){
+            tag.setText("");
+            tag.setEditable(true);
+        }
     }
 
     private void deleteItem() {
@@ -371,9 +394,9 @@ public class ConfigurationView extends JPanel {
 
                 if (tag.isEditable()) {
 
-                Sensor newSensor = new Sensor(cID++, data[0], Integer.parseInt(data[1]),
-                        Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4],
-                        data[5], data[6], data[7].equals("true") ? 1 : 0);
+                    Sensor newSensor = new Sensor(cID++, data[0], Integer.parseInt(data[1]),
+                            Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4],
+                            data[5], data[6], data[7].equals("true") ? 1 : 0);
 
                     for (Map.Entry<String, SensorTuple> entry : sensors.entrySet()) {
                         existingItemsPanel.remove(entry.getValue().button);
@@ -391,7 +414,7 @@ public class ConfigurationView extends JPanel {
                     JLabel newLabel = new JLabel(newSensor.getDescription());
                     sensors.put(newSensor.getTag(), new SensorTuple(sensorButton, newLabel, newSensor));
 
-                    SortedSet<String> keys = new TreeSet<String>(sensors.keySet());
+                    SortedSet<String> keys = new TreeSet<>(sensors.keySet());
 
                     cRow = ROW_START;
 
@@ -404,6 +427,8 @@ public class ConfigurationView extends JPanel {
 
                     panelMain.validate();
                     panelMain.repaint();
+
+                    duplicate.setEnabled(true);
 
                 } else {
                     Sensor s = sensors.get(tag.getText()).sensor;
@@ -423,25 +448,33 @@ public class ConfigurationView extends JPanel {
         }
     }
 
+    private Boolean checkName(String name, Boolean print){
+        for (Map.Entry<String, SensorTuple> entry : sensors.entrySet()) {
+            if (entry.getKey().equals(name)) {
+                if(print) JOptionPane.showMessageDialog(panelMain,"This tag has already been taken, select another!");
+                return false;
+            }
+        }
+        return true;
+    }
+
     private Boolean checkAllFields() {
-    return true;
-//        int i, String t, int a, int o, int b, String d, String s, String u, int st
-//
-//        Boolean tagCheck = isNumber(tag.getText());
-//        Boolean nameCheck = !name.getText().isEmpty();
-//        Boolean unitsCheck = !units.getText().isEmpty();
-//        Boolean sLowCheck = isNumber(stableLow.getText());
-//        Boolean sHighCheck = isNumber(stableHigh.getText());
-//        Boolean critLowCheck = isNumber(criticalLow.getText());
-//        Boolean critHighCheck = isNumber(criticalHigh.getText());
-//        Boolean critCheck = isNumber(criticality.getText());
-//        Boolean slopeCheck = isNumber(slope.getText());
-//        Boolean offsetCheck = isNumber(offset.getText());
-//
-//        return (idCheck && nameCheck && unitsCheck &&
-//                sLowCheck && sHighCheck && critLowCheck &&
-//                critHighCheck && critCheck && slopeCheck &&
-//                offsetCheck);
+        String cTag = tag.getText();
+        if (!cTag.isEmpty()) {
+            if (tag.isEditable()) {
+                if(!checkName(cTag, true)){
+                    return false;
+                }
+            }
+        }
+
+        Boolean addressCheck = isNumber(address.getText());
+        Boolean offsetCheck = isNumber(offset.getText());
+        Boolean byteCheck = isNumber(byteLength.getText());
+        Boolean descriptionCheck = !description.getText().isEmpty();
+        Boolean unitsCheck = !units.getText().isEmpty();
+
+        return (addressCheck && offsetCheck && byteCheck && descriptionCheck && unitsCheck);
     }
 
     private Boolean isNumber(String s) {

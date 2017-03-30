@@ -33,7 +33,7 @@ public class CustomView extends JPanel {
     private DBHandler handler;
     private SCADASystem sys;
 
-    private HashMap<String, JLabel> sensors;
+    private HashMap<Integer, JLabel> sensors;
     private ArrayList<JCheckBox> items;
     private ArrayList<Sensor> itemSensors;
 
@@ -46,7 +46,7 @@ public class CustomView extends JPanel {
 
     public CustomView(DBHandler dbHandler, SCADASystem scadaSys, SCADAViewer viewer, int viewNumber) {
         panelMain = new JPanel(new BorderLayout());
-        sensors = new HashMap<String, JLabel>();
+        sensors = new HashMap<>();
 
         sys = scadaSys;
         handler = dbHandler;
@@ -95,7 +95,7 @@ public class CustomView extends JPanel {
         if (view == viewer.currentView) {
             for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
 //                System.out.println("sys "+entry.getKey());
-                sensors.get("" + entry.getKey()).setText(entry.getValue().getValue());
+                sensors.get(entry.getKey()).setText(entry.getValue().getValue());
             }
         }
     }
@@ -179,14 +179,13 @@ public class CustomView extends JPanel {
         for (int i = 0; i < items.size(); i++) {
             if (createLabels) {
                 JLabel tmp = new JLabel("");
-                sensors.put("" + itemSensors.get(i).getID(), tmp);
+                sensors.put(itemSensors.get(i).getID(), tmp);
             }
             if (items.get(i).isSelected()) {
                 s = itemSensors.get(i);
                 addComp(0, i + 1, new JLabel(s.getTag()), selectedPanel, selectedConstraints, selectedLayout);
                 addComp(1, i + 1, new JLabel(s.getDescription()), selectedPanel, selectedConstraints, selectedLayout);
-                addComp(2, i + 1, sensors.get(""+
-                        s.getID()), selectedPanel, selectedConstraints, selectedLayout);
+                addComp(2, i + 1, sensors.get(s.getID()), selectedPanel, selectedConstraints, selectedLayout);
                 addComp(3, i + 1, new JLabel(s.getUnits()), selectedPanel, selectedConstraints, selectedLayout);
             }
         }

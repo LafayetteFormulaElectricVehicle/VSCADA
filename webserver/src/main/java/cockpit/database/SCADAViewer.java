@@ -1,6 +1,7 @@
 package cockpit.database;
 
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +29,19 @@ public class SCADAViewer extends JPanel {
     }
 
     public static void main(String[] args) {
-        String file = "/Users/CraigLombardo/Desktop/output.txt";
+
+        try {
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // If Nimbus is not available, you can set the GUI to another look and feel.
+        }
+
+        String file = System.getProperty("user.home") + "/Desktop/output.txt";
         DBHandler handler = new DBHandler("SCADA.db", "SQLSchema/");
         SCADASystem sys = new SCADASystem(handler, file);
 

@@ -236,12 +236,12 @@ public class DBHandler {
      *************************************************************************************************/
 
     public ArrayList<ArrayList<String>> getSensorInfo() {
-        String sql = "select * from SensorLabels;";
+        String sql = "select * from SensorLabels ORDER BY tag ASC;";
         return runQuery(sql);
     }
 
     public ArrayList<ArrayList<String>> getIDDescUnitsTag() {
-        String sql = "select ID, description, units, tag from SensorLabels;";
+        String sql = "select ID, description, units, tag from SensorLabels ORDER BY tag ASC;";
         return runQuery(sql);
     }
 
@@ -270,23 +270,23 @@ public class DBHandler {
         if (isNew) {
             sql1 = "INSERT INTO SensorLabels (tag, address, offset, byteLength, description, system, units, store) VALUES " +
                     "('" + data[0] + "', '" + data[1] + "', '" + data[2] + "', '" + data[3] + "', '" + data[4] + "', '" +
-                    data[5] + "', '" + data[6] + "', '" + data[7] + "');";
+                    data[5] + "', '" + data[6] + "', '" + (data[7].equals("true") ? 1 : 0 ) + "');";
         } else {
             sql1 = "UPDATE SensorLabels SET " +
-                    "tag='" + data[0] + ",' " +
-                    "address='" + data[1] + ",' " +
-                    "offset='" + data[2] + ",' " +
-                    "byteLength='" + data[3] + ",' " +
-                    "description='" + data[4] + ",' " +
-                    "system='" + data[5] + ",' " +
-                    "units='" + data[6] + ",' " +
-                    "store='" + data[7] + "' " +
+                    "tag='" + data[0] + "', " +
+                    "address='" + data[1] + "', " +
+                    "offset='" + data[2] + "', " +
+                    "byteLength='" + data[3] + "', " +
+                    "description='" + data[4] + "', " +
+                    "system='" + data[5] + "', " +
+                    "units='" + data[6] + "', " +
+                    "store='" + (data[7].equals("true") ? 1 : 0 ) + "' " +
                     "WHERE tag='" + data[0] + "';";
         }
 
-        System.out.println(sql1);
+//        System.out.println(sql1);
 
-//        runSQL(sql1);
+        runSQL(sql1);
 
     }
 }
