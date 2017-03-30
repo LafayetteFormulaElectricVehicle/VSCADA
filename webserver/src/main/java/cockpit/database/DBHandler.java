@@ -225,8 +225,8 @@ public class DBHandler {
         runSQL(sql);
     }
 
-    public void insertDataTimes(String data){
-        if(data == null) return;
+    public void insertDataTimes(String data) {
+        if (data == null) return;
         String sql = "INSERT INTO Data (sensorID, value, TimeStamp) VALUES " + data + ";";
         runSQL(sql);
     }
@@ -236,7 +236,7 @@ public class DBHandler {
      *************************************************************************************************/
 
     public ArrayList<ArrayList<String>> getSensorInfo() {
-        String sql = "select l.*, c.* from SensorLabels AS l INNER JOIN Configurations AS c ON l.ID=c.sensorID;";
+        String sql = "select * from SensorLabels;";
         return runQuery(sql);
     }
 
@@ -251,9 +251,42 @@ public class DBHandler {
     }
 
     //If you change the database this method will fail you
-    public ArrayList<ArrayList<String>> getSensorcharacterization(){
+    public ArrayList<ArrayList<String>> getSensorcharacterization() {
         String sql = "select * from SensorLabels;";
         return runQuery(sql);
     }
 
+    public void removeSensor(String tag) {
+        String sql = "DELETE FROM SensorLabels WHERE tag=\'" + tag + "\'";
+        runSQL(sql);
+    }
+
+    public void updateSensor(Boolean isNew, String[] data) {
+
+        if (data.length < 8) return;
+
+        String sql1 = "";
+
+        if (isNew) {
+            sql1 = "INSERT INTO SensorLabels (tag, address, offset, byteLength, description, system, units, store) VALUES " +
+                    "('" + data[0] + "', '" + data[1] + "', '" + data[2] + "', '" + data[3] + "', '" + data[4] + "', '" +
+                    data[5] + "', '" + data[6] + "', '" + data[7] + "');";
+        } else {
+            sql1 = "UPDATE SensorLabels SET " +
+                    "tag='" + data[0] + ",' " +
+                    "address='" + data[1] + ",' " +
+                    "offset='" + data[2] + ",' " +
+                    "byteLength='" + data[3] + ",' " +
+                    "description='" + data[4] + ",' " +
+                    "system='" + data[5] + ",' " +
+                    "units='" + data[6] + ",' " +
+                    "store='" + data[7] + "' " +
+                    "WHERE tag='" + data[0] + "';";
+        }
+
+        System.out.println(sql1);
+
+//        runSQL(sql1);
+
+    }
 }

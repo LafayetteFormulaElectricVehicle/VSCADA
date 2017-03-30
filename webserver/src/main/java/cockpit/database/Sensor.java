@@ -2,7 +2,7 @@ package cockpit.database;
 
 public class Sensor {
 
-    private int id;
+    public int id;
     private String hexID;
     private String tag;
     private int address;
@@ -110,6 +110,10 @@ public class Sensor {
 
     public Boolean getStore() {
         return store;
+    }
+
+    public void setUnits(String s){
+        units = s;
     }
 
     public void setStore(Boolean b) {

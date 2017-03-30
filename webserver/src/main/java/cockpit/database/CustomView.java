@@ -35,7 +35,7 @@ public class CustomView extends JPanel {
 
     private HashMap<String, JLabel> sensors;
     private ArrayList<JCheckBox> items;
-    private ArrayList<CustomTuple> itemTuples;
+    private ArrayList<Sensor> itemSensors;
 
     private SCADAViewer viewer;
     private int view;
@@ -54,7 +54,7 @@ public class CustomView extends JPanel {
         view = viewNumber;
 
         items = new ArrayList<JCheckBox>();
-        itemTuples = new ArrayList<CustomTuple>();
+        itemSensors = new ArrayList<Sensor>();
 
         createConstraints();
 
@@ -111,6 +111,8 @@ public class CustomView extends JPanel {
 
         String tag;
 
+        HashMap<Integer, Sensor> allSensors = sys.getMap();
+
         for (ArrayList<String> r : info) {
             id = r.get(0);
             name = r.get(1);
@@ -122,7 +124,8 @@ public class CustomView extends JPanel {
 
             JCheckBox check = new JCheckBox();
             items.add(check);
-            itemTuples.add(new CustomTuple(id, idString, name, units, tag));
+
+            itemSensors.add(allSensors.get(Integer.parseInt(r.get(0))));
             addComp(0, row, check, itemsPanel, itemsConstraints, itemsLayout);
             addComp(1, row, new JLabel(tag), itemsPanel, itemsConstraints, itemsLayout);
             addComp(2, row, new JLabel(name), itemsPanel, itemsConstraints, itemsLayout);
@@ -171,19 +174,20 @@ public class CustomView extends JPanel {
     }
 
     public void createNewSelectedInfo() {
-        CustomTuple checkedTuple;
+        Sensor s;
 
         for (int i = 0; i < items.size(); i++) {
             if (createLabels) {
                 JLabel tmp = new JLabel("");
-                sensors.put("" + itemTuples.get(i).tID, tmp);
+                sensors.put("" + itemSensors.get(i).getID(), tmp);
             }
             if (items.get(i).isSelected()) {
-                checkedTuple = itemTuples.get(i);
-                addComp(0, i + 1, new JLabel(checkedTuple.tTag), selectedPanel, selectedConstraints, selectedLayout);
-                addComp(1, i + 1, new JLabel(checkedTuple.tName), selectedPanel, selectedConstraints, selectedLayout);
-                addComp(2, i + 1, sensors.get(checkedTuple.tID), selectedPanel, selectedConstraints, selectedLayout);
-                addComp(3, i + 1, new JLabel(checkedTuple.tUnits), selectedPanel, selectedConstraints, selectedLayout);
+                s = itemSensors.get(i);
+                addComp(0, i + 1, new JLabel(s.getTag()), selectedPanel, selectedConstraints, selectedLayout);
+                addComp(1, i + 1, new JLabel(s.getDescription()), selectedPanel, selectedConstraints, selectedLayout);
+                addComp(2, i + 1, sensors.get(""+
+                        s.getID()), selectedPanel, selectedConstraints, selectedLayout);
+                addComp(3, i + 1, new JLabel(s.getUnits()), selectedPanel, selectedConstraints, selectedLayout);
             }
         }
 
@@ -253,23 +257,6 @@ public class CustomView extends JPanel {
 
         layout.setConstraints(comp, constraints);
         panel.add(comp);
-    }
-
-    private class CustomTuple {
-
-        private String tID;
-        private String tIDString;
-        private String tName;
-        private String tUnits;
-        private String tTag;
-
-        private CustomTuple(String i, String iS, String n, String u, String t) {
-            tID = i;
-            tIDString = iS;
-            tName = n;
-            tUnits = u;
-            tTag = t;
-        }
     }
 
 }
