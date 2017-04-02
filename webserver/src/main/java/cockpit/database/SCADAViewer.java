@@ -30,18 +30,19 @@ public class SCADAViewer extends JPanel {
 
     public static void main(String[] args) {
 
-        try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            // If Nimbus is not available, you can set the GUI to another look and feel.
-        }
+//        try {
+//            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (Exception e) {
+//            // If Nimbus is not available, you can set the GUI to another look and feel.
+//        }
 
         String file = System.getProperty("user.home") + "/Desktop/output.txt";
+//        System.out.println(file);
         DBHandler handler = new DBHandler("SCADA.db", "SQLSchema/");
         SCADASystem sys = new SCADASystem(handler, file);
 
@@ -53,6 +54,7 @@ public class SCADAViewer extends JPanel {
         test.addCard(new MaintenanceView(handler, sys, test, 0).getPane(), "Maintenance View");
         test.addCard(new QueryView().getPane(), "Query View");
         test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
+        test.addCard(new DynoView().getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
     }
 

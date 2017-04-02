@@ -47,6 +47,8 @@ public class ConfigurationView extends JPanel {
     private JComboBox<String> store;
     private JButton duplicate;
 
+    private JButton editButton;
+
     private HashMap<String, SensorTuple> sensors;
     private DBHandler handler;
 
@@ -218,6 +220,7 @@ public class ConfigurationView extends JPanel {
         store.setSelectedIndex(0);
 
         duplicate.setEnabled(false);
+        editButton.setText("Add Record");
     }
 
     private void buttonPushed(String e) {
@@ -234,6 +237,7 @@ public class ConfigurationView extends JPanel {
         store.setSelectedItem("" + s.getStore());
 
         duplicate.setEnabled(true);
+        editButton.setText("Update Record");
     }
 
     private void createNewItemsPane() {
@@ -314,8 +318,8 @@ public class ConfigurationView extends JPanel {
 
         addNewItemsComp(2, 9, duplicate);
 
-        JButton submit = new JButton("Add/Update");
-        submit.addActionListener(
+        editButton = new JButton("");
+        editButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         editItem();
@@ -343,7 +347,7 @@ public class ConfigurationView extends JPanel {
 
         addNewItemsComp(0, 11, new JLabel(" "));
         addNewItemsComp(0, 12, newButton);
-        addNewItemsComp(1, 12, submit);
+        addNewItemsComp(1, 12, editButton);
         addNewItemsComp(2, 12, deleteButton);
 
         cleanItemInfo();
@@ -431,7 +435,8 @@ public class ConfigurationView extends JPanel {
                     duplicate.setEnabled(true);
 
                 } else {
-                    Sensor s = sensors.get(tag.getText()).sensor;
+                    SensorTuple tup = sensors.get(tag.getText());
+                    Sensor s = tup.sensor;
 
                     s.setTag(tag.getText());
                     s.setAddress(Integer.parseInt(address.getText()));
@@ -441,6 +446,8 @@ public class ConfigurationView extends JPanel {
                     s.setUnits(units.getText());
                     s.setSystem((String) system.getSelectedItem());
                     s.setStore(store.getSelectedItem().equals("true"));
+
+                    tup.label.setText(description.getText());
                 }
             } else System.out.println("NOT EDITING");
         } else {
