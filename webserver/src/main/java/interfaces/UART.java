@@ -1,4 +1,4 @@
-package interfaces.can;
+package interfaces;
 
 /**
  * Created by 13wil on 3/8/2017.
