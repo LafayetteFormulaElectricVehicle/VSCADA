@@ -240,8 +240,18 @@ public class DBHandler {
         return runQuery(sql);
     }
 
-    public ArrayList<ArrayList<String>> getIDDescUnitsTag() {
-        String sql = "select ID, description, units, tag from SensorLabels ORDER BY tag ASC;";
+    public ArrayList<ArrayList<String>> getIDDescUnitsTag(String[] tags) {
+        String tagSearch = "";
+
+        if (tags != null) {
+            tagSearch += "WHERE tag in (";
+            for (int i = 0; i < tags.length; i++) {
+                tagSearch += "'" + tags[i] + "'";
+                if (i < tags.length - 1) tagSearch += ", ";
+            }
+            tagSearch += ")";
+        }
+        String sql = "select ID, description, units, tag from SensorLabels " + tagSearch + " ORDER BY tag ASC;";
         return runQuery(sql);
     }
 
@@ -270,7 +280,7 @@ public class DBHandler {
         if (isNew) {
             sql1 = "INSERT INTO SensorLabels (tag, address, offset, byteLength, description, system, units, store) VALUES " +
                     "('" + data[0] + "', '" + data[1] + "', '" + data[2] + "', '" + data[3] + "', '" + data[4] + "', '" +
-                    data[5] + "', '" + data[6] + "', '" + (data[7].equals("true") ? 1 : 0 ) + "');";
+                    data[5] + "', '" + data[6] + "', '" + (data[7].equals("true") ? 1 : 0) + "');";
         } else {
             sql1 = "UPDATE SensorLabels SET " +
                     "tag='" + data[0] + "', " +
@@ -280,7 +290,7 @@ public class DBHandler {
                     "description='" + data[4] + "', " +
                     "system='" + data[5] + "', " +
                     "units='" + data[6] + "', " +
-                    "store='" + (data[7].equals("true") ? 1 : 0 ) + "' " +
+                    "store='" + (data[7].equals("true") ? 1 : 0) + "' " +
                     "WHERE tag='" + data[0] + "';";
         }
 

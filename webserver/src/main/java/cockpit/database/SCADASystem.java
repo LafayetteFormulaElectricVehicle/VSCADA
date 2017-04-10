@@ -57,7 +57,9 @@ public class SCADASystem implements Runnable {
     }
 
     public void updateData(Integer address, ArrayList<String> packets) {
-        for (Integer i : mappings.get(address)) {
+        ArrayList<Integer> map = mappings.get(address);
+        if(map == null) return;
+        for (Integer i : map) {
             Sensor s = sensors.get(i);
             String bytes = "";
 
@@ -105,5 +107,11 @@ public class SCADASystem implements Runnable {
         thr.start();
         while (true) {
         }
+    }
+
+    public int customHighLow(int highByte, int lowByte){
+        String highHex = Integer.toHexString(highByte);
+        String lowHex = Integer.toHexString(lowByte);
+        return new BigInteger(highHex + lowHex, 16).intValue();
     }
 }

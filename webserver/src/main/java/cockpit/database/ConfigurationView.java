@@ -4,16 +4,13 @@ package cockpit.database;
  * Created by CraigLombardo on 3/14/17.
  */
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.sun.xml.internal.fastinfoset.algorithm.BooleanEncodingAlgorithm;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-public class ConfigurationView extends JPanel {
+public class ConfigurationView {
 
     private static int ROW_START = 2;
     private int cRow = ROW_START;
@@ -36,6 +33,11 @@ public class ConfigurationView extends JPanel {
     private JPanel innerPanel;
     private JPanel panelMain;
 
+    //Search Panel
+    private GridBagLayout searchLayout;
+    private GridBagConstraints searchConstraints;
+    private JPanel searchPanel;
+
     //Fields
     private JTextField tag;
     private JTextField address;
@@ -48,6 +50,8 @@ public class ConfigurationView extends JPanel {
     private JButton duplicate;
 
     private JButton editButton;
+
+    private JTextField searchBox;
 
     private HashMap<String, SensorTuple> sensors;
     private DBHandler handler;
@@ -65,8 +69,8 @@ public class ConfigurationView extends JPanel {
         createExistingItems();
         createNewItemsPane();
 
-
         createScrollPanes();
+        createSearchBar();
         panelMain.add(innerPanel);
     }
 
@@ -107,6 +111,7 @@ public class ConfigurationView extends JPanel {
         createExistingConstraints();
         createNewItemConstraints();
         createInnerConstraints();
+        createSearchConstraints();
     }
 
     private void createExistingConstraints() {
@@ -138,6 +143,26 @@ public class ConfigurationView extends JPanel {
         innerPanel = new JPanel(innerLayout);
     }
 
+    private void createSearchConstraints() {
+        searchLayout = new GridBagLayout();
+        searchConstraints = new GridBagConstraints();
+
+        searchConstraints.fill = GridBagConstraints.BOTH;
+        searchConstraints.anchor = GridBagConstraints.CENTER;
+        searchConstraints.weighty = 1;
+        searchPanel = new JPanel(searchLayout);
+    }
+
+    private void addSearchComp(int x, int y, int wx, Component comp) {
+        searchConstraints.gridx = x;
+        searchConstraints.gridy = y;
+
+        searchConstraints.weightx = wx;
+
+        searchLayout.setConstraints(comp, searchConstraints);
+        searchPanel.add(comp);
+    }
+
     private void addExistingItemsComp(int x, int y, Component comp) {
         existingItemsConstraints.gridx = x;
         existingItemsConstraints.gridy = y;
@@ -163,7 +188,7 @@ public class ConfigurationView extends JPanel {
     }
 
     private void createExistingItems() {
-        addExistingItemsComp(0, 0, new JLabel(" ID "));
+        addExistingItemsComp(0, 0, new JLabel(" Tag "));
         addExistingItemsComp(1, 0, new JLabel("  Name  "));
 
         ArrayList<ArrayList<String>> info = handler.getSensorInfo();
@@ -221,10 +246,18 @@ public class ConfigurationView extends JPanel {
 
         duplicate.setEnabled(false);
         editButton.setText("Add Record");
+
+        if (searchBox != null) searchBox.setText("");
     }
 
-    private void buttonPushed(String e) {
-        Sensor s = sensors.get(e).sensor;
+    private void buttonPushed(String name) {
+        Sensor s;
+        try {
+            s = sensors.get(name).sensor;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(panelMain, "This tag does not exist.");
+            return;
+        }
 
         tag.setText(s.getTag());
         tag.setEditable(false);
@@ -238,6 +271,8 @@ public class ConfigurationView extends JPanel {
 
         duplicate.setEnabled(true);
         editButton.setText("Update Record");
+
+        searchBox.setText(name);
     }
 
     private void createNewItemsPane() {
@@ -353,10 +388,12 @@ public class ConfigurationView extends JPanel {
         cleanItemInfo();
     }
 
-    private void duplicateRecord(){
-        if(duplicate.isEnabled()){
+    private void duplicateRecord() {
+        if (duplicate.isEnabled()) {
             tag.setText("");
             tag.setEditable(true);
+            editButton.setText("Add Record");
+            duplicate.setEnabled(false);
         }
     }
 
@@ -455,10 +492,10 @@ public class ConfigurationView extends JPanel {
         }
     }
 
-    private Boolean checkName(String name, Boolean print){
+    private Boolean checkName(String name, Boolean print) {
         for (Map.Entry<String, SensorTuple> entry : sensors.entrySet()) {
             if (entry.getKey().equals(name)) {
-                if(print) JOptionPane.showMessageDialog(panelMain,"This tag has already been taken, select another!");
+                if (print) JOptionPane.showMessageDialog(panelMain, "This tag has already been taken, select another!");
                 return false;
             }
         }
@@ -469,7 +506,7 @@ public class ConfigurationView extends JPanel {
         String cTag = tag.getText();
         if (!cTag.isEmpty()) {
             if (tag.isEditable()) {
-                if(!checkName(cTag, true)){
+                if (!checkName(cTag, true)) {
                     return false;
                 }
             }
@@ -504,6 +541,43 @@ public class ConfigurationView extends JPanel {
         system.addItem("DYNO");
         system.addItem("TSI");
         system.addItem("TSV");
+    }
+
+    private void createSearchBar() {
+
+        JLabel title = new JLabel("Tag Lookup");
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+
+        searchBox = new JTextField("");
+        searchBox.setHorizontalAlignment(SwingConstants.CENTER);
+
+        searchBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buttonPushed(searchBox.getText());
+            }
+        });
+
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        buttonPushed(searchBox.getText());
+                    }
+                }
+        );
+
+        addSearchComp(0, 0, 40, new JLabel(" "));
+        addSearchComp(1, 0, 10, title);
+        addSearchComp(2, 0, 10, new JLabel(""));
+        addSearchComp(3, 0, 40, new JLabel(" "));
+
+        addSearchComp(0, 1, 40, new JLabel(" "));
+        addSearchComp(1, 1, 10, searchBox);
+        addSearchComp(2, 1, 10, searchButton);
+        addSearchComp(3, 1, 40, new JLabel(" "));
+
+        panelMain.add(searchPanel, BorderLayout.PAGE_START);
     }
 
     private class SensorTuple {

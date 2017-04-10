@@ -33,16 +33,12 @@ public class Sensor {
         value = "NaN?";
     }
 
-    public void setValue(String v){
-        value = v;
-    }
-
-    public String getValue(){
+    public String getValue() {
         return value;
     }
 
-    public String getHexID() {
-        return hexID;
+    public void setValue(String v) {
+        value = v;
     }
 
     public int getID() {
@@ -104,16 +100,16 @@ public class Sensor {
         system = s;
     }
 
-    public String getUnits(){
+    public String getUnits() {
         return units;
+    }
+
+    public void setUnits(String s) {
+        units = s;
     }
 
     public Boolean getStore() {
         return store;
-    }
-
-    public void setUnits(String s){
-        units = s;
     }
 
     public void setStore(Boolean b) {

@@ -37,7 +37,7 @@ public class MaintenanceView {
         this.viewer = viewer;
         view = viewNumber;
 
-        createMapping(handler.getIDDescUnitsTag());
+        createMapping(handler.getIDDescUnitsTag(null));
 
         scrollPanel = new JScrollPane(innerPanel);
         pane.add(scrollPanel, BorderLayout.CENTER);

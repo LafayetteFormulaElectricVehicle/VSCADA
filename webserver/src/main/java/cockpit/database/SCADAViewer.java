@@ -13,6 +13,7 @@ public class SCADAViewer extends JPanel {
     private JPanel cards;
     private Container pane;
     private JComboBox<String> comboBox;
+    private int count = 0;
 
     public SCADAViewer() {
         JFrame frame = new JFrame("SCADA Viewer");
@@ -55,8 +56,9 @@ public class SCADAViewer extends JPanel {
         test.addCard(new MaintenanceView(handler, sys, test, 0).getPane(), "Maintenance View");
         test.addCard(new QueryView().getPane(), "Query View");
         test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
-        test.addCard(new DynoView().getPanel(), "Dyno Control");
+        test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
+        test.addCard(new GraphView().getPanel(), "Graph View");
     }
 
     public void addComponentsToPane() {
@@ -99,5 +101,6 @@ public class SCADAViewer extends JPanel {
     public void addCard(JComponent card, String name) {
         comboBox.addItem(name);
         cards.add(card, name);
+        comboBox.setMaximumRowCount(++count);
     }
 }

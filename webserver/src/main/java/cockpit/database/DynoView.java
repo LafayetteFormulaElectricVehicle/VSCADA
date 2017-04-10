@@ -53,32 +53,31 @@ public class DynoView {
     private TimeSeries dataset;
     private String dataUnits = "Testing";
 
-    private Timer timer = new Timer(1000, new ActionListener() {
-        public void actionPerformed(ActionEvent event) {
-            dataset.add(new Millisecond(), torquePos + throttlePos);
-        }
-    });
+    private String[] tags = {"MRPMLB", "MRPMHB", "SFHB", "TI", "CVLB", "CVHB", "CT", "MT"};
 
-    public DynoView() {
+    private DBHandler handler;
+
+    private SCADAViewer viewer;
+    private int view;
+
+    public DynoView(DBHandler DBH, SCADASystem scadaSys, SCADAViewer sViewer, int viewNumber) {
+        handler = DBH;
+        viewer = sViewer;
+        view = viewNumber;
+
         panelMain = new JPanel(new BorderLayout());
         dataset = new TimeSeries("");
         createControlPanel();
         createGraphPanel();
 
-        timer.start();
-    }
-
-    public static void main(String[] args) {
-
-        JFrame window = new JFrame("Test");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(600, 600);
-        window.setMinimumSize(new Dimension(300, 300));
-
-        DynoView test1 = new DynoView();
-        window.getContentPane().add(test1.getPanel(), BorderLayout.CENTER);
-
-        window.setVisible(true);
+        Timer displayTimer = new Timer(1000, null);
+        displayTimer.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                dataset.add(new Millisecond(), throttlePos + torquePos);
+                updateNow(scadaSys.getMap());
+            }
+        });
+        displayTimer.start();
     }
 
     public JPanel getPanel() {
@@ -222,14 +221,18 @@ public class DynoView {
 
         fields = new HashMap<>();
 
-        fields.put("1", new Field("Torque", "lb*ft"));
-        fields.put("2", new Field("Power", "hp"));
-        fields.put("3", new Field("Dyno Speed", "rpm"));
-        fields.put("4", new Field("MC Speed", "rpm"));
-        fields.put("5", new Field("Current", "A"));
-        fields.put("6", new Field("Voltage", "V"));
-        fields.put("7", new Field("MC Temp", "C"));
-        fields.put("8", new Field("Motor Temp", "C"));
+        for (ArrayList<String> arr : handler.getIDDescUnitsTag(tags)) {
+            fields.put(arr.get(0), new Field(arr.get(1), arr.get(2)));
+        }
+
+//        fields.put("1", new Field("Torque", "lb*ft"));
+//        fields.put("2", new Field("Power", "hp"));
+//        fields.put("3", new Field("Dyno Speed", "rpm"));
+//        fields.put("4", new Field("MC Speed", "rpm"));
+//        fields.put("5", new Field("Current", "A"));
+//        fields.put("6", new Field("Voltage", "V"));
+//        fields.put("7", new Field("MC Temp", "C"));
+//        fields.put("8", new Field("Motor Temp", "C"));
     }
 
     public void addControlsComp(int x, int y, int wx, int wy, boolean resize, Component comp) {
@@ -321,6 +324,19 @@ public class DynoView {
 
         panelMain.validate();
         panelMain.repaint();
+    }
+
+    private void updateNow(HashMap<Integer, Sensor> sysMap) {
+        Field f;
+        if (view == viewer.currentView) {
+            for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
+//                System.out.println(entry.getKey());
+                f = fields.get("" + entry.getKey());
+                if (f != null) {
+                    f.value.setText(entry.getValue().getValue());
+                }
+            }
+        }
     }
 
     private class Field {

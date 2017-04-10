@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomView extends JPanel {
+public class CustomView {
 
     private JScrollPane scrollPanelSelect;
     private GridBagLayout selectedLayout;
@@ -64,7 +64,7 @@ public class CustomView extends JPanel {
         addComp(2, 1, new JLabel("  Sensor Desc:  "), itemsPanel, itemsConstraints, itemsLayout);
         addComp(3, 1, new JLabel("  Sensor Units:  "), itemsPanel, itemsConstraints, itemsLayout);
 
-        createItems(handler.getIDDescUnitsTag());
+        createItems(handler.getIDDescUnitsTag(null));
 
         createNewSelectedInfo();
 
