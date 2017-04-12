@@ -144,7 +144,7 @@ public class DBHandler {
     }
 
     //date in the form of 2017-02-05
-    public ArrayList<ArrayList<String>> getInfo(String IDs, String systems, String date1, String date2) {
+   /* public ArrayList<ArrayList<String>> getInfo(String IDs, String systems, String date1, String date2) {
 
         String whereC;
         String andC;
@@ -188,7 +188,7 @@ public class DBHandler {
         System.out.println(query + "\n\n");
 //    return null;
         return runQuery(query);
-    }
+    }*/
 
     private String parseCSV(String csv) {
         String out = "";
@@ -273,14 +273,16 @@ public class DBHandler {
 
     public void updateSensor(Boolean isNew, String[] data) {
 
-        if (data.length < 8) return;
+        if (data.length < 10) return;
 
         String sql1 = "";
 
         if (isNew) {
-            sql1 = "INSERT INTO SensorLabels (tag, address, offset, byteLength, description, system, units, store) VALUES " +
-                    "('" + data[0] + "', '" + data[1] + "', '" + data[2] + "', '" + data[3] + "', '" + data[4] + "', '" +
-                    data[5] + "', '" + data[6] + "', '" + (data[7].equals("true") ? 1 : 0) + "');";
+            sql1 = "INSERT INTO SensorLabels (tag, address, offset, byteLength, description, " +
+                    "system, units, store, valSlope, valOffset) VALUES " +
+                    "('" + data[0] + "', '" + data[1] + "', '" + data[2] + "', '" + data[3] + "', '" +
+                    data[4] + "', '" + data[5] + "', '" + data[6] + "', '" +
+                    (data[7].equals("true") ? 1 : 0) + "', '" + data[8] + "', '" + data[9] + "');";
         } else {
             sql1 = "UPDATE SensorLabels SET " +
                     "tag='" + data[0] + "', " +
@@ -290,7 +292,9 @@ public class DBHandler {
                     "description='" + data[4] + "', " +
                     "system='" + data[5] + "', " +
                     "units='" + data[6] + "', " +
-                    "store='" + (data[7].equals("true") ? 1 : 0) + "' " +
+                    "store='" + (data[7].equals("true") ? 1 : 0) + "', " +
+                    "valSlope='" + data[8] + "', " +
+                    "valOffset='" + data[9] + "' " +
                     "WHERE tag='" + data[0] + "';";
         }
 
@@ -299,4 +303,73 @@ public class DBHandler {
         runSQL(sql1);
 
     }
+
+    public ArrayList<ArrayList<String>> getLatestData(int seconds) {
+/*      tag
+        description
+        system
+        units
+        value
+        timestamp
+*/
+        String selects = "labels.tag, labels.description, labels.system, labels.units, data.value, data.TimeStamp";
+        String tables = "SensorLabels AS labels " +
+                "INNER JOIN Data AS data ON labels.ID=data.sensorID";
+
+        String query = "";
+        if (seconds == 1) query = "select " + selects + " from " + tables + " where TimeStamp = (select MAX(TimeStamp) from Data);";
+        else {
+            query = "select " + selects + " from " + tables + " where TimeStamp <= (select MAX(TimeStamp) from Data)" +
+                    "AND TimeStamp >= datetime((select MAX(TimeStamp) from Data), '-" + seconds + " seconds');";
+        }
+
+//        System.out.println(query + "\n\n");
+        return runQuery(query);
+    }
+
+    //Dates in format of 2017-04-09 23:29:58
+    public ArrayList<ArrayList<String>> getInfo(String tags, String systems, String date1, String date2) {
+
+        String whereC;
+        String andC;
+        String and2C;
+
+        String sys;
+        String range;
+        String idRange;
+
+        whereC = (systems != null || date1 != null || date2 != null || tags != null) ? " WHERE " : "";
+        andC = (tags != null && systems != null) ? " AND " : "";
+        // andC = (IDs != null && (systems != null || date1 != null || date2 != null)) ? " AND " : "";
+        and2C = ((tags != null || systems != null) && (date1 != null || date2 != null)) ? " AND " : "";
+
+        sys = parseSystems(systems);
+
+        if (tags != null) idRange = "labels.tag IN (" + parseCSV(tags) + ")";
+        else idRange = "";
+
+        if (date1 == null) {
+            if (date2 == null) range = "";
+            else range = "DATETIME(TimeStamp) = \"" + date2 + "\"";
+        } else {
+            if (date2 == null) range = "DATETIME(TimeStamp) = \"" + date1 + "\"";
+            else range = "DATETIME(TimeStamp) >= \"" + date1 + "\" " +
+                    "AND DATETIME(TimeStamp) <= \"" + date2 + "\"";
+        }
+
+        String query = "select " +
+                "labels.tag, " +
+                "labels.description, " +
+                "labels.system, " +
+                "labels.units, " +
+                "data.value, " +
+                "data.TimeStamp " +
+                "from SensorLabels AS labels " +
+                "INNER JOIN Data AS data ON labels.ID=data.sensorID" +
+                whereC + idRange + andC + sys + and2C + range + " ORDER BY labels.tag ASC;";
+
+//        System.out.println(query + "\n\n");
+        return runQuery(query);
+    }
+
 }

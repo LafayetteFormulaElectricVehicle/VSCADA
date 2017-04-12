@@ -1,4 +1,4 @@
-package cockpit.database;
+package GUI;
 
 /**
  * Created by CraigLombardo on 3/14/17.

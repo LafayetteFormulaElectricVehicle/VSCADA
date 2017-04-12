@@ -1,8 +1,12 @@
-package cockpit.database;
+package GUI;
 
 /**
  * Created by CraigLombardo on 3/14/17.
  */
+
+import cockpit.database.DBHandler;
+import cockpit.database.SCADASystem;
+import cockpit.database.Sensor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,7 +99,7 @@ public class CustomView {
         if (view == viewer.currentView) {
             for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
 //                System.out.println("sys "+entry.getKey());
-                sensors.get(entry.getKey()).setText(entry.getValue().getValue());
+                sensors.get(entry.getKey()).setText(entry.getValue().getCalibValue());
             }
         }
     }

@@ -40,7 +40,7 @@ public class SCADASystem implements Runnable {
         for (ArrayList<String> arr : info) {
             Sensor s = new Sensor(Integer.parseInt(arr.get(0)), arr.get(1), Integer.parseInt(arr.get(2)),
                     Integer.parseInt(arr.get(3)), Integer.parseInt(arr.get(4)), arr.get(5),
-                    arr.get(6), arr.get(7), Integer.parseInt(arr.get(8)));
+                    arr.get(6), arr.get(7), Integer.parseInt(arr.get(8)), Double.parseDouble(arr.get(9)), Double.parseDouble(arr.get(10)));
 
             tryInsert(Integer.parseInt(arr.get(2)), Integer.parseInt(arr.get(0)));
             sensors.put(Integer.parseInt(arr.get(0)), s);
@@ -67,7 +67,7 @@ public class SCADASystem implements Runnable {
                 bytes += packets.get(j);
             }
 
-            s.setValue("" + new BigInteger(bytes, 16).intValue());
+            s.setRawValue("" + new BigInteger(bytes, 16).intValue());
         }
     }
 
@@ -75,7 +75,7 @@ public class SCADASystem implements Runnable {
         String data = "";
         String val = "";
         for (Map.Entry<Integer, Sensor> entry : sensors.entrySet()) {
-            val = entry.getValue().getValue();
+            val = entry.getValue().getCalibValue();
             if (!val.equals("NaN?")) {
                 data += "(\"" + entry.getKey() + "\", \"" + val + "\")";
                 data += ", ";

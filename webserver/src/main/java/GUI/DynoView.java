@@ -1,9 +1,12 @@
-package cockpit.database;
+package GUI;
 
 /**
  * Created by CraigLombardo on 3/30/17.
  */
 
+import cockpit.database.DBHandler;
+import cockpit.database.SCADASystem;
+import cockpit.database.Sensor;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -53,7 +56,7 @@ public class DynoView {
     private TimeSeries dataset;
     private String dataUnits = "Testing";
 
-    private String[] tags = {"MRPMLB", "MRPMHB", "SFHB", "TI", "CVLB", "CVHB", "CT", "MT"};
+    private String[] tags = {"BI", "RMSC", "SF", "TI", "CFP", "CV", "CT", "MT"};
 
     private DBHandler handler;
 
@@ -333,7 +336,7 @@ public class DynoView {
 //                System.out.println(entry.getKey());
                 f = fields.get("" + entry.getKey());
                 if (f != null) {
-                    f.value.setText(entry.getValue().getValue());
+                    f.value.setText(entry.getValue().getCalibValue());
                 }
             }
         }

@@ -12,9 +12,13 @@ public class Sensor {
     private String units;
     private String system;
     private Boolean store;
-    private String value;
 
-    public Sensor(int i, String t, int a, int o, int b, String d, String s, String u, int st) {
+    private Double valSlope;
+    private Double valOffset;
+    private String rawValue;
+    private String calibValue;
+
+    public Sensor(int i, String t, int a, int o, int b, String d, String s, String u, int st, Double valS, Double valO) {
         id = i;
 
         String buff = "" + Integer.toHexString(i);
@@ -30,15 +34,30 @@ public class Sensor {
         units = u;
         store = (st == 1);
 
-        value = "NaN?";
+        valOffset = valO;
+        valSlope = valS;
+
+        rawValue = "NaN?";
+        calibValue = "NaN?";
     }
 
-    public String getValue() {
-        return value;
+    public String getRawValue() {
+        return rawValue;
     }
 
-    public void setValue(String v) {
-        value = v;
+    public void setRawValue(String v) {
+        rawValue = v;
+//        System.out.println((Integer.parseInt(v) * valSlope));
+//        System.out.println(String.format("%.2f", (Integer.parseInt(v) * valSlope + valOffset)));
+        calibValue = String.format("%.2f", (Integer.parseInt(v) * valSlope + valOffset));
+    }
+
+    public String getCalibValue() {
+        return calibValue;
+    }
+
+    public void setCalibValue(String v) {
+        calibValue = v;
     }
 
     public int getID() {
@@ -114,5 +133,21 @@ public class Sensor {
 
     public void setStore(Boolean b) {
         store = b;
+    }
+
+    public Double getValSlope(){
+        return valSlope;
+    }
+
+    public Double getValOffset(){
+        return valOffset;
+    }
+
+    public void setValSlope(Double d){
+        valSlope = d;
+    }
+
+    public void setValOffset(Double d){
+        valOffset = d;
     }
 }

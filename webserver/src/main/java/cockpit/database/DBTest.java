@@ -10,23 +10,26 @@ import java.util.ArrayList;
  */
 import java.util.ArrayList;
 
-public class DBTest{
+public class DBTest {
 
-  public static void main(String[] args){
-    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
-    // SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
-    ArrayList<ArrayList<String>> out = handler.getInfo("256", null, "2017-02-26", "2017-02-28");
-    //    out = handler.getInfo(null, null, null, null);
-       par(out);
-
-          out = handler.getInfo("256", null, null, null);
-          par(out);
-          out = handler.getInfo("256", "TSV", null, null);
-          par(out);
-          out = handler.getInfo("256", "TSV", "2017-03-05 22:46:50", null);
-          par(out);
-          out = handler.getInfo(null, "TSV", "2017-03-08 23:20:00", "2017-03-08 23:20:33");
-          par(out);
+    public static void main(String[] args) {
+        CustomSensor c = new CustomSensor("Test", "MRPMHB", "MRPMLB", 1.0, 0.0, "testing", "Nada", "TSV", 1);
+        c.calculate(2, 2);
+        System.out.println(c.getValue());
+//    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
+//    // SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
+//    ArrayList<ArrayList<String>> out = handler.getInfo("256", null, "2017-02-26", "2017-02-28");
+//    //    out = handler.getInfo(null, null, null, null);
+//       par(out);
+//
+//          out = handler.getInfo("256", null, null, null);
+//          par(out);
+//          out = handler.getInfo("256", "TSV", null, null);
+//          par(out);
+//          out = handler.getInfo("256", "TSV", "2017-03-05 22:46:50", null);
+//          par(out);
+//          out = handler.getInfo(null, "TSV", "2017-03-08 23:20:00", "2017-03-08 23:20:33");
+//          par(out);
 //    scada.addSensor("1");
 //    scada.addSensor("2");
 //    scada.addSensor("3");
@@ -39,7 +42,7 @@ public class DBTest{
 //    scada.addSensor("10");
 
 //    scada.openCAN();
-  }
+    }
 
 
 //  public static void main(String[] args){
@@ -199,15 +202,15 @@ public class DBTest{
 
    }*/
 
-  public static void par(ArrayList<ArrayList<String>> out){
-    if(out!=null) for(ArrayList<String> inner : out){
-      for(String s : inner){
-        System.out.print(s + " - ");
-      }
-      System.out.println();
+    public static void par(ArrayList<ArrayList<String>> out) {
+        if (out != null) for (ArrayList<String> inner : out) {
+            for (String s : inner) {
+                System.out.print(s + " - ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println();
     }
-    System.out.println();
-    System.out.println();
-  }
 
 }

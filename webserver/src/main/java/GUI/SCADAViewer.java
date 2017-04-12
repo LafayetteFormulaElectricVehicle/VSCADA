@@ -1,4 +1,7 @@
-package cockpit.database;
+package GUI;
+
+import cockpit.database.DBHandler;
+import cockpit.database.SCADASystem;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -7,13 +10,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SCADAViewer extends JPanel {
+public class SCADAViewer {
 
     public int currentView = 0;
     private JPanel cards;
     private Container pane;
     private JComboBox<String> comboBox;
     private int count = 0;
+
+    private JLabel cTime;
+    private int seconds = 0;
+    private int minutes = 0;
+    private int hours = 0;
 
     public SCADAViewer() {
         JFrame frame = new JFrame("SCADA Viewer");
@@ -28,6 +36,7 @@ public class SCADAViewer extends JPanel {
 
         frame.pack();
         frame.setVisible(true);
+
     }
 
     public static void main(String[] args) {
@@ -54,14 +63,43 @@ public class SCADAViewer extends JPanel {
         SCADAViewer test = new SCADAViewer();
 
         test.addCard(new MaintenanceView(handler, sys, test, 0).getPane(), "Maintenance View");
-        test.addCard(new QueryView().getPane(), "Query View");
+        test.addCard(new QueryView(handler).getPane(), "Query View");
         test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
         test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
         test.addCard(new GraphView().getPanel(), "Graph View");
+
+//        handler.getLatestData(3);
+//
+//        System.out.println(handler.getInfo("BI", null, "2017-04-09 23:29:58", "2017-04-09 23:29:59"));
+
     }
 
     public void addComponentsToPane() {
+        cTime = new JLabel("Runtime: 0:00:00");
+
+        Timer t = new Timer(1000, null);
+        t.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                String text = "Runtime: ";
+                text += ((hours >= 10) ? hours : "0" + hours) + ":";
+                text += ((minutes >= 10) ? minutes : "0" + minutes) + ":";
+                text += (seconds >= 10) ? seconds : "0" + seconds;
+
+                cTime.setText(text);
+
+                if(++seconds == 60){
+                    seconds = 0;
+                    minutes++;
+                }
+                if(minutes == 60){
+                    minutes = 0;
+                    hours++;
+                }
+            }
+        });
+        t.start();
+
         JPanel comboBoxPane = new JPanel();
 
         comboBox = new JComboBox<String>();
@@ -80,7 +118,6 @@ public class SCADAViewer extends JPanel {
                 }
         );
 
-        comboBoxPane.add(comboBox);
 
         JButton quit = new JButton("Quit");
 
@@ -91,8 +128,11 @@ public class SCADAViewer extends JPanel {
             }
         });
 
+        comboBoxPane.add(cTime);
+        comboBoxPane.add(new JLabel("      "));
+        comboBoxPane.add(comboBox);
         comboBoxPane.add(quit);
-        comboBoxPane.setBorder(new MatteBorder(0,0,1,0,Color.black));
+        comboBoxPane.setBorder(new MatteBorder(0, 0, 1, 0, Color.black));
 
         pane.add(comboBoxPane, BorderLayout.PAGE_START);
         pane.add(cards, BorderLayout.CENTER);

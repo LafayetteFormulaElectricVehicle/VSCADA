@@ -1,8 +1,12 @@
-package cockpit.database;
+package GUI;
 
 /**
  * Created by CraigLombardo on 3/14/17.
  */
+
+import cockpit.database.DBHandler;
+import cockpit.database.Sensor;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +51,10 @@ public class ConfigurationView {
     private JComboBox<String> system;
     private JTextField units;
     private JComboBox<String> store;
+
+    private JTextField valueSlope;
+    private JTextField valueOffset;
+
     private JButton duplicate;
 
     private JButton editButton;
@@ -204,7 +212,7 @@ public class ConfigurationView {
             if (cID < thisID) cID = thisID;
             sensor = new Sensor(thisID, s.get(1), Integer.parseInt(s.get(2)),
                     Integer.parseInt(s.get(3)), Integer.parseInt(s.get(4)), s.get(5), s.get(6),
-                    s.get(7), Integer.parseInt(s.get(8)));
+                    s.get(7), Integer.parseInt(s.get(8)), Double.parseDouble(s.get(9)), Double.parseDouble(s.get(10)));
 
             JButton sensorButton = new JButton(sensor.getTag());
             sensorButton.addActionListener(
@@ -244,6 +252,9 @@ public class ConfigurationView {
         units.setText("");
         store.setSelectedIndex(0);
 
+        valueSlope.setText("");
+        valueOffset.setText("");
+
         duplicate.setEnabled(false);
         editButton.setText("Add Record");
 
@@ -268,6 +279,9 @@ public class ConfigurationView {
         system.setSelectedItem(s.getSystem());
         units.setText(s.getUnits());
         store.setSelectedItem("" + s.getStore());
+
+        valueSlope.setText("" + s.getValSlope());
+        valueOffset.setText("" + s.getValOffset());
 
         duplicate.setEnabled(true);
         editButton.setText("Update Record");
@@ -307,40 +321,11 @@ public class ConfigurationView {
         ((JLabel) store.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         setStoreTypes();
 
-        addNewItemsComp(1, 0, new JLabel(""));
-        addNewItemsComp(1, 1, new JLabel(" "));
+        valueOffset = new JTextField(12);
+        valueOffset.setHorizontalAlignment(JTextField.CENTER);
 
-        addNewItemsComp(0, 2, new JLabel("  Tag  "));
-        addNewItemsComp(0, 3, tag);
-        addNewItemsComp(0, 4, new JLabel(" "));
-
-        addNewItemsComp(1, 2, new JLabel("  Address  "));
-        addNewItemsComp(1, 3, address);
-        addNewItemsComp(1, 4, new JLabel(" "));
-
-        addNewItemsComp(2, 2, new JLabel("  Offset  "));
-        addNewItemsComp(2, 3, offset);
-        addNewItemsComp(2, 4, new JLabel(" "));
-
-        addNewItemsComp(0, 5, new JLabel("  Bytes  "));
-        addNewItemsComp(0, 6, byteLength);
-        addNewItemsComp(0, 7, new JLabel(" "));
-
-        addNewItemsComp(1, 5, new JLabel("  Description  "));
-        addNewItemsComp(1, 6, description);
-        addNewItemsComp(1, 7, new JLabel(" "));
-
-        addNewItemsComp(2, 5, new JLabel("  Units  "));
-        addNewItemsComp(2, 6, units);
-        addNewItemsComp(2, 7, new JLabel(" "));
-
-        addNewItemsComp(0, 8, new JLabel("  System  "));
-        addNewItemsComp(0, 9, system);
-        addNewItemsComp(0, 10, new JLabel(" "));
-
-        addNewItemsComp(1, 8, new JLabel("  Store  "));
-        addNewItemsComp(1, 9, store);
-        addNewItemsComp(1, 10, new JLabel(" "));
+        valueSlope = new JTextField(12);
+        valueSlope.setHorizontalAlignment(JTextField.CENTER);
 
         duplicate = new JButton("Duplicate Record");
         duplicate.addActionListener(
@@ -350,8 +335,6 @@ public class ConfigurationView {
                     }
                 }
         );
-
-        addNewItemsComp(2, 9, duplicate);
 
         editButton = new JButton("");
         editButton.addActionListener(
@@ -380,10 +363,56 @@ public class ConfigurationView {
                 }
         );
 
-        addNewItemsComp(0, 11, new JLabel(" "));
-        addNewItemsComp(0, 12, newButton);
-        addNewItemsComp(1, 12, editButton);
-        addNewItemsComp(2, 12, deleteButton);
+        addNewItemsComp(1, 0, new JLabel(""));
+        addNewItemsComp(1, 1, new JLabel(" "));
+
+        addNewItemsComp(0, 2, new JLabel("  Tag  "));
+        addNewItemsComp(0, 3, tag);
+//        addNewItemsComp(0, 4, new JLabel(" "));
+
+        addNewItemsComp(1, 2, new JLabel("  Address  "));
+        addNewItemsComp(1, 3, address);
+//        addNewItemsComp(1, 4, new JLabel(" "));
+
+        addNewItemsComp(2, 2, new JLabel("  Offset  "));
+        addNewItemsComp(2, 3, offset);
+//        addNewItemsComp(2, 4, new JLabel(" "));
+
+        addNewItemsComp(0, 5, new JLabel("  Bytes  "));
+        addNewItemsComp(0, 6, byteLength);
+//        addNewItemsComp(0, 7, new JLabel(" "));
+
+        addNewItemsComp(1, 5, new JLabel("  Description  "));
+        addNewItemsComp(1, 6, description);
+//        addNewItemsComp(1, 7, new JLabel(" "));
+
+        addNewItemsComp(2, 5, new JLabel("  Units  "));
+        addNewItemsComp(2, 6, units);
+//        addNewItemsComp(2, 7, new JLabel(" "));
+
+        addNewItemsComp(0, 8, new JLabel("  Value Slope  "));
+        addNewItemsComp(0, 9, valueSlope);
+//        addNewItemsComp(0, 10, new JLabel(" "));
+
+        addNewItemsComp(1, 8, new JLabel("  Value Offset  "));
+        addNewItemsComp(1, 9, valueOffset);
+//        addNewItemsComp(1, 10, new JLabel(" "));
+
+        addNewItemsComp(2, 8, new JLabel("  System  "));
+        addNewItemsComp(2, 9, system);
+//        addNewItemsComp(2, 10, new JLabel(" "));
+
+        addNewItemsComp(0, 11, new JLabel("  Store  "));
+        addNewItemsComp(0, 12, store);
+//        addNewItemsComp(0, 13, new JLabel(" "));
+
+        addNewItemsComp(2, 12, duplicate);
+
+        addNewItemsComp(0, 15, new JLabel(" "));
+        addNewItemsComp(0, 16, new JLabel(" "));
+        addNewItemsComp(0, 17, newButton);
+        addNewItemsComp(1, 17, editButton);
+        addNewItemsComp(2, 17, deleteButton);
 
         cleanItemInfo();
     }
@@ -421,8 +450,8 @@ public class ConfigurationView {
             int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to make these changes to the DB?", "Warning", dialogButton);
             if (dialogResult == JOptionPane.OK_OPTION) {
 
-                String[] data = {"", "", "", "", "", "", "", ""};
-                data[0] = tag.getText();
+                String[] data = {"", "", "", "", "", "", "", "", "", ""};
+                data[0] = tag.getText().toUpperCase();
                 data[1] = address.getText();
                 data[2] = offset.getText();
                 data[3] = byteLength.getText();
@@ -430,6 +459,8 @@ public class ConfigurationView {
                 data[5] = (String) system.getSelectedItem();
                 data[6] = units.getText();
                 data[7] = (String) store.getSelectedItem();
+                data[8] = valueSlope.getText();
+                data[9] = valueOffset.getText();
 
                 handler.updateSensor(tag.isEditable(), data);
 
@@ -437,7 +468,8 @@ public class ConfigurationView {
 
                     Sensor newSensor = new Sensor(cID++, data[0], Integer.parseInt(data[1]),
                             Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4],
-                            data[5], data[6], data[7].equals("true") ? 1 : 0);
+                            data[5], data[6], data[7].equals("true") ? 1 : 0,
+                            Double.parseDouble(data[8]), Double.parseDouble(data[9]));
 
                     for (Map.Entry<String, SensorTuple> entry : sensors.entrySet()) {
                         existingItemsPanel.remove(entry.getValue().button);
@@ -466,6 +498,8 @@ public class ConfigurationView {
                         addExistingItemsComp(1, cRow++, s.label);
                     }
 
+                    tag.setText(data[0]);
+
                     panelMain.validate();
                     panelMain.repaint();
 
@@ -483,6 +517,9 @@ public class ConfigurationView {
                     s.setUnits(units.getText());
                     s.setSystem((String) system.getSelectedItem());
                     s.setStore(store.getSelectedItem().equals("true"));
+
+                    s.setValSlope(Double.parseDouble(valueSlope.getText()));
+                    s.setValOffset(Double.parseDouble(valueOffset.getText()));
 
                     tup.label.setText(description.getText());
                 }
@@ -517,8 +554,11 @@ public class ConfigurationView {
         Boolean byteCheck = isNumber(byteLength.getText());
         Boolean descriptionCheck = !description.getText().isEmpty();
         Boolean unitsCheck = !units.getText().isEmpty();
+        Boolean valOffCheck = isNumber(valueOffset.getText());
+        Boolean valSlopeCheck = isNumber(valueSlope.getText());
 
-        return (addressCheck && offsetCheck && byteCheck && descriptionCheck && unitsCheck);
+        return (addressCheck && offsetCheck && byteCheck && descriptionCheck &&
+                unitsCheck && valOffCheck && valSlopeCheck);
     }
 
     private Boolean isNumber(String s) {
@@ -554,7 +594,7 @@ public class ConfigurationView {
         searchBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buttonPushed(searchBox.getText());
+                buttonPushed(searchBox.getText().toUpperCase());
             }
         });
 
@@ -562,7 +602,7 @@ public class ConfigurationView {
         searchButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        buttonPushed(searchBox.getText());
+                        buttonPushed(searchBox.getText().toUpperCase());
                     }
                 }
         );
