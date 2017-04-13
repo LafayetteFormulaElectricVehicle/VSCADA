@@ -34,6 +34,7 @@ public class SCADAViewer {
         pane = frame.getContentPane();
         addComponentsToPane();
 
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.pack();
         frame.setVisible(true);
 
@@ -67,7 +68,7 @@ public class SCADAViewer {
         test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
         test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
-        test.addCard(new GraphView().getPanel(), "Graph View");
+//        test.addCard(new GraphView().getPanel(), "Graph View");
 
 //        handler.getLatestData(3);
 //

@@ -9,6 +9,8 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.awt.*;
 import javax.swing.*;
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -132,24 +134,39 @@ public class QueryView {
                 }
         );
 
-        JButton clean = new JButton("Clean Pane");
+        JButton clean = new JButton("Clean Screen");
         clean.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         //Do stuff
+                        tagSearch.setText("");
+                        sysSearch.setText("");
+                        date1Search.setText("");
+                        date2Search.setText("");
                         results.setText("");
                     }
                 }
         );
 
-        addSearchComp(2, 2, 25, clean);
-        addSearchComp(3, 2, 25, executeQuery);
+        JButton export = new JButton("Export Data");
+        export.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        //Do stuff
+                        exportData();
+                    }
+                }
+        );
+
+        addSearchComp(0, 2, 25, clean);
+        addSearchComp(1, 2, 25, executeQuery);
+        addSearchComp(3, 2, 25, export);
 
         panelMain.add(searchPanel, BorderLayout.PAGE_START);
     }
 
     public void execute() {
-        if(working) return;
+        if (working) return;
         working = true;
         checkDateFormat();
 
@@ -221,6 +238,23 @@ public class QueryView {
 
         if (!errMsg.equals(""))
             JOptionPane.showMessageDialog(panelMain, "Proper Format:\n2017-04-09 23:29:58\n\n" + errMsg);
+    }
+
+    private void exportData() {
+        try {
+            JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")));
+            System.out.println("¯\\_(ツ)_/¯");
+            if (fc.showOpenDialog(panelMain) == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                //This is where a real application would open the file.
+                PrintWriter pr = new PrintWriter(file.getName());
+                pr.print(results.getText());
+                pr.close();
+            }
+
+        } catch (java.io.FileNotFoundException e) {
+            System.out.println("File not found, or something ¯\\_(ツ)_/¯");
+        }
     }
 
 }
