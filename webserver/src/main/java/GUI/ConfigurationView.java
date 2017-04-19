@@ -52,8 +52,7 @@ public class ConfigurationView {
     private JTextField units;
     private JComboBox<String> store;
 
-    private JTextField valueSlope;
-    private JTextField valueOffset;
+    private JTextField correction;
 
     private JButton duplicate;
 
@@ -84,7 +83,7 @@ public class ConfigurationView {
 
     public static void main(String[] args) {
 
-        DBHandler handler = new DBHandler("SCADA.db", "SQLSchema/");
+        DBHandler handler = new DBHandler();
 
         JFrame window = new JFrame("Test");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -212,7 +211,7 @@ public class ConfigurationView {
             if (cID < thisID) cID = thisID;
             sensor = new Sensor(thisID, s.get(1), Integer.parseInt(s.get(2)),
                     Integer.parseInt(s.get(3)), Integer.parseInt(s.get(4)), s.get(5), s.get(6),
-                    s.get(7), Integer.parseInt(s.get(8)), Double.parseDouble(s.get(9)), Double.parseDouble(s.get(10)));
+                    s.get(7), Integer.parseInt(s.get(8)), Double.parseDouble(s.get(9)));
 
             JButton sensorButton = new JButton(sensor.getTag());
             sensorButton.addActionListener(
@@ -252,8 +251,7 @@ public class ConfigurationView {
         units.setText("");
         store.setSelectedIndex(0);
 
-        valueSlope.setText("");
-        valueOffset.setText("");
+        correction.setText("");
 
         duplicate.setEnabled(false);
         editButton.setText("Add Record");
@@ -280,8 +278,7 @@ public class ConfigurationView {
         units.setText(s.getUnits());
         store.setSelectedItem("" + s.getStore());
 
-        valueSlope.setText("" + s.getValSlope());
-        valueOffset.setText("" + s.getValOffset());
+        correction.setText("" + s.getCorrection());
 
         duplicate.setEnabled(true);
         editButton.setText("Update Record");
@@ -321,11 +318,8 @@ public class ConfigurationView {
         ((JLabel) store.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         setStoreTypes();
 
-        valueOffset = new JTextField(12);
-        valueOffset.setHorizontalAlignment(JTextField.CENTER);
-
-        valueSlope = new JTextField(12);
-        valueSlope.setHorizontalAlignment(JTextField.CENTER);
+        correction = new JTextField(12);
+        correction.setHorizontalAlignment(JTextField.CENTER);
 
         duplicate = new JButton("Duplicate Record");
         duplicate.addActionListener(
@@ -390,22 +384,18 @@ public class ConfigurationView {
         addNewItemsComp(2, 6, units);
 //        addNewItemsComp(2, 7, new JLabel(" "));
 
-        addNewItemsComp(0, 8, new JLabel("  Value Slope  "));
-        addNewItemsComp(0, 9, valueSlope);
+        addNewItemsComp(0, 8, new JLabel("  Correction  "));
+        addNewItemsComp(0, 9, correction);
 //        addNewItemsComp(0, 10, new JLabel(" "));
 
-        addNewItemsComp(1, 8, new JLabel("  Value Offset  "));
-        addNewItemsComp(1, 9, valueOffset);
-//        addNewItemsComp(1, 10, new JLabel(" "));
+        addNewItemsComp(1, 8, new JLabel("  Store  "));
+        addNewItemsComp(1, 9, store);
 
         addNewItemsComp(2, 8, new JLabel("  System  "));
         addNewItemsComp(2, 9, system);
-//        addNewItemsComp(2, 10, new JLabel(" "));
 
-        addNewItemsComp(0, 11, new JLabel("  Store  "));
-        addNewItemsComp(0, 12, store);
-//        addNewItemsComp(0, 13, new JLabel(" "));
-
+        addNewItemsComp(0, 10, new JLabel(" "));
+        addNewItemsComp(0, 11, new JLabel(" "));
         addNewItemsComp(2, 12, duplicate);
 
         addNewItemsComp(0, 15, new JLabel(" "));
@@ -450,7 +440,7 @@ public class ConfigurationView {
             int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you would like to make these changes to the DB?", "Warning", dialogButton);
             if (dialogResult == JOptionPane.OK_OPTION) {
 
-                String[] data = {"", "", "", "", "", "", "", "", "", ""};
+                String[] data = {"", "", "", "", "", "", "", "", ""};
                 data[0] = tag.getText().toUpperCase();
                 data[1] = address.getText();
                 data[2] = offset.getText();
@@ -459,8 +449,7 @@ public class ConfigurationView {
                 data[5] = (String) system.getSelectedItem();
                 data[6] = units.getText();
                 data[7] = (String) store.getSelectedItem();
-                data[8] = valueSlope.getText();
-                data[9] = valueOffset.getText();
+                data[8] = correction.getText();
 
                 handler.updateSensor(tag.isEditable(), data);
 
@@ -469,7 +458,7 @@ public class ConfigurationView {
                     Sensor newSensor = new Sensor(cID++, data[0], Integer.parseInt(data[1]),
                             Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4],
                             data[5], data[6], data[7].equals("true") ? 1 : 0,
-                            Double.parseDouble(data[8]), Double.parseDouble(data[9]));
+                            Double.parseDouble(data[8]));
 
                     for (Map.Entry<String, SensorTuple> entry : sensors.entrySet()) {
                         existingItemsPanel.remove(entry.getValue().button);
@@ -518,8 +507,7 @@ public class ConfigurationView {
                     s.setSystem((String) system.getSelectedItem());
                     s.setStore(store.getSelectedItem().equals("true"));
 
-                    s.setValSlope(Double.parseDouble(valueSlope.getText()));
-                    s.setValOffset(Double.parseDouble(valueOffset.getText()));
+                    s.setCorrection(Double.parseDouble(correction.getText()));
 
                     tup.label.setText(description.getText());
                 }
@@ -554,11 +542,10 @@ public class ConfigurationView {
         Boolean byteCheck = isNumber(byteLength.getText());
         Boolean descriptionCheck = !description.getText().isEmpty();
         Boolean unitsCheck = !units.getText().isEmpty();
-        Boolean valOffCheck = isNumber(valueOffset.getText());
-        Boolean valSlopeCheck = isNumber(valueSlope.getText());
+        Boolean correctionCheck = !correction.getText().isEmpty();
 
         return (addressCheck && offsetCheck && byteCheck && descriptionCheck &&
-                unitsCheck && valOffCheck && valSlopeCheck);
+                unitsCheck && correctionCheck);
     }
 
     private Boolean isNumber(String s) {

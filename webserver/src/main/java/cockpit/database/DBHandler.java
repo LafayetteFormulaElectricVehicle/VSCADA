@@ -1,5 +1,6 @@
 package cockpit.database;
 
+import javax.swing.*;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,20 +9,12 @@ import java.util.Scanner;
 public class DBHandler {
 
     private Connection c;
-    private String dbName;
+    private String dbName = "SCADA.db";
 
-    private String schemaPath = "../SQLSchema/";
+    private String schemaPath = "SQLSchema/";
 
     public DBHandler() {
         c = null;
-        dbName = "SCADA.db";
-        connectDB();
-    }
-
-    public DBHandler(String name, String sPath) {
-        c = null;
-        dbName = name;
-        if (sPath != null) schemaPath = sPath;
         connectDB();
     }
 
@@ -48,6 +41,7 @@ public class DBHandler {
 //        }
         readSQLFile(schemaPath + "Data.sql");
         readSQLFile(schemaPath + "ErrorMessages.sql");
+        readSQLFile(schemaPath + "Equations.sql");
     }
 
     public Boolean checkExists(String table) {
@@ -272,17 +266,18 @@ public class DBHandler {
     }
 
     public void updateSensor(Boolean isNew, String[] data) {
+        System.out.println(data.length);
+        for(String s : data) System.out.println("'" + s + "'");
 
-        if (data.length < 10) return;
-
+        if (data.length != 9) return;
         String sql1 = "";
 
         if (isNew) {
             sql1 = "INSERT INTO SensorLabels (tag, address, offset, byteLength, description, " +
-                    "system, units, store, valSlope, valOffset) VALUES " +
+                    "system, units, store, correction) VALUES " +
                     "('" + data[0] + "', '" + data[1] + "', '" + data[2] + "', '" + data[3] + "', '" +
                     data[4] + "', '" + data[5] + "', '" + data[6] + "', '" +
-                    (data[7].equals("true") ? 1 : 0) + "', '" + data[8] + "', '" + data[9] + "');";
+                    (data[7].equals("true") ? 1 : 0) + "', '" + data[8] +  "');";
         } else {
             sql1 = "UPDATE SensorLabels SET " +
                     "tag='" + data[0] + "', " +
@@ -293,12 +288,12 @@ public class DBHandler {
                     "system='" + data[5] + "', " +
                     "units='" + data[6] + "', " +
                     "store='" + (data[7].equals("true") ? 1 : 0) + "', " +
-                    "valSlope='" + data[8] + "', " +
-                    "valOffset='" + data[9] + "' " +
+                    "correction='" + data[8] + "', " +
                     "WHERE tag='" + data[0] + "';";
         }
 
 //        System.out.println(sql1);
+        System.out.println(sql1);
 
         runSQL(sql1);
 
@@ -317,7 +312,8 @@ public class DBHandler {
                 "INNER JOIN Data AS data ON labels.ID=data.sensorID";
 
         String query = "";
-        if (seconds == 1) query = "select " + selects + " from " + tables + " where TimeStamp = (select MAX(TimeStamp) from Data);";
+        if (seconds == 1)
+            query = "select " + selects + " from " + tables + " where TimeStamp = (select MAX(TimeStamp) from Data);";
         else {
             query = "select " + selects + " from " + tables + " where TimeStamp <= (select MAX(TimeStamp) from Data)" +
                     "AND TimeStamp >= datetime((select MAX(TimeStamp) from Data), '-" + seconds + " seconds');";
@@ -370,6 +366,35 @@ public class DBHandler {
 
 //        System.out.println(query + "\n\n");
         return runQuery(query);
+    }
+
+    public ArrayList<ArrayList<String>> getEquations() {
+        String sql = "SELECT destination, equation FROM Equations ORDER BY equationOrder ASC;";
+        return runQuery(sql);
+    }
+
+    public void updateEquations(ArrayList<JTextField> destinations, ArrayList<JTextField> equations) {
+        String sql = "delete from Equations;";
+        runSQL(sql);
+
+        sql = "INSERT INTO Equations (equationOrder, destination, equation) VALUES ";
+
+        int size = destinations.size();
+
+        String dest;
+        String eqs;
+
+        for (int i = 0; i < size; i++) {
+            dest = destinations.get(i).getText();
+            eqs = equations.get(i).getText();
+            if (!dest.equals("") && !eqs.equals("")) {
+                sql += "('" + i + "', '" + dest + "', '" + eqs + "')";
+                if (i < size - 1) sql += ",";
+                else sql += ";";
+            }
+        }
+//        System.out.println(sql);
+        runSQL(sql);
     }
 
 }

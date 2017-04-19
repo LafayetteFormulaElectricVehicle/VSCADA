@@ -8,8 +8,7 @@ CREATE TABLE IF NOT EXISTS SensorLabels (
   system        VARCHAR(50) NOT NULL,
   units         VARCHAR(50) NOT NULL,
   store         INTEGER NOT NULL,
-  valSlope      DOUBLE NOT NULL,
-  valOffset     DOUBLE NOT NULL
+  correction    DOUBLE NOT NULL
   );
 
 PRAGMA foreign_keys = ON;

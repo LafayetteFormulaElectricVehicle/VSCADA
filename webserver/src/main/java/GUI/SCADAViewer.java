@@ -9,6 +9,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 
 public class SCADAViewer {
 
@@ -55,7 +56,7 @@ public class SCADAViewer {
 
         String file = System.getProperty("user.home") + "/Desktop/output.txt";
 //        System.out.println(file);
-        DBHandler handler = new DBHandler("SCADA.db", "SQLSchema/");
+        DBHandler handler = new DBHandler();
         SCADASystem sys = new SCADASystem(handler, file);
 
         Thread thr = new Thread(sys);
@@ -68,7 +69,8 @@ public class SCADAViewer {
         test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
         test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
-//        test.addCard(new GraphView().getPanel(), "Graph View");
+        test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
+        test.addCard(new ChargingView(sys).getPanel(), "Charging View");
 
 //        handler.getLatestData(3);
 //
@@ -89,11 +91,11 @@ public class SCADAViewer {
 
                 cTime.setText(text);
 
-                if(++seconds == 60){
+                if (++seconds == 60) {
                     seconds = 0;
                     minutes++;
                 }
-                if(minutes == 60){
+                if (minutes == 60) {
                     minutes = 0;
                     hours++;
                 }
@@ -129,9 +131,23 @@ public class SCADAViewer {
             }
         });
 
+        Scanner sc;
+        String ip = "IP: ";
+
+
+        try {
+            sc = new Scanner(Runtime.getRuntime().exec("ipconfig getifaddr en0").getInputStream());
+            ip += sc.nextLine();
+        } catch (Exception e) {
+        }
+
+
+        comboBoxPane.add(new JLabel(ip));
+        comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(cTime);
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(comboBox);
+        comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(quit);
         comboBoxPane.setBorder(new MatteBorder(0, 0, 1, 0, Color.black));
 

@@ -71,7 +71,8 @@ public class I2C {
             //       except the 3B, it will return "/dev/ttyAMA0".  For Raspberry Pi
             //       model 3B may return "/dev/ttyS0" or "/dev/ttyAMA0" depending on
             //       environment configuration.
-            config.device(SerialPort.getDefaultPort())
+            config.device("/dev/i2c-1")
+//            config.device(SerialPort.getDefaultPort())
                     .baud(Baud._9600)
                     .dataBits(DataBits._8)
                     .parity(Parity.NONE)

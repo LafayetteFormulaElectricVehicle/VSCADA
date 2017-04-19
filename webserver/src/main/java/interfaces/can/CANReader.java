@@ -35,7 +35,7 @@ public class CANReader implements Runnable {
             String line2;
             while (true) {
                 line2 = in.readLine();
-                if (line2 == null) endReached = true;
+                if (line2 == null || line2.equals("")) endReached = true;
                 else if (endReached) {
                     parseLine(line2);
                 }
@@ -49,15 +49,17 @@ public class CANReader implements Runnable {
 
     public void parseLine(String line) {
         ArrayList<String> out = new ArrayList<>();
+        int id = -33;
         try {
             sc = new Scanner(line);
             sc.next();
-            int id = new BigInteger(sc.next(), 16).intValue();
+            id = new BigInteger(sc.next(), 16).intValue();
             sc.next();
 
             while (sc.hasNext()) out.add(sc.next());
             sys.updateData(id, out);
         } catch (Exception e) {
+            System.out.println(line);
             System.out.println("Bad format");
         }
 

@@ -1,5 +1,6 @@
 package cockpit.database;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 //import VSCADAComp.Parser;
 
@@ -13,11 +14,28 @@ import java.util.ArrayList;
 public class DBTest {
 
     public static void main(String[] args) {
-        CustomSensor c = new CustomSensor("Test", "MRPMHB", "MRPMLB", 1.0, 0.0, "testing", "Nada", "TSV", 1);
-        c.calculate(2, 2);
-        System.out.println(c.getValue());
-//    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
-//    // SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
+//        CustomSensor c = new CustomSensor("Test", "MRPMHB", "MRPMLB", 1.0, 0.0, "testing", "Nada", "TSV", 1);
+//        c.calculate(2, 2);
+//        System.out.println(c.getValue());
+
+//        System.out.println(new BigInteger("0F0", 16).intValue());
+
+        DBHandler handler = new DBHandler();
+        SCADASystem scada = new SCADASystem(handler, "/Users/CraigLombardo/Desktop/output.txt");
+
+        ArrayList<String> packets = new ArrayList<>();
+
+        packets.add("00");
+        packets.add("01");
+        packets.add("02");
+        packets.add("03");
+        packets.add("04");
+        packets.add("05");
+//        packets.add("06");
+//        packets.add("07");
+
+//        scada.updateData(240, packets);
+
 //    ArrayList<ArrayList<String>> out = handler.getInfo("256", null, "2017-02-26", "2017-02-28");
 //    //    out = handler.getInfo(null, null, null, null);
 //       par(out);

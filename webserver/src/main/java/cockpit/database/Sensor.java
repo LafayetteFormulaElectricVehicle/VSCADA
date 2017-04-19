@@ -13,12 +13,11 @@ public class Sensor {
     private String system;
     private Boolean store;
 
-    private Double valSlope;
-    private Double valOffset;
+    private Double correction;
     private String rawValue;
     private String calibValue;
 
-    public Sensor(int i, String t, int a, int o, int b, String d, String s, String u, int st, Double valS, Double valO) {
+    public Sensor(int i, String t, int a, int o, int b, String d, String s, String u, int st, Double c) {
         id = i;
 
         String buff = "" + Integer.toHexString(i);
@@ -34,22 +33,21 @@ public class Sensor {
         units = u;
         store = (st == 1);
 
-        valOffset = valO;
-        valSlope = valS;
+        correction = c;
 
         rawValue = "NaN?";
         calibValue = "NaN?";
     }
 
-    public String getRawValue() {
-        return rawValue;
-    }
+//    public String getRawValue() {
+//        return rawValue;
+//    }
 
     public void setRawValue(String v) {
         rawValue = v;
 //        System.out.println((Integer.parseInt(v) * valSlope));
 //        System.out.println(String.format("%.2f", (Integer.parseInt(v) * valSlope + valOffset)));
-        calibValue = String.format("%.2f", (Integer.parseInt(v) * valSlope + valOffset));
+        calibValue = String.format("%.2f", (Double.parseDouble(v) * correction));
     }
 
     public String getCalibValue() {
@@ -135,19 +133,11 @@ public class Sensor {
         store = b;
     }
 
-    public Double getValSlope(){
-        return valSlope;
+    public void setCorrection(Double c){
+        correction = c;
     }
 
-    public Double getValOffset(){
-        return valOffset;
-    }
-
-    public void setValSlope(Double d){
-        valSlope = d;
-    }
-
-    public void setValOffset(Double d){
-        valOffset = d;
+    public Double getCorrection(){
+        return correction;
     }
 }

@@ -23,7 +23,7 @@ public class SparkServer implements Runnable{
         port(3000);
         t = new Thread(this, "SparkServer");
         gson = new GsonBuilder().setPrettyPrinting().create();
-        handler = new DBHandler("SCADA.db","SQLSCHEME/");
+        handler = new DBHandler();
         t.start();
     }
 
