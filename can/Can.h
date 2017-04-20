@@ -15,6 +15,46 @@ extern "C" {
 JNIEXPORT void JNICALL Java_Can_read
   (JNIEnv *, jobject);
 
+/*
+ * Class:     Can
+ * Method:    open_port
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_Can_open_1port
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Can
+ * Method:    send_port
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_Can_send_1port
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Can
+ * Method:    read_port
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_Can_read_1port
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Can
+ * Method:    close_port
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_Can_close_1port
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Can
+ * Method:    init
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_Can_init
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif
