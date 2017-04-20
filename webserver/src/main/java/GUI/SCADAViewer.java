@@ -89,9 +89,9 @@ public class SCADAViewer {
 
         try {
             sc = new Scanner(Runtime.getRuntime().exec("vcgencmd measure_temp").getInputStream());
-            temperature.setText(sc.nextLine());
+            temperature.setText("pi " + sc.nextLine());
         } catch (Exception e) {
-            temperature.setText("temp=?");
+            temperature.setText("pi temp=?");
         }
     }
 

@@ -35,7 +35,7 @@ public class SCADASystem implements Runnable {
     public static final int MAX_TIME = 3;
     public int seconds = MAX_TIME;
 
-    private boolean storeData;
+    private boolean storeData = true;
 
     public SCADASystem(DBHandler dbhandler, String CANfile) {
         handler = dbhandler;
