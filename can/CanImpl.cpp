@@ -82,8 +82,18 @@ void can_read_port() {
                 recvbytes = read(soc, &frame_rd, sizeof(struct can_frame));
                 if(recvbytes)
                 {
-                    printf("dlc = %d, data = %s\n", frame_rd.can_dlc,frame_rd.data);
-                    
+		char buffer [200];
+		string str = "";
+		for(int i = 0; i < frame_rd.can_dlc; i++) {
+			char* tmp = new char[200];
+			sprintf(tmp,"%s %.2X",str.c_str(),frame_rd.data[i]);
+			str = tmp;
+			delete[] tmp;
+			
+			//sprintf(buffer, "%.2X ", buffer, frame_rd.data[i]);
+		}
+		printf("can0\t%X\t[%d]\t%s\n", frame_rd.can_id, frame_rd.can_dlc, str.c_str());
+                    //printf("ID = %X, Len = %d, Data = %.2X %.2X %.2X %.2X %.2X %.2X\n", frame_rd.can_id,frame_rd.can_dlc, frame_rd.data[0],frame_rd.data[1],frame_rd.data[2],frame_rd.data[3],frame_rd.data[4],frame_rd.data[5]); 
 
                 }
             }

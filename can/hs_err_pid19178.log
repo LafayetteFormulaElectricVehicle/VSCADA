@@ -1,0 +1,111 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x76e69e64, pid=19178, tid=1983312992
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_65-b17) (build 1.8.0_65-b17)
+# Java VM: Java HotSpot(TM) Client VM (25.65-b01 mixed mode linux-arm )
+# Problematic frame:
+# C
+[error occurred during error reporting (printing problematic frame), id 0xb]
+
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread is native thread
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 2 (SEGV_ACCERR), si_addr: 0x76370000
+
+Registers:
+  r0  = 0x7636e9a4
+  r1  = 0x7636ffff
+  r2  = 0x7636ffff
+  r3  = 0x00000030
+  r4  = 0x761d3834
+  r5  = 0x00000020
+  r6  = 0x00000000
+  r7  = 0x00000000
+  r8  = 0x7636eb44
+  r9  = 0x665912f8
+  r10 = 0x76207000
+  fp  = 0x7636eaac
+  r12 = 0x00000000
+  sp  = 0x7636e918
+  lr  = 0x761c31cc
+  pc  = 0x76e69e64
+  cpsr = 0x20000010
+
+Top of Stack: (sp=0x7636e918)
+0x7636e918:   7636ea70 76859098 00000006 00000020
+0x7636e928:   00000000 00000000 00000000 00000000
+0x7636e938:   00000000 00000000 00000000 00000000
+0x7636e948:   00000000 00000000 00000000 00000000
+0x7636e958:   00000000 00000000 00000000 00000000
+0x7636e968:   00000000 00000000 00000000 00000000
+0x7636e978:   00000000 00000000 00000000 00000000
+0x7636e988:   00000000 00000000 00000000 00000000 
+
+Instructions: (pc=0x76e69e64)
+0x76e69e44:   e1a02003 e1a03002 e4d3c001 e35c0000
+0x76e69e54:   1afffffa e2422001 e4d13001 e3530000
+0x76e69e64:   e5e23001 1afffffb e12fff1e e5d02000
+0x76e69e74:   e6ef1071 e2003007 e263300f e1520001 
+
+Register to memory mapping:
+
+  r0  = 0x7636e9a4
+0x7636e9a4 is pointing into the stack for thread: 0x76207000
+
+  r1  = 0x7636ffff
+0x7636ffff is pointing into the stack for thread: 0x76207000
+
+  r2  = 0x7636ffff
+0x7636ffff is pointing into the stack for thread: 0x76207000
+
+  r3  = 0x00000030
+0x00000030 is an unknown value
+
+  r4  = 0x761d3834
+0x761d3834: <offset 0x11834> in /home/pi/jni/can/libcan.so at 0x761c2000
+
+  r5  = 0x00000020
+0x00000020 is an unknown value
+
+  r6  = 0x00000000
+0x00000000 is an unknown value
+
+  r7  = 0x00000000
+0x00000000 is an unknown value
+
+  r8  = 0x7636eb44
+0x7636eb44 is pointing into the stack for thread: 0x76207000
+
+  r9  = 0x665912f8
+{method} {0x665912f8} 'read_port' '()V' in 'Can'
+
+  r10 = 0x76207000
+0x76207000 is a thread
+
+  fp  = 0x7636eaac
+0x7636eaac is pointing into the stack for thread: 0x76207000
+
+  r12 = 0x00000000
+0x00000000 is an unknown value
+
+  sp  = 0x7636e918
+0x7636e918 is pointing into the stack for thread: 0x76207000
+
+  lr  = 0x761c31cc
+0x761c31cc: can_read_port+0x248 in /home/pi/jni/can/libcan.so at 0x761c2000
+
+  pc  = 0x76e69e64
+0x76e69e64: strcat+0x28 in /lib/arm-linux-gnueabihf/libc.so.6 at 0x76df2000
+
+
+
+Stack: 
