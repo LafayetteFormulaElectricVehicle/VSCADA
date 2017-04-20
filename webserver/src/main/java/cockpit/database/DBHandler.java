@@ -34,14 +34,14 @@ public class DBHandler {
         if (!checkExists("SensorLabels")) {
             readSQLFile(schemaPath + "SensorLabels.sql");
             readSQLFile(schemaPath + "SensorSetup.sql");
+            readSQLFile(schemaPath + "CustomSensorSetup.sql");
         }
-//        if (!checkExists("Configurations")) {
-//            readSQLFile(schemaPath + "Configurations.sql");
-//            readSQLFile(schemaPath + "ConfigurationSetup.sql");
-//        }
         readSQLFile(schemaPath + "Data.sql");
         readSQLFile(schemaPath + "ErrorMessages.sql");
-        readSQLFile(schemaPath + "Equations.sql");
+        if (!checkExists("Equations")) {
+            readSQLFile(schemaPath + "Equations.sql");
+            readSQLFile(schemaPath + "EquationSetup.sql");
+        }
     }
 
     public Boolean checkExists(String table) {
@@ -111,7 +111,7 @@ public class DBHandler {
             ResultSet rs = stmt.executeQuery(query);
             return getResultsTable(rs);
         } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
     }
@@ -267,7 +267,7 @@ public class DBHandler {
 
     public void updateSensor(Boolean isNew, String[] data) {
         System.out.println(data.length);
-        for(String s : data) System.out.println("'" + s + "'");
+        for (String s : data) System.out.println("'" + s + "'");
 
         if (data.length != 9) return;
         String sql1 = "";
@@ -277,7 +277,7 @@ public class DBHandler {
                     "system, units, store, correction) VALUES " +
                     "('" + data[0] + "', '" + data[1] + "', '" + data[2] + "', '" + data[3] + "', '" +
                     data[4] + "', '" + data[5] + "', '" + data[6] + "', '" +
-                    (data[7].equals("true") ? 1 : 0) + "', '" + data[8] +  "');";
+                    (data[7].equals("true") ? 1 : 0) + "', '" + data[8] + "');";
         } else {
             sql1 = "UPDATE SensorLabels SET " +
                     "tag='" + data[0] + "', " +

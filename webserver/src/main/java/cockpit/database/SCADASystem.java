@@ -32,6 +32,9 @@ public class SCADASystem implements Runnable {
     private String file;
     private ArrayList<Equation> equations;
 
+    public static final int MAX_TIME = 3;
+    public int seconds = MAX_TIME;
+
     public SCADASystem(DBHandler dbhandler, String CANfile) {
         handler = dbhandler;
         createAllSensors();
@@ -129,7 +132,15 @@ public class SCADASystem implements Runnable {
         Timer t = new Timer(1000, null);
         t.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                writeToDB();
+                if(tmp.newData){
+                    seconds = MAX_TIME;
+                    tmp.newData = false;
+                    writeToDB();
+                }
+                else if(seconds > 0) {
+                    seconds--;
+                    writeToDB();
+                }
             }
         });
         t.start();

@@ -12,12 +12,14 @@ import cockpit.database.SCADASystem;
 public class CANReader implements Runnable {
 
     String file;
-    Boolean endReached;
+    public boolean endReached;
     SCADASystem sys;
 
     ArrayList<String> ids;
     ArrayList<String> values;
     Scanner sc;
+
+    public volatile boolean newData = false;
 
     public CANReader(String fileName, SCADASystem system) {
         file = fileName;
@@ -35,8 +37,11 @@ public class CANReader implements Runnable {
             String line2;
             while (true) {
                 line2 = in.readLine();
-                if (line2 == null || line2.equals("")) endReached = true;
+                if (line2 == null || line2.equals("")) {
+                    endReached = true;
+                }
                 else if (endReached) {
+                    newData = true;
                     parseLine(line2);
                 }
             }

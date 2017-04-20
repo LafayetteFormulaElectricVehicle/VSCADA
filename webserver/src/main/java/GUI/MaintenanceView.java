@@ -17,17 +17,15 @@ import java.util.*;
 
 public class MaintenanceView {
 
+    private static final Boolean singleColumn = false;
     private GridBagLayout innerLayout;
     private GridBagConstraints innerConstraints;
     private JPanel innerPanel;
     private JPanel pane;
     private JScrollPane scrollPanel;
-
     private DBHandler handler;
     private SCADASystem sys;
-
     private HashMap<Integer, JLabel> sensors;
-
     private SCADAViewer viewer;
     private int view;
 
@@ -69,10 +67,25 @@ public class MaintenanceView {
     }
 
     public void createHeader() {
-        addComp(0, 0, new JLabel("  Sensor Tag  "));
-        addComp(1, 0, new JLabel("  Sensor Desc  "));
-        addComp(2, 0, new JLabel("  Sensor Value  "));
-        addComp(3, 0, new JLabel("  Sensor Units  "));
+
+        if (singleColumn) {
+            addComp(0, 0, 30, new JLabel(""));
+            addComp(1, 0, 10, new JLabel("  Sensor Tag  "));
+            addComp(2, 0, 10, new JLabel("  Sensor Desc  "));
+            addComp(3, 0, 10, new JLabel("  Sensor Value  "));
+            addComp(4, 0, 10, new JLabel("  Sensor Units  "));
+            addComp(5, 0, 30, new JLabel(""));
+        } else {
+            addComp(0, 0, 10, new JLabel("  Sensor Tag  "));
+            addComp(1, 0, 10, new JLabel("  Sensor Desc  "));
+            addComp(2, 0, 10, new JLabel("  Sensor Value  "));
+            addComp(3, 0, 10, new JLabel("  Sensor Units  "));
+            addComp(4, 0, 20, new JLabel(" "));
+            addComp(5, 0, 10, new JLabel("  Sensor Tag  "));
+            addComp(6, 0, 10, new JLabel("  Sensor Desc  "));
+            addComp(7, 0, 10, new JLabel("  Sensor Value  "));
+            addComp(8, 0, 10, new JLabel("  Sensor Units  "));
+        }
     }
 
     public void createMapping(ArrayList<ArrayList<String>> info) {
@@ -91,21 +104,31 @@ public class MaintenanceView {
         String hexVal;
         String hexString;
 
+        ArrayList<String> r;
+
         int row = 1;
-        for (ArrayList<String> r : info) {
+        int toggleVal = singleColumn ? 0 : 5;
+        int align = singleColumn ? 1 : 0;
+
+        for (int i = 0; i < info.size(); i++) {
+            r = info.get(i);
             id = r.get(0);
             name = r.get(1);
             units = r.get(2);
             tag = r.get(3);
 
-            addComp(0, row, new JLabel(tag));
-            addComp(1, row, new JLabel(name));
-
             JLabel valueField = new JLabel("");
             sensors.put(Integer.parseInt(id), valueField);
-            addComp(2, row, valueField);
 
-            addComp(3, row++, new JLabel(units));
+            addComp(align, row, 10, new JLabel(tag));
+            addComp(align + 1, row, 10, new JLabel(name));
+            addComp(align + 2, row, 10, valueField);
+            addComp(align + 3, row, 10, new JLabel(units));
+
+            if (!singleColumn && (i+1 == info.size() / 2)) {
+                row = 1;
+                align += toggleVal;
+            } else row++;
         }
 
         HashMap<Integer, Sensor> m = sys.getMap();
@@ -113,9 +136,13 @@ public class MaintenanceView {
         updateNow(m);
     }
 
-    public void addComp(int x, int y, Component comp) {
+    public void addComp(int x, int y, int wx, Component comp) {
         innerConstraints.gridx = x;
         innerConstraints.gridy = y;
+
+        innerConstraints.weightx = wx;
+
+        innerConstraints.gridheight = 1;
 
         innerLayout.setConstraints(comp, innerConstraints);
         innerPanel.add(comp);
