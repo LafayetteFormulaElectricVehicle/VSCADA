@@ -18,10 +18,10 @@ JNIEXPORT void JNICALL Java_Can_read
 /*
  * Class:     Can
  * Method:    open_port
- * Signature: ()V
+ * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT void JNICALL Java_Can_open_1port
-  (JNIEnv *, jobject);
+JNIEXPORT jint JNICALL Java_Can_open_1port
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     Can

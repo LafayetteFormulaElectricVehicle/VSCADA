@@ -4,12 +4,12 @@
 #ifdef __cplusplus
         extern "C" {
 #endif
-        void read();
-        void open_port();
-        void send_port();
-        void read_port();
-        int close_port();
-        int init();
+        void can_read();
+        int can_open_port(const char *port);
+        void can_send_port();
+        void can_read_port();
+        int can_close_port();
+        int can_init();
 
 
 #ifdef __cplusplus
