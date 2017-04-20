@@ -35,6 +35,8 @@ public class SCADASystem implements Runnable {
     public static final int MAX_TIME = 3;
     public int seconds = MAX_TIME;
 
+    private boolean storeData;
+
     public SCADASystem(DBHandler dbhandler, String CANfile) {
         handler = dbhandler;
         createAllSensors();
@@ -100,6 +102,7 @@ public class SCADASystem implements Runnable {
     }
 
     public void writeToDB() {
+        if(!storeData) return;
         String data = "";
         String val = "";
 
@@ -163,4 +166,9 @@ public class SCADASystem implements Runnable {
             if(value != null) sensors.get(destSensor.id).setRawValue("" + value);
         }
     }
+
+    public void toggleDataSave(Boolean bool){
+        storeData = bool;
+    }
+
 }

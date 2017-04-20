@@ -20,11 +20,17 @@ public class SCADAViewer {
     private int count = 0;
 
     private JLabel cTime;
+    private JLabel temperature;
     private int seconds = 0;
     private int minutes = 0;
     private int hours = 0;
 
-    public SCADAViewer() {
+    private SCADASystem system;
+    private boolean savingData = true;
+
+    public SCADAViewer(SCADASystem sys) {
+        system = sys;
+
         JFrame frame = new JFrame("SCADA Viewer");
         frame.setPreferredSize(new Dimension(850, 600));
         frame.setMinimumSize(new Dimension(300, 300));
@@ -62,7 +68,7 @@ public class SCADAViewer {
         Thread thr = new Thread(sys);
         thr.start();
 
-        SCADAViewer test = new SCADAViewer();
+        SCADAViewer test = new SCADAViewer(sys);
 
         test.addCard(new MaintenanceView(handler, sys, test, 0).getPane(), "Maintenance View");
         test.addCard(new QueryView(handler).getPane(), "Query View");
@@ -78,8 +84,22 @@ public class SCADAViewer {
 
     }
 
+    private void getTemperature(){
+        Scanner sc;
+
+        try {
+            sc = new Scanner(Runtime.getRuntime().exec("vcgencmd measure_temp").getInputStream());
+            temperature.setText(sc.nextLine());
+        } catch (Exception e) {
+            temperature.setText("temp=?");
+        }
+    }
+
     public void addComponentsToPane() {
         cTime = new JLabel("Runtime: 0:00:00");
+
+        temperature = new JLabel();
+        getTemperature();
 
         Timer t = new Timer(1000, null);
         t.addActionListener(new ActionListener() {
@@ -92,6 +112,7 @@ public class SCADAViewer {
                 cTime.setText(text);
 
                 if (++seconds == 60) {
+                    getTemperature();
                     seconds = 0;
                     minutes++;
                 }
@@ -136,17 +157,33 @@ public class SCADAViewer {
 
 
         try {
-            sc = new Scanner(Runtime.getRuntime().exec("ipconfig getifaddr en0").getInputStream());
+            sc = new Scanner(Runtime.getRuntime().exec("hostname -I").getInputStream());
             ip += sc.nextLine();
         } catch (Exception e) {
         }
 
 
+        JButton dataAq = new JButton("Saving Data: " + savingData);
+
+        dataAq.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                savingData = !savingData;
+                system.toggleDataSave(savingData);
+                dataAq.setText("Saving Data: " + savingData);
+            }
+        });
+
+
         comboBoxPane.add(new JLabel(ip));
+        comboBoxPane.add(new JLabel("      "));
+        comboBoxPane.add(temperature);
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(cTime);
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(comboBox);
+        comboBoxPane.add(new JLabel("      "));
+        comboBoxPane.add(dataAq);
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(quit);
         comboBoxPane.setBorder(new MatteBorder(0, 0, 1, 0, Color.black));
@@ -161,3 +198,8 @@ public class SCADAViewer {
         comboBox.setMaximumRowCount(++count);
     }
 }
+
+
+
+//vcgencmd measure_temp //get temperature of PI
+

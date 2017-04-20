@@ -70,21 +70,21 @@ public class MaintenanceView {
 
         if (singleColumn) {
             addComp(0, 0, 30, new JLabel(""));
-            addComp(1, 0, 10, new JLabel("  Sensor Tag  "));
-            addComp(2, 0, 10, new JLabel("  Sensor Desc  "));
-            addComp(3, 0, 10, new JLabel("  Sensor Value  "));
-            addComp(4, 0, 10, new JLabel("  Sensor Units  "));
+            addComp(1, 0, 10, new JLabel("<html><b>Sensor Tag</b></html>"));
+            addComp(2, 0, 10, new JLabel("<html><b>Sensor Desc</b></html>"));
+            addComp(3, 0, 10, new JLabel("<html><b>Sensor Value</b></html>"));
+            addComp(4, 0, 10, new JLabel("<html><b>Sensor Units</b></html>"));
             addComp(5, 0, 30, new JLabel(""));
         } else {
-            addComp(0, 0, 10, new JLabel("  Sensor Tag  "));
-            addComp(1, 0, 10, new JLabel("  Sensor Desc  "));
-            addComp(2, 0, 10, new JLabel("  Sensor Value  "));
-            addComp(3, 0, 10, new JLabel("  Sensor Units  "));
+            addComp(0, 0, 10, new JLabel("<html><b>Sensor Tag</b></html>"));
+            addComp(1, 0, 10, new JLabel("<html><b>Sensor Desc</b></html>"));
+            addComp(2, 0, 10, new JLabel("<html><b>Sensor Value</b></html>"));
+            addComp(3, 0, 10, new JLabel("<html><b>Sensor Units</b></html>"));
             addComp(4, 0, 20, new JLabel(" "));
-            addComp(5, 0, 10, new JLabel("  Sensor Tag  "));
-            addComp(6, 0, 10, new JLabel("  Sensor Desc  "));
-            addComp(7, 0, 10, new JLabel("  Sensor Value  "));
-            addComp(8, 0, 10, new JLabel("  Sensor Units  "));
+            addComp(5, 0, 10, new JLabel("<html><b>Sensor Tag</b></html>"));
+            addComp(6, 0, 10, new JLabel("<html><b>Sensor Desc</b></html>"));
+            addComp(7, 0, 10, new JLabel("<html><b>Sensor Value</b></html>"));
+            addComp(8, 0, 10, new JLabel("<html><b>Sensor Units</b></html>"));
         }
     }
 
