@@ -57,36 +57,17 @@ public class DriveView extends ApplicationFrame implements ChangeListener {
      */
     public DriveView(final String title) {
         super(title);
-//        batteryDataset = createBatteryDataset();
+
         speedDataset = new DefaultValueDataset(value);
-//        tempDataset = createTemperatureDataset();
-
         speedChart = createSpeedChart(speedDataset);
-//        batteryChart = createBatteryChart(batteryDataset);
-//        tempChart = createTemperatureChart(tempDataset);
-
-//        batteryPanel = new ChartPanel(batteryChart);
-//        tempPanel = new ChartPanel(tempChart);
         speedPanel = new ChartPanel(speedChart);
-
-        speedPanel.setPreferredSize(new Dimension(300, 380));
-//        batteryPanel.setPreferredSize(new java.awt.Dimension(220, 380));
-//        tempPanel.setPreferredSize(new java.awt.Dimension(220, 380));
-//        batteryPanel1.setMaximumDrawHeight(100);
-
-        //set_battery_0_10();
-
-//        getContentPane().add(batteryPanel, BorderLayout.WEST);
-//        getContentPane().add(tempPanel, BorderLayout.EAST);
-        getContentPane().add(speedPanel, BorderLayout.CENTER);
-
 
         JPanel jpanel = new JPanel(new GridLayout(2, 2));
         jpanel.add(new JLabel("Battery %"));
         jpanel.add(new JLabel("Temp %"));
 
         s1 = new JSlider(0,100);
-        s1.setMajorTickSpacing(20);
+        s1.setMajorTickSpacing(10);
         s1.setPaintTicks(true);
         s1.setPaintLabels(true);
         s1.addChangeListener(this);
@@ -119,6 +100,9 @@ public class DriveView extends ApplicationFrame implements ChangeListener {
 
     public void update(int data) {
         speedDataset.setValue(data);
+//        update_battery(s1.getValue());
+//        update_temperature(s2.getValue());
+//        refresh();
     }
 
     public void stateChanged(ChangeEvent changeEvent) {
@@ -130,6 +114,7 @@ public class DriveView extends ApplicationFrame implements ChangeListener {
     public void refresh() {
         getContentPane().removeAll();
         getContentPane().revalidate();
+        speedPanel.setPreferredSize(new Dimension(300, 380));
         getContentPane().add(batteryPanel, BorderLayout.WEST);
         getContentPane().add(tempPanel, BorderLayout.EAST);
         getContentPane().add(speedPanel, BorderLayout.CENTER);
@@ -492,46 +477,46 @@ public class DriveView extends ApplicationFrame implements ChangeListener {
             result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(160, "Product 1 (Austin)", " ");
         } else if (value < 60) {
-            result.addValue(0, "Product 1 (US)", " ");
-            result.addValue(60, "Product 1 (Europe)", " ");
+            result.addValue(60, "Product 1 (US)", " ");
+            result.addValue(0, "Product 1 (Europe)", " ");
             result.addValue(0, "Product 1 (Asia)", " ");
             result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(140, "Product 1 (Austin)", " ");
         } else if (value < 80) {
-            result.addValue(0, "Product 1 (US)", " ");
-            result.addValue(80, "Product 1 (Europe)", " ");
+            result.addValue(80, "Product 1 (US)", " ");
+            result.addValue(0, "Product 1 (Europe)", " ");
             result.addValue(0, "Product 1 (Asia)", " ");
             result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(120, "Product 1 (Austin)", " ");
         } else if (value < 100) {
-            result.addValue(0, "Product 1 (US)", " ");
+            result.addValue(100, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(100, "Product 1 (Asia)", " ");
+            result.addValue(0, "Product 1 (Asia)", " ");
             result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(100, "Product 1 (Austin)", " ");
         } else if (value < 120) {
-            result.addValue(0, "Product 1 (US)", " ");
+            result.addValue(120, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(120, "Product 1 (Asia)", " ");
+            result.addValue(0, "Product 1 (Asia)", " ");
             result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(80, "Product 1 (Austin)", " ");
         } else if (value < 140) {
-            result.addValue(0, "Product 1 (US)", " ");
+            result.addValue(140, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(140, "Product 1 (Asia)", " ");
+            result.addValue(0, "Product 1 (Asia)", " ");
             result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(60, "Product 1 (Austin)", " ");
         } else if (value < 160) {
             result.addValue(0, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(160, "Product 1 (Middle East)", " ");
+            result.addValue(160, "Product 1 (Asia)", " ");
+            result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(40, "Product 1 (Austin)", " ");
         } else if (value < 180) {
             result.addValue(0, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(180, "Product 1 (Middle East)", " ");
+            result.addValue(180, "Product 1 (Asia)", " ");
+            result.addValue(0, "Product 1 (Middle East)", " ");
             result.addValue(20, "Product 1 (Austin)", " ");
         } else {
             result.addValue(0, "Product 1 (US)", " ");
@@ -546,6 +531,10 @@ public class DriveView extends ApplicationFrame implements ChangeListener {
         tempChart.removeLegend();
         tempPanel = new ChartPanel(tempChart);
         tempPanel.setPreferredSize(new java.awt.Dimension(220, 380));
+    }
+
+    public void update_speed() {
+
     }
 
 
