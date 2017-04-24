@@ -6,7 +6,6 @@ package GUI;
 
 import cockpit.database.DBHandler;
 import cockpit.database.Sensor;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.swing.*;
 import java.awt.*;
@@ -613,7 +612,7 @@ public class ConfigurationView {
         JLabel label;
         Sensor sensor;
 
-        public SensorTuple(JButton btn, JLabel lbl, Sensor s) {
+        SensorTuple(JButton btn, JLabel lbl, Sensor s) {
             button = btn;
             label = lbl;
             sensor = s;

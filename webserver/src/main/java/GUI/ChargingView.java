@@ -29,7 +29,6 @@ public class ChargingView extends JPanel {
     private int viewNumber;
     private SCADAViewer viewer;
 
-
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
             updateDisplay();

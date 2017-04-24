@@ -66,7 +66,6 @@ public class SCADAViewer {
         String ip = "";
 
         String file = System.getProperty("user.home") + "/Desktop/output.txt";
-//        System.out.println(file);
         DBHandler handler = new DBHandler();
         SCADASystem sys = new SCADASystem(handler, file);
 

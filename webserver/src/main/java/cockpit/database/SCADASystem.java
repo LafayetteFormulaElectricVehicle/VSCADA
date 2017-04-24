@@ -97,6 +97,7 @@ public class SCADASystem implements Runnable {
             }
 //            System.out.println(bytes);
             s.setRawValue("" + new BigInteger(bytes, 16).intValue());
+            customMapping.get(s.getTag()).setRawValue("" + new BigInteger(bytes, 16).intValue());
         }
 
     }
@@ -130,7 +131,6 @@ public class SCADASystem implements Runnable {
     public void run() {
         CANReader tmp = new CANReader(file, this);
         Thread thr = new Thread(tmp);
-
 
         Timer t = new Timer(1000, null);
         t.addActionListener(new ActionListener() {
