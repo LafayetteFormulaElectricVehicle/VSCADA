@@ -1,10 +1,12 @@
+#include <jni.h>
+
 #ifndef _CAN_CPP_IMPL_H
 #define _CAN_CPP_IMPL_H
  
 #ifdef __cplusplus
         extern "C" {
 #endif
-        void can_read();
+        jstring can_read(JNIEnv *env);
         int can_open_port(const char *port);
         void can_send_port();
         void can_read_port();

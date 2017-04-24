@@ -14,9 +14,9 @@ using namespace std;
 int soc;
 int read_can_port;
 
-void can_read() {
-    cout << "Hello there\n";
-    return;
+jstring can_read(JNIEnv *env) {
+    std::string message = "HELLOfdfsd";
+    return env->NewStringUTF(message.c_str());
 }
 
 int can_open_port(const char *port) {

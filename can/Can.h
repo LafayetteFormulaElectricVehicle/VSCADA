@@ -10,9 +10,9 @@ extern "C" {
 /*
  * Class:     Can
  * Method:    read
- * Signature: ()V
+ * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT void JNICALL Java_Can_read
+JNIEXPORT jstring JNICALL Java_Can_read
   (JNIEnv *, jobject);
 
 /*
