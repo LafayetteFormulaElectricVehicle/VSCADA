@@ -1,4 +1,4 @@
-/**
+package server; /**
  * Created by 13wil on 3/2/2017.
  */
 
@@ -16,20 +16,23 @@ public class SparkServer implements Runnable{
     Thread t;
     Gson gson;
     DBHandler handler;
+    SCADASystem sys;
 
     private static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SparkServer.class.getName());
 
-    public SparkServer() {
+    public SparkServer(DBHandler DBH, SCADASystem system) {
         port(3000);
-        t = new Thread(this, "SparkServer");
+        t = new Thread(this, "server.SparkServer");
         gson = new GsonBuilder().setPrettyPrinting().create();
-        handler = new DBHandler();
+//        handler = new DBHandler();
+        handler = DBH;
+        sys = system;
         t.start();
     }
 
     public void run() {
         staticFiles.location("/");
-        LOG.info("Server started on port 3000");
+        LOG.info("server.Server started on port 3000");
 
         get("/",(req,res) -> {
             res.redirect("/app/home.html");
@@ -62,6 +65,11 @@ public class SparkServer implements Runnable{
 //            printReq(req);
             return "in name";
         });
+
+        get("/map", (req, res) -> {
+            return gson.toJson(sys.getMap());
+        });
+
 
 //        get("/data", (req, res) -> {
 //            DataPacket packet = new DataPacket();

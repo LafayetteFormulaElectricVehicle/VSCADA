@@ -63,7 +63,7 @@ public class DBTest {
     }
 
 
-//  public static void main(String[] args){
+//  public static void server.main(String[] args){
 //    DBHandler handler = new DBHandler("SCADA.db","SQLSchema/");
 //
 //    SCADASystem s = new SCADASystem(handler);
@@ -123,7 +123,7 @@ public class DBTest {
 
 
 
-  /*public static void main(String[] args){
+  /*public static void server.main(String[] args){
    //    System.out.println("Hello World!");
 
    DBHandler handler = new DBHandler("../SCADA.db","../SQLSchema/");

@@ -1,25 +1,10 @@
 package GUI;
 
 /**
- * Created by CraigLombardo on 4/17/17.
- * <p>
- * Created by CraigLombardo on 3/14/17.
- */
-
-/**
  * Created by CraigLombardo on 3/14/17.
  */
 
 import cockpit.database.SCADASystem;
-import cockpit.database.Sensor;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.time.Millisecond;
-import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,137 +12,169 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-public class ChargingView {
+import cockpit.database.Sensor;
 
-    private JPanel graphsPanel;
-    private String[] selection = {"PCOUL1", "PCOUL2", "PCOUL3", "PCOUL4"};
-    private TimeSeries[] series = {null, null, null, null};
-    private double[] lastValues = {0d, 0d, 0d, 0d};
-    private double lastValue1 = 100.0;
-    private double lastValue2 = 100.0;
-    private double lastValue3 = 100.0;
-    private double lastValue4 = 100.0;
-    private JPanel content;
+public class ChargingView extends JPanel {
 
     private SCADASystem system;
 
+    private String[] couls = {"PCOUL1", "PCOUL2", "PCOUL3", "PCOUL4"};
+    private String[] socs = {"PSOC1", "PSOC2", "PSOC3", "PSOC4"};
+
+    private BatteryCircle[] progressBars;
+
+    private Font myFont = new Font("DialogInput", Font.BOLD, 18);
+    private int percentLabelOffset = getFontMetrics(myFont).stringWidth("100%") / 3;
+
+    private int viewNumber;
+    private SCADAViewer viewer;
+
+
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
-            updateChart();
+            updateDisplay();
         }
     });
 
-    public ChargingView(SCADASystem sys) {
+    public ChargingView(SCADASystem sys, SCADAViewer viewer, int screenWidth, int viewNumber) {
 
         system = sys;
+        this.viewer = viewer;
+        this.viewNumber = viewNumber;
+        progressBars = new BatteryCircle[4];
 
-        content = new JPanel(new BorderLayout());
+        int diameter = screenWidth / 5;
 
-        series[0] = new TimeSeries("Pack 1");
-        series[1] = new TimeSeries("Pack 2");
-        series[2] = new TimeSeries("Pack 3");
-        series[3] = new TimeSeries("Pack 4");
+        for (int i = 0; i < 4; i++) {
+            progressBars[i] = new BatteryCircle(diameter / 5 + (diameter * 6 * i / 5), 20, diameter, myFont, "Pack " + (i + 1));
+        }
 
-        graphsPanel = new JPanel(new GridLayout(2, 2));
-        updateGraphsPane();
         timer.start();
-
     }
 
-    public static void main(String[] args) {
-
+//    public static void main(String[] args) {
+//
 //        JFrame window = new JFrame("Test");
 //        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        window.setSize(800, 400);
+//        window.setSize(1000, 400);
 //        window.setMinimumSize(new Dimension(300, 300));
 //
-//        ChargingView demo = new ChargingView();
-//        window.getContentPane().add(demo.getPanel(), BorderLayout.CENTER);
+//        ChargingView demo = new ChargingView(1000);
+//        window.getContentPane().add(demo, BorderLayout.CENTER);
 //
 //        window.setVisible(true);
+//
+//    }
 
-    }
+    private void updateDisplay() {
+        if (viewNumber == viewer.currentView) {
+            HashMap<String, Sensor> cMap = system.getCustomMapping();
 
-    public JPanel getPanel() {
-        return content;
-    }
+            String coulVal;
+            String socVal;
 
-    private JFreeChart createChart(TimeSeriesCollection dataset, String units) {
-        JFreeChart result = ChartFactory.createTimeSeriesChart(
-                units,
-                "Time",
-                "Couloumbs",
-                dataset,
-                false,
-                true,
-                false
-        );
+            for (int i = 0; i < 4; i++) {
+                coulVal = cMap.get(couls[i]).getCalibValue();
+                socVal = cMap.get(socs[i]).getCalibValue();
 
-        XYPlot plot = result.getXYPlot();
-
-        plot.setBackgroundPaint(Color.WHITE);
-        plot.setDomainGridlinesVisible(true);
-        plot.setDomainGridlinePaint(Color.BLACK);
-        plot.setRangeGridlinesVisible(true);
-        plot.setRangeGridlinePaint(Color.BLACK);
-
-        ValueAxis xaxis = plot.getDomainAxis();
-        xaxis.setAutoRange(true);
-
-        xaxis.setVerticalTickLabels(true);
-
-        ValueAxis yaxis = plot.getRangeAxis();
-        yaxis.setRange(0.0, 100.0);
-        yaxis.setAutoRange(true);
-        return result;
-    }
-
-    public void updateChart() {
-
-        HashMap<String, Sensor> cMap = system.getCustomMapping();
-
-        for (int i = 0; i < 4; i++) {
-            try {
-                lastValues[i] = Double.parseDouble(cMap.get(selection[i]).getCalibValue());
-            } catch (Exception e) {
-                lastValues[i] = 0d;
+                progressBars[i].setCoulombs(coulVal.equals("NaN?") ? 0 : (int) Double.parseDouble(coulVal));
+                progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
             }
-            series[i].add(new Millisecond(), lastValues[i]);
-        }
 
+            for (BatteryCircle circle : progressBars) {
+                if (circle.update) {
+                    repaint();
+                    break;
+                }
+            }
+        }
     }
 
-    public void updateGraphsPane() {
-        content.remove(graphsPanel);
-        graphsPanel = new JPanel(new GridLayout());
+    @Override
+    protected void paintComponent(Graphics g) {
+        for (BatteryCircle circle : progressBars) {
+            g.setColor(new Color(circle.red, circle.green, 0));
+            int angle = -(int) (((float) circle.value / 100) * 360);
 
-        createNewGraphPane();
+            g.fillArc(circle.x, circle.y, circle.diameter, circle.diameter, 90, angle);
 
-        content.add(graphsPanel);
-        content.validate();
-        content.repaint();
+            g.setColor(getBackground());
+
+            g.fillArc(circle.x + circle.diameter / 4, circle.y + circle.diameter / 4,
+                    circle.diameter / 2, circle.diameter / 2, 90, angle - 5);
+
+            g.setColor(Color.BLACK);
+            g.drawString(circle.value + "%", circle.x + circle.diameter / 2 - percentLabelOffset,
+                    circle.y + circle.diameter / 2);
+
+            g.drawString(circle.label, circle.x + circle.diameter / 2 - circle.labelOffset,
+                    circle.y + circle.diameter + 20);
+
+            if (circle.charging) {
+                g.drawString("Charging", circle.x + circle.diameter / 2 - 25,
+                        circle.y + circle.diameter + 40);
+            }
+
+            circle.update = false;
+        }
     }
 
-    public void createNewGraphPane() {
+    class BatteryCircle {
 
-        for (int i = 0; i < 4; i++) {
-            series[i] = new TimeSeries("");
+        public int x;
+        public int y;
+        public int diameter;
+        public int red;
+
+        public String label;
+        public int labelOffset;
+
+        public int green;
+        public int value = 0;
+
+        public int coulombs = 0;
+
+        public boolean update = false;
+        public boolean charging = false;
+
+        private BatteryCircle(int x, int y, int diameter, Font font, String label) {
+            this.x = x;
+            this.y = y;
+            this.diameter = diameter;
+            this.label = label;
+            labelOffset = getFontMetrics(font).stringWidth(label) / 3;
         }
 
-        graphsPanel.setLayout(new GridLayout(2, 2));
-
-
-        for (int i = 0; i < 4; i++) {
-
-            TimeSeriesCollection dataset = new TimeSeriesCollection(series[i]);
-            JFreeChart chart = createChart(dataset, selection[i]);
-
-            chart.setBackgroundPaint(Color.WHITE);
-
-            ChartPanel chartPanel = new ChartPanel(chart);
-            chartPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            graphsPanel.add(chartPanel);
+        private void setCoulombs(int c) {
+            if (c >= coulombs && c != 0) {
+                if (charging) update = true;
+                charging = true;
+            } else {
+                if (!charging) update = true;
+                charging = false;
+            }
+            coulombs = c;
         }
+
+        public void setValue(int val) {
+            if (val != value) {
+                value = val;
+                update = true;
+                checkColors();
+            }
+        }
+
+        private void checkColors() {
+            //0-255
+            //0-50 == red decreases
+            //50-100 == green increases
+            if (value >= 50) green = 255;
+            else green = (int) ((value / 50f) * 255);
+
+            if (value >= 50) red = (int) ((1 - ((value - 50) / 50f)) * 255);
+            else red = 255;
+        }
+
     }
 
 }
