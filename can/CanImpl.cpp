@@ -14,14 +14,9 @@ using namespace std;
 int soc;
 int read_can_port;
 
-jstring can_read() {
-    std::string message = "HELLO";
-    int byteCount = message.length();
-    jbyte* pNativeMessage = reinterpret_cast<const jbyte*>(message.c_str());
-    jbyteArray bytes = env->NewByteArray(byteCount);
-    env->SetByteArrayRegion(bytes, 0, byteCount, pNativeMessage);
-    //cout << "Hello there\n";
-    return;
+jstring can_read(JNIEnv *env) {
+    std::string message = "HELLOfdfsd";
+    return env->NewStringUTF(message.c_str());
 }
 
 int can_open_port(const char *port) {

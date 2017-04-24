@@ -4,7 +4,7 @@
 #include "CanImpl.h"
  
 JNIEXPORT jstring JNICALL Java_Can_read(JNIEnv *env, jobject thisObj) {    
-    return can_read();
+    return can_read(env);
 }
 
 JNIEXPORT int JNICALL Java_Can_open_1port(JNIEnv *env, jobject thisObj, jstring javaString) {

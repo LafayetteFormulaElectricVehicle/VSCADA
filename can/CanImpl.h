@@ -6,7 +6,7 @@
 #ifdef __cplusplus
         extern "C" {
 #endif
-        jstring can_read();
+        jstring can_read(JNIEnv *env);
         int can_open_port(const char *port);
         void can_send_port();
         void can_read_port();
