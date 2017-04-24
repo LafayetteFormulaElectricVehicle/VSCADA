@@ -6,7 +6,6 @@ import cockpit.database.SCADASystem;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.MatteBorder;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +13,10 @@ import java.util.Scanner;
 
 import server.SparkServer;
 
-public class SCADAViewer implements Viewer {
+public class SCADACockpit implements Viewer{
 
-    public int frameSize;
     private int currentView = 0;
+    public int frameSize;
     private JPanel cards;
     private Container pane;
     private JComboBox<String> comboBox;
@@ -30,11 +29,11 @@ public class SCADAViewer implements Viewer {
     private SCADASystem system;
     private boolean savingData = true;
 
-    public SCADAViewer(SCADASystem sys) {
+    public SCADACockpit(SCADASystem sys) {
         system = sys;
 
         JFrame frame = new JFrame("SCADA Viewer");
-        frame.setPreferredSize(new Dimension(850, 600));
+        frame.setPreferredSize(new Dimension(800, 480));
         frame.setMinimumSize(new Dimension(300, 300));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -43,17 +42,21 @@ public class SCADAViewer implements Viewer {
         pane = frame.getContentPane();
         addComponentsToPane();
 
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frameSize = Toolkit.getDefaultToolkit().getScreenSize().width;
         frame.pack();
         frame.setVisible(true);
 
     }
 
+    public int getCurrentView(){
+        return currentView;
+    }
+
     public static void main(String[] args) {
 
         try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -63,8 +66,7 @@ public class SCADAViewer implements Viewer {
             // If Nimbus is not available, you can set the GUI to another look and feel.
         }
 
-        String ip = "127.0.0.1";
-//        String ip = "";
+        String ip = "";
 
         String file = System.getProperty("user.home") + "/Desktop/output.txt";
         DBHandler handler = new DBHandler();
@@ -76,15 +78,16 @@ public class SCADAViewer implements Viewer {
         Thread thr = new Thread(sys);
         thr.start();
 
-        SCADAViewer test = new SCADAViewer(sys);
+        SCADACockpit test = new SCADACockpit(sys);
 
-        test.addCard(new MaintenanceView(handler, sys, test, ip, 0).getPane(), "Maintenance View");
+        test.addCard(new DriveView2(sys, test, 800, 0), "Drive View");
+        test.addCard(new ChargingView(sys, test, 800, 1), "Charging View");
+
+        test.addCard(new MaintenanceView(handler, sys, test, ip, 1).getPane(), "Maintenance View");
+
         test.addCard(new QueryView(handler).getPane(), "Query View");
-        test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
-        test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
         test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
-        test.addCard(new ChargingView(sys, test, test.frameSize, 6), "Charging View");
 
     }
 
@@ -200,10 +203,6 @@ public class SCADAViewer implements Viewer {
         comboBox.addItem(name);
         cards.add(card, name);
         comboBox.setMaximumRowCount(++count);
-    }
-
-    public int getCurrentView() {
-        return currentView;
     }
 }
 

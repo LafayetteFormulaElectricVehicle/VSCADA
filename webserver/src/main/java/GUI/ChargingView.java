@@ -7,6 +7,7 @@ package GUI;
 import cockpit.database.SCADASystem;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +28,7 @@ public class ChargingView extends JPanel {
     private int percentLabelOffset = getFontMetrics(myFont).stringWidth("100%") / 3;
 
     private int viewNumber;
-    private SCADAViewer viewer;
+    private Viewer viewer;
 
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -35,7 +36,7 @@ public class ChargingView extends JPanel {
         }
     });
 
-    public ChargingView(SCADASystem sys, SCADAViewer viewer, int screenWidth, int viewNumber) {
+    public ChargingView(SCADASystem sys, Viewer viewer, int screenWidth, int viewNumber) {
 
         system = sys;
         this.viewer = viewer;
@@ -66,7 +67,7 @@ public class ChargingView extends JPanel {
 //    }
 
     private void updateDisplay() {
-        if (viewNumber == viewer.currentView) {
+        if (viewNumber == viewer.getCurrentView()) {
             HashMap<String, Sensor> cMap = system.getCustomMapping();
 
             String coulVal;
@@ -92,6 +93,9 @@ public class ChargingView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         for (BatteryCircle circle : progressBars) {
+//            g.setColor(Color.black);
+//            g.drawArc(circle.x, circle.y, circle.diameter, circle.diameter, 0, 360);
+
             g.setColor(new Color(circle.red, circle.green, 0));
             int angle = -(int) (((float) circle.value / 100) * 360);
 

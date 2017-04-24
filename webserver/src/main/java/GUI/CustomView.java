@@ -9,6 +9,7 @@ import cockpit.database.SCADASystem;
 import cockpit.database.Sensor;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,14 +42,14 @@ public class CustomView {
     private ArrayList<JCheckBox> items;
     private ArrayList<Sensor> itemSensors;
 
-    private SCADAViewer viewer;
+    private Viewer viewer;
     private int view;
 
     private JPanel panelMain;
     private Boolean createLabels = true;
 
 
-    public CustomView(DBHandler dbHandler, SCADASystem scadaSys, SCADAViewer viewer, int viewNumber) {
+    public CustomView(DBHandler dbHandler, SCADASystem scadaSys, Viewer viewer, int viewNumber) {
         panelMain = new JPanel(new BorderLayout());
         sensors = new HashMap<>();
 
@@ -96,7 +97,7 @@ public class CustomView {
     }
 
     private void updateNow(HashMap<Integer, Sensor> sysMap) {
-        if (view == viewer.currentView) {
+        if (view == viewer.getCurrentView()) {
             for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
 //                System.out.println("sys "+entry.getKey());
                 sensors.get(entry.getKey()).setText(entry.getValue().getCalibValue());
