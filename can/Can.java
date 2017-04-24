@@ -3,7 +3,7 @@ public class Can{
         System.loadLibrary("can");
     }
 
-    private native void read();
+    private native String read();
     private native int open_port(String port);
     private native void send_port();
     private native void read_port();
@@ -12,8 +12,10 @@ public class Can{
 
     public static void main(String[] args) {
         Can can = new Can();
-        can.open_port("can0");
-        can.read_port();
-        can.close_port();
+        String s = can.read();
+        System.out.println(s);
+        //can.open_port("can0");
+        //can.read_port();
+        //can.close_port();
     }
 }

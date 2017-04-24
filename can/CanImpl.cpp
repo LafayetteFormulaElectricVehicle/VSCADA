@@ -14,8 +14,13 @@ using namespace std;
 int soc;
 int read_can_port;
 
-void can_read() {
-    cout << "Hello there\n";
+jstring can_read() {
+    std::string message = "HELLO";
+    int byteCount = message.length();
+    jbyte* pNativeMessage = reinterpret_cast<const jbyte*>(message.c_str());
+    jbyteArray bytes = env->NewByteArray(byteCount);
+    env->SetByteArrayRegion(bytes, 0, byteCount, pNativeMessage);
+    //cout << "Hello there\n";
     return;
 }
 
