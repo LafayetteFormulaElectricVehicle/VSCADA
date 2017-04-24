@@ -393,66 +393,30 @@ public class DriveView extends ApplicationFrame implements ChangeListener {
 
     public void update_battery(int value) {
         DefaultCategoryDataset result = new DefaultCategoryDataset();
-        if(value < 10) {
-            result.addValue(5, "Product 1 (US)", "Battery");
+        if(value < 20) {
+            result.addValue(value, "Product 1 (US)", "Battery");
             result.addValue(0, "Product 1 (Europe)", "Battery");
             result.addValue(0, "Product 1 (Asia)", "Battery");
             result.addValue(0, "Product 1 (Middle East)", "Battery");
-            result.addValue(95, "Product 1 (Austin)", "Battery");
-        } else if (value < 20) {
-            result.addValue(15, "Product 1 (US)", "Battery");
-            result.addValue(0, "Product 1 (Europe)", "Battery");
-            result.addValue(0, "Product 1 (Asia)", "Battery");
-            result.addValue(0, "Product 1 (Middle East)", "Battery");
-            result.addValue(85, "Product 1 (Austin)", "Battery");
-        } else if (value < 30) {
-            result.addValue(0, "Product 1 (US)", "Battery");
-            result.addValue(25, "Product 1 (Europe)", "Battery");
-            result.addValue(0, "Product 1 (Asia)", "Battery");
-            result.addValue(0, "Product 1 (Middle East)", "Battery");
-            result.addValue(75, "Product 1 (Austin)", "Battery");
+            result.addValue(100-value, "Product 1 (Austin)", "Battery");
         } else if (value < 40) {
             result.addValue(0, "Product 1 (US)", "Battery");
-            result.addValue(35, "Product 1 (Europe)", "Battery");
+            result.addValue(value, "Product 1 (Europe)", "Battery");
             result.addValue(0, "Product 1 (Asia)", "Battery");
             result.addValue(0, "Product 1 (Middle East)", "Battery");
-            result.addValue(65, "Product 1 (Austin)", "Battery");
-        } else if (value < 50) {
-            result.addValue(0, "Product 1 (US)", "Battery");
-            result.addValue(0, "Product 1 (Europe)", "Battery");
-            result.addValue(45, "Product 1 (Asia)", "Battery");
-            result.addValue(0, "Product 1 (Middle East)", "Battery");
-            result.addValue(55, "Product 1 (Austin)", "Battery");
-        } else if (value < 60) {
-            result.addValue(0, "Product 1 (US)", "Battery");
-            result.addValue(0, "Product 1 (Europe)", "Battery");
-            result.addValue(55, "Product 1 (Asia)", "Battery");
-            result.addValue(0, "Product 1 (Middle East)", "Battery");
-            result.addValue(45, "Product 1 (Austin)", "Battery");
+            result.addValue(100-value, "Product 1 (Austin)", "Battery");
         } else if (value < 70) {
             result.addValue(0, "Product 1 (US)", "Battery");
             result.addValue(0, "Product 1 (Europe)", "Battery");
-            result.addValue(65, "Product 1 (Asia)", "Battery");
+            result.addValue(value, "Product 1 (Asia)", "Battery");
             result.addValue(0, "Product 1 (Middle East)", "Battery");
-            result.addValue(35, "Product 1 (Austin)", "Battery");
-        } else if (value < 80) {
-            result.addValue(0, "Product 1 (US)", "Battery");
-            result.addValue(0, "Product 1 (Europe)", "Battery");
-            result.addValue(0, "Product 1 (Asia)", "Battery");
-            result.addValue(75, "Product 1 (Middle East)", "Battery");
-            result.addValue(25, "Product 1 (Austin)", "Battery");
-        } else if (value < 90) {
-            result.addValue(0, "Product 1 (US)", "Battery");
-            result.addValue(0, "Product 1 (Europe)", "Battery");
-            result.addValue(0, "Product 1 (Asia)", "Battery");
-            result.addValue(85, "Product 1 (Middle East)", "Battery");
-            result.addValue(15, "Product 1 (Austin)", "Battery");
+            result.addValue(100-value, "Product 1 (Austin)", "Battery");
         } else {
             result.addValue(0, "Product 1 (US)", "Battery");
             result.addValue(0, "Product 1 (Europe)", "Battery");
             result.addValue(0, "Product 1 (Asia)", "Battery");
-            result.addValue(95, "Product 1 (Middle East)", "Battery");
-            result.addValue(5, "Product 1 (Austin)", "Battery");
+            result.addValue(value, "Product 1 (Middle East)", "Battery");
+            result.addValue(100-value, "Product 1 (Austin)", "Battery");
         }
 
         batteryDataset = result;
@@ -464,66 +428,24 @@ public class DriveView extends ApplicationFrame implements ChangeListener {
 
     public void update_temperature(int value) {
         DefaultCategoryDataset result = new DefaultCategoryDataset();
-        if(value < 20) {
-            result.addValue(20, "Product 1 (US)", " ");
+        if(value < 130) {
+            result.addValue(value, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
             result.addValue(0, "Product 1 (Asia)", " ");
             result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(180, "Product 1 (Austin)", " ");
-        } else if (value < 40) {
-            result.addValue(40, "Product 1 (US)", " ");
-            result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(160, "Product 1 (Austin)", " ");
-        } else if (value < 60) {
-            result.addValue(60, "Product 1 (US)", " ");
-            result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(140, "Product 1 (Austin)", " ");
-        } else if (value < 80) {
-            result.addValue(80, "Product 1 (US)", " ");
-            result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(120, "Product 1 (Austin)", " ");
-        } else if (value < 100) {
-            result.addValue(100, "Product 1 (US)", " ");
-            result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(100, "Product 1 (Austin)", " ");
-        } else if (value < 120) {
-            result.addValue(120, "Product 1 (US)", " ");
-            result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(80, "Product 1 (Austin)", " ");
-        } else if (value < 140) {
-            result.addValue(140, "Product 1 (US)", " ");
-            result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(60, "Product 1 (Austin)", " ");
-        } else if (value < 160) {
+            result.addValue(200-value, "Product 1 (Austin)", " ");
+        } else if (value < 170) {
             result.addValue(0, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(160, "Product 1 (Asia)", " ");
+            result.addValue(value, "Product 1 (Asia)", " ");
             result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(40, "Product 1 (Austin)", " ");
-        } else if (value < 180) {
-            result.addValue(0, "Product 1 (US)", " ");
-            result.addValue(0, "Product 1 (Europe)", " ");
-            result.addValue(180, "Product 1 (Asia)", " ");
-            result.addValue(0, "Product 1 (Middle East)", " ");
-            result.addValue(20, "Product 1 (Austin)", " ");
+            result.addValue(200-value, "Product 1 (Austin)", " ");
         } else {
             result.addValue(0, "Product 1 (US)", " ");
             result.addValue(0, "Product 1 (Europe)", " ");
             result.addValue(0, "Product 1 (Asia)", " ");
-            result.addValue(200, "Product 1 (Middle East)", " ");
-            result.addValue(0, "Product 1 (Austin)", " ");
+            result.addValue(value, "Product 1 (Middle East)", " ");
+            result.addValue(200-value, "Product 1 (Austin)", " ");
         }
 
         tempDataset = result;
