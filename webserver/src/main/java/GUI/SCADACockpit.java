@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
+import oracle.jrockit.jfr.JFR;
 import server.SparkServer;
 
 public class SCADACockpit implements Viewer{
@@ -42,7 +43,9 @@ public class SCADACockpit implements Viewer{
         pane = frame.getContentPane();
         addComponentsToPane();
 
-//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
+
         frameSize = Toolkit.getDefaultToolkit().getScreenSize().width;
         frame.pack();
         frame.setVisible(true);
@@ -80,8 +83,8 @@ public class SCADACockpit implements Viewer{
 
         SCADACockpit test = new SCADACockpit(sys);
 
-        test.addCard(new DriveView2(sys, test, 800, 0), "Drive View");
-        test.addCard(new ChargingView(sys, test, 800, 1), "Charging View");
+        test.addCard(new DriveView2(sys, test, test.frameSize, 0), "Drive View");
+        test.addCard(new ChargingView(sys, test, test.frameSize, 1), "Charging View");
 
         test.addCard(new MaintenanceView(handler, sys, test, ip, 1).getPane(), "Maintenance View");
 
