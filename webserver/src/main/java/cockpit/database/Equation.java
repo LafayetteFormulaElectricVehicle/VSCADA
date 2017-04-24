@@ -23,7 +23,7 @@ public class Equation {
     }
 
 
-//    public static void main(String[] args) {
+//    public static void server.main(String[] args) {
 //        HashMap<String, Double> map = new HashMap<>();
 //        map.put("v1", 20.0);
 //        map.put("v2", 25.0);

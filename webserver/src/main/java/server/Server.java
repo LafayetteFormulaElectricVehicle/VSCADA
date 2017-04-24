@@ -1,10 +1,5 @@
-//import org.apache.commons.codec.binary.Base64;
+package server;//import org.apache.commons.codec.binary.Base64;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
@@ -21,7 +16,7 @@ public class Server implements Runnable{
     private static org.slf4j.Logger LOG = LoggerFactory.getLogger(Server.class.getName());
 
     public Server() {
-        Thread t = new Thread(this,"Server");
+        Thread t = new Thread(this,"server.Server");
         t.start();
 
     }

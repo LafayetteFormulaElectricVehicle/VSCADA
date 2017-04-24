@@ -11,20 +11,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
+import server.SparkServer;
+
 public class SCADAViewer {
 
     public int currentView = 0;
+    public int frameSize;
     private JPanel cards;
     private Container pane;
     private JComboBox<String> comboBox;
     private int count = 0;
-
     private JLabel cTime;
     private JLabel temperature;
     private int seconds = 0;
     private int minutes = 0;
     private int hours = 0;
-
     private SCADASystem system;
     private boolean savingData = true;
 
@@ -42,6 +43,7 @@ public class SCADAViewer {
         addComponentsToPane();
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frameSize = Toolkit.getDefaultToolkit().getScreenSize().width;
         frame.pack();
         frame.setVisible(true);
 
@@ -60,31 +62,33 @@ public class SCADAViewer {
             // If Nimbus is not available, you can set the GUI to another look and feel.
         }
 
+//        String ip = "127.0.0.1";
+        String ip = "";
+
         String file = System.getProperty("user.home") + "/Desktop/output.txt";
 //        System.out.println(file);
         DBHandler handler = new DBHandler();
         SCADASystem sys = new SCADASystem(handler, file);
+
+        SparkServer sparkServer;
+        if (ip.equals("")) sparkServer = new SparkServer(handler, sys);
 
         Thread thr = new Thread(sys);
         thr.start();
 
         SCADAViewer test = new SCADAViewer(sys);
 
-        test.addCard(new MaintenanceView(handler, sys, test, 0).getPane(), "Maintenance View");
+        test.addCard(new MaintenanceView(handler, sys, test, ip, 0).getPane(), "Maintenance View");
         test.addCard(new QueryView(handler).getPane(), "Query View");
         test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
         test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
         test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
-        test.addCard(new ChargingView(sys).getPanel(), "Charging View");
-
-//        handler.getLatestData(3);
-//
-//        System.out.println(handler.getInfo("BI", null, "2017-04-09 23:29:58", "2017-04-09 23:29:59"));
+        test.addCard(new ChargingView(sys, test, test.frameSize, 6), "Charging View");
 
     }
 
-    private void getTemperature(){
+    private void getTemperature() {
         Scanner sc;
 
         try {
@@ -198,7 +202,6 @@ public class SCADAViewer {
         comboBox.setMaximumRowCount(++count);
     }
 }
-
 
 
 //vcgencmd measure_temp //get temperature of PI
