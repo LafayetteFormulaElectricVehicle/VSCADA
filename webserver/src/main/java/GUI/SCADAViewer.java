@@ -52,6 +52,14 @@ public class SCADAViewer implements Viewer {
 
     public static void main(String[] args) {
 
+        String ip;
+
+        int dialogButton = JOptionPane.OK_CANCEL_OPTION;
+        ip = JOptionPane.showInputDialog(null, "What is the IP of the server?", "IP Info", dialogButton);
+        if (ip == null || ip.equals("")) {
+            System.exit(0);
+        }
+
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -63,7 +71,7 @@ public class SCADAViewer implements Viewer {
             // If Nimbus is not available, you can set the GUI to another look and feel.
         }
 
-        String ip = "139.147.195.196";
+//        String ip = "139.147.195.196";
 //        String ip = "";
 
 //        String file = System.getProperty("user.home") + "/Desktop/output.txt";
