@@ -63,10 +63,11 @@ public class SCADAViewer implements Viewer {
             // If Nimbus is not available, you can set the GUI to another look and feel.
         }
 
-        String ip = "127.0.0.1";
+        String ip = "139.147.195.196";
 //        String ip = "";
 
-        String file = System.getProperty("user.home") + "/Desktop/output.txt";
+//        String file = System.getProperty("user.home") + "/Desktop/output.txt";
+        String file = "";
         DBHandler handler = new DBHandler();
         SCADASystem sys = new SCADASystem(handler, file);
 
@@ -80,11 +81,11 @@ public class SCADAViewer implements Viewer {
 
         test.addCard(new MaintenanceView(handler, sys, test, ip, 0).getPane(), "Maintenance View");
         test.addCard(new QueryView(handler).getPane(), "Query View");
-        test.addCard(new CustomView(handler, sys, test, 2).getPane(), "Custom View");
+        test.addCard(new CustomView(handler, sys, test, ip, 2).getPane(), "Custom View");
         test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
         test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
-        test.addCard(new ChargingView(sys, test, test.frameSize, 6), "Charging View");
+        test.addCard(new ChargingView(sys, test, test.frameSize, ip, 6), "Charging View");
 
     }
 

@@ -12,8 +12,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import cockpit.database.Sensor;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import server.HTTPRequest;
 
 public class ChargingView extends JPanel {
 
@@ -30,13 +35,19 @@ public class ChargingView extends JPanel {
     private int viewNumber;
     private Viewer viewer;
 
+    private String ip;
+    private boolean server;
+
+    private HTTPRequest request;
+
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
             updateDisplay();
         }
     });
 
-    public ChargingView(SCADASystem sys, Viewer viewer, int screenWidth, int viewNumber) {
+    public ChargingView(SCADASystem sys, Viewer viewer, int screenWidth, String ipAddr, int viewNumber) {
+        request = new HTTPRequest();
 
         system = sys;
         this.viewer = viewer;
@@ -48,6 +59,9 @@ public class ChargingView extends JPanel {
         for (int i = 0; i < 4; i++) {
             progressBars[i] = new BatteryCircle(diameter / 5 + (diameter * 6 * i / 5), 20, diameter, myFont, "Pack " + (i + 1));
         }
+
+        ip = ipAddr;
+        server = !ip.equals("");
 
         timer.start();
     }
@@ -68,17 +82,37 @@ public class ChargingView extends JPanel {
 
     private void updateDisplay() {
         if (viewNumber == viewer.getCurrentView()) {
-            HashMap<String, Sensor> cMap = system.getCustomMapping();
 
             String coulVal;
             String socVal;
 
-            for (int i = 0; i < 4; i++) {
-                coulVal = cMap.get(couls[i]).getCalibValue();
-                socVal = cMap.get(socs[i]).getCalibValue();
+            if (server) {
+                try {
+                    JsonElement j = request.sendGet("http://" + ip + ":3000/cmap");
+                    JsonObject obj = j.getAsJsonObject();
 
-                progressBars[i].setCoulombs(coulVal.equals("NaN?") ? 0 : (int) Double.parseDouble(coulVal));
-                progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
+                    for (int i = 0; i < 4; i++) {
+                        System.out.println("Here");
+                        coulVal = getCalibValue(obj.get(couls[i]).toString());
+                        socVal = getCalibValue(obj.get(socs[i]).toString());
+
+                        progressBars[i].setCoulombs(coulVal.equals("NaN?") ? 0 : (int) Double.parseDouble(coulVal));
+                        progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
+                    }
+
+                } catch (Exception e) {
+//                System.out.println("No Connection");
+                }
+
+            } else {
+                HashMap<String, Sensor> cMap = system.getCustomMapping();
+                for (int i = 0; i < 4; i++) {
+                    coulVal = cMap.get(couls[i]).getCalibValue();
+                    socVal = cMap.get(socs[i]).getCalibValue();
+
+                    progressBars[i].setCoulombs(coulVal.equals("NaN?") ? 0 : (int) Double.parseDouble(coulVal));
+                    progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
+                }
             }
 
             for (BatteryCircle circle : progressBars) {
@@ -120,6 +154,18 @@ public class ChargingView extends JPanel {
 
             circle.update = false;
         }
+    }
+
+    private String getCalibValue(String json) {
+        int end = 0;
+
+        for (int i = json.length() - 1; i >= 0; i--) {
+            if (json.charAt(i) == '"') {
+                if (end == 0) end = i;
+                else return json.substring(i + 1, end);
+            }
+        }
+        return "";
     }
 
     class BatteryCircle {

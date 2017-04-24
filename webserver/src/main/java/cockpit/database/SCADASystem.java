@@ -19,6 +19,7 @@ import java.util.Map;
  * @version 1.0
  * @since 2017-03-01
  */
+
 public class SCADASystem implements Runnable {
     //sensorID, Sensor --- Contains actual data
     private HashMap<Integer, Sensor> sensors;
@@ -98,6 +99,7 @@ public class SCADASystem implements Runnable {
 //            System.out.println(bytes);
             s.setRawValue("" + new BigInteger(bytes, 16).intValue());
             customMapping.get(s.getTag()).setRawValue("" + new BigInteger(bytes, 16).intValue());
+//            System.out.println(s.getTag() + " " + new BigInteger(bytes, 16).intValue());
         }
 
     }
@@ -126,7 +128,7 @@ public class SCADASystem implements Runnable {
         return sensors;
     }
 
-    public HashMap<String, Sensor> getCustomMapping(){ return customMapping;};
+    public HashMap<String, Sensor> getCustomMapping(){ return customMapping;}
 
     public void run() {
         CANReader tmp = new CANReader(file, this);
@@ -163,7 +165,10 @@ public class SCADASystem implements Runnable {
 //            System.out.println(sensors.get(destSensor.id).getDescription());
 //            if(value != null) destSensor.setRawValue("" + e.evaluate(customMapping));
 
-            if(value != null) sensors.get(destSensor.id).setRawValue("" + value);
+            if(value != null){
+                sensors.get(destSensor.id).setRawValue("" + value);
+                customMapping.get(destTag).setRawValue("" + value);
+            }
         }
     }
 

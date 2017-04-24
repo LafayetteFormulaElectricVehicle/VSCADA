@@ -84,7 +84,7 @@ public class SCADACockpit implements Viewer{
         SCADACockpit test = new SCADACockpit(sys);
 
         test.addCard(new DriveView2(sys, test, test.frameSize, 0), "Drive View");
-        test.addCard(new ChargingView(sys, test, test.frameSize, 1), "Charging View");
+        test.addCard(new ChargingView(sys, test, test.frameSize, ip, 1), "Charging View");
 
         test.addCard(new MaintenanceView(handler, sys, test, ip, 1).getPane(), "Maintenance View");
 
