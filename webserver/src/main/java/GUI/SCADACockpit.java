@@ -173,16 +173,16 @@ public class SCADACockpit implements Viewer{
         }
 
 
-        JButton dataAq = new JButton("Saving Data: " + savingData);
-
-        dataAq.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                savingData = !savingData;
-                system.toggleDataSave(savingData);
-                dataAq.setText("Saving Data: " + savingData);
-            }
-        });
+//        JButton dataAq = new JButton("Saving Data: " + savingData);
+//
+//        dataAq.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                savingData = !savingData;
+//                system.toggleDataSave(savingData);
+//                dataAq.setText("Saving Data: " + savingData);
+//            }
+//        });
 
 
         comboBoxPane.add(new JLabel(ip));
@@ -193,8 +193,8 @@ public class SCADACockpit implements Viewer{
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(comboBox);
         comboBoxPane.add(new JLabel("      "));
-        comboBoxPane.add(dataAq);
-        comboBoxPane.add(new JLabel("      "));
+//        comboBoxPane.add(dataAq);
+//        comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(quit);
         comboBoxPane.setBorder(new MatteBorder(0, 0, 1, 0, Color.black));
 
