@@ -59,11 +59,11 @@ public class DriveView2 extends JPanel {
                 segmentWidth, segmentHeight * 3,
                 100, false, true, myFont, "Pack 1");
 
-        c1 = new CustomDial(segmentWidth + panelWidth, (screenHeight-20-(3*segmentWidth))/2,
-                3*segmentWidth, 100, 135, 270, true);
+        c1 = new CustomDial(panelWidth - segmentWidth, (screenHeight - 20 - panelWidth) / 2,
+                panelWidth, 100, 135, 270, true);
 
-        c2 = new CustomDial(2*(segmentWidth + panelWidth), (screenHeight-20-(3*segmentWidth))/2,
-                3*segmentWidth, 100, 135, 270, true);
+        c2 = new CustomDial(2 * panelWidth + segmentWidth, (screenHeight - 20 - panelWidth) / 2,
+                panelWidth, 100, 135, 270, true);
 
         timer.start();
     }
