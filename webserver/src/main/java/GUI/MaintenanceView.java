@@ -22,8 +22,8 @@ import com.google.gson.JsonElement;
 
 public class MaintenanceView {
 
-    private static final Boolean singleColumn = false;
     HTTPRequest request;
+    private boolean singleColumn;
     private GridBagLayout innerLayout;
     private GridBagConstraints innerConstraints;
     private JPanel innerPanel;
@@ -38,9 +38,9 @@ public class MaintenanceView {
     private String ip;
     private boolean server;
 
-    public MaintenanceView(DBHandler dbHandler, SCADASystem scadaSys, Viewer viewer, String ipAddr, int viewNumber) {
+    public MaintenanceView(DBHandler dbHandler, SCADASystem scadaSys, Viewer viewer, String ipAddr, boolean singleColumn, int viewNumber) {
         request = new HTTPRequest();
-
+        this.singleColumn = singleColumn;
         sys = scadaSys;
         handler = dbHandler;
 

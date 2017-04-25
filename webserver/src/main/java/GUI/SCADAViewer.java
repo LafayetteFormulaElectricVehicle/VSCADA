@@ -91,7 +91,7 @@ public class SCADAViewer implements Viewer {
 
         SCADAViewer test = new SCADAViewer(sys);
 
-        test.addCard(new MaintenanceView(handler, sys, test, ip, 0).getPane(), "Maintenance View");
+        test.addCard(new MaintenanceView(handler, sys, test, ip, false, 0).getPane(), "Maintenance View");
         test.addCard(new QueryView(handler).getPane(), "Query View");
         test.addCard(new CustomView(handler, sys, test, ip, 2).getPane(), "Custom View");
         test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
