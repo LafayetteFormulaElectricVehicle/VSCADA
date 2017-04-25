@@ -19,9 +19,11 @@ public class DriveView2 extends JPanel {
 
     private SCADASystem system;
 
+    private String[] currents = {"PA1", "PA2", "PA3", "PA4"};
     private String[] socs = {"PSOC1", "PSOC2", "PSOC3", "PSOC4"};
 
-    private ProgressBar[] progressBars;
+    private ProgressBar[] currentBars;
+    private ProgressBar[] socBars;
 
     private Font myFont = new Font("DialogInput", Font.BOLD, 18);
     private int percentLabelOffset = getFontMetrics(myFont).stringWidth("100%") / 3;
@@ -35,25 +37,36 @@ public class DriveView2 extends JPanel {
         }
     });
 
-    public DriveView2(SCADASystem sys, Viewer viewer, int screenWidth, int viewNumber) {
+    public DriveView2(SCADASystem sys, Viewer viewer, int screenWidth, int screenHeight, int viewNumber) {
 
         system = sys;
         this.viewer = viewer;
         this.viewNumber = viewNumber;
-        progressBars = new ProgressBar[4];
+        currentBars = new ProgressBar[4];
+        socBars = new ProgressBar[4];
 
-        int width = screenWidth / 5;
+        double panelWidth = screenWidth / 3;
+        int segmentWidth = (int) panelWidth / 5;
+        int segmentHeight = (screenHeight - 20) / 9;
+
+        System.out.println(screenHeight);
 
         for (int i = 0; i < 4; i++) {
-            progressBars[i] = new ProgressBar(width / 5 + (width * 6 * i / 5), 20,
-                    width, 300, 100, i == 1, i!=1, myFont, "Pack " + (i + 1));
+            currentBars[i] = new ProgressBar(segmentWidth + (segmentWidth * (i % 2 == 1 ? 2 : 0)),
+                    i < 2 ? segmentHeight : 5 * segmentHeight, segmentWidth, segmentHeight * 3,
+                    100, i == 1, i != 1, myFont, "Pack " + (i + 1));
+        }
+
+        for (int i = 0; i < 4; i++) {
+            socBars[i] = new ProgressBar((int) (panelWidth * 2) + segmentWidth + (segmentWidth * (i % 2 == 1 ? 2 : 0)),
+                    i < 2 ? segmentHeight : 5 * segmentHeight, segmentWidth, segmentHeight * 3,
+                    100, i == 1, i != 1, myFont, "Pack " + (i + 1));
         }
 
         timer.start();
     }
 
     public static void main(String[] args) {
-
 
         String file = System.getProperty("user.home") + "/Desktop/output.txt";
         DBHandler handler = new DBHandler();
@@ -63,7 +76,7 @@ public class DriveView2 extends JPanel {
         thr.start();
 
         SCADAViewer test = new SCADAViewer(sys);
-        test.addCard(new DriveView2(sys, test, test.frameSize, 0), "Drive View");
+        test.addCard(new DriveView2(sys, test, test.frameWidth, test.frameHeight, 0), "Drive View");
 
     }
 
@@ -71,26 +84,24 @@ public class DriveView2 extends JPanel {
         if (viewNumber == viewer.getCurrentView()) {
             HashMap<String, Sensor> cMap = system.getCustomMapping();
 
-            String socVal;
+            String val;
 
             for (int i = 0; i < 4; i++) {
-                socVal = cMap.get(socs[i]).getCalibValue();
-
-                progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
+                val = cMap.get(currents[i]).getCalibValue();
+                currentBars[i].setValue(val.equals("NaN?") ? 0 : (int) Double.parseDouble(val));
             }
 
-            for (ProgressBar bar : progressBars) {
-                if (bar.update) {
-                    repaint();
-                    break;
-                }
+            for (int i = 0; i < 4; i++) {
+                val = cMap.get(socs[i]).getCalibValue();
+                socBars[i].setValue(val.equals("NaN?") ? 0 : (int) Double.parseDouble(val));
             }
+
+            repaint();
         }
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        for (ProgressBar bar : progressBars) {
+    private void drawBars(Graphics g, ProgressBar[] bars) {
+        for (ProgressBar bar : bars) {
 
             g.setColor(Color.black);
             g.drawRect(bar.x, bar.y, bar.width, bar.height);
@@ -101,13 +112,19 @@ public class DriveView2 extends JPanel {
             g.fillRect(bar.x, bar.y + (bar.height - fillHeight), bar.width, fillHeight);
 
             g.setColor(Color.BLACK);
-            if(bar.showPercent) g.drawString(bar.value + "%", bar.x + bar.width / 2 - percentLabelOffset, bar.y - 5);
+            if (bar.showPercent) g.drawString(bar.value + "%", bar.x + bar.width / 2 - percentLabelOffset, bar.y - 5);
 
             g.drawString(bar.label, bar.x + bar.width / 2 - bar.labelOffset,
                     bar.y + bar.height + 20);
 
             bar.update = false;
         }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        drawBars(g, currentBars);
+        drawBars(g, socBars);
     }
 
     class ProgressBar {

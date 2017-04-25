@@ -16,7 +16,9 @@ import server.SparkServer;
 
 public class SCADAViewer implements Viewer {
 
-    public int frameSize;
+    public int frameWidth;
+    public int frameHeight;
+
     private int currentView = 0;
     private JPanel cards;
     private Container pane;
@@ -44,7 +46,9 @@ public class SCADAViewer implements Viewer {
         addComponentsToPane();
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frameSize = Toolkit.getDefaultToolkit().getScreenSize().width;
+        Dimension dims = Toolkit.getDefaultToolkit().getScreenSize();
+        frameWidth = dims.width;
+        frameHeight = dims.height;
         frame.pack();
         frame.setVisible(true);
 
@@ -93,7 +97,7 @@ public class SCADAViewer implements Viewer {
         test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
         test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
-        test.addCard(new ChargingView(sys, test, test.frameSize, ip, 6), "Charging View");
+        test.addCard(new ChargingView(sys, test, test.frameWidth, ip, 6), "Charging View");
 
     }
 

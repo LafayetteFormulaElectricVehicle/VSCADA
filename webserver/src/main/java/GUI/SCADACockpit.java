@@ -17,7 +17,10 @@ import server.SparkServer;
 public class SCADACockpit implements Viewer{
 
     private int currentView = 0;
-    public int frameSize;
+
+    public int frameWidth;
+    public int frameHeight;
+
     private JPanel cards;
     private Container pane;
     private JComboBox<String> comboBox;
@@ -46,7 +49,10 @@ public class SCADACockpit implements Viewer{
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
 
-        frameSize = Toolkit.getDefaultToolkit().getScreenSize().width;
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frameWidth = dim.width;
+        frameHeight = dim.height;
+
         frame.pack();
         frame.setVisible(true);
 
@@ -83,8 +89,8 @@ public class SCADACockpit implements Viewer{
 
         SCADACockpit test = new SCADACockpit(sys);
 
-        test.addCard(new DriveView2(sys, test, test.frameSize, 0), "Drive View");
-        test.addCard(new ChargingView(sys, test, test.frameSize, ip, 1), "Charging View");
+        test.addCard(new DriveView2(sys, test, test.frameWidth, test.frameHeight, 0), "Drive View");
+        test.addCard(new ChargingView(sys, test, test.frameWidth, ip, 1), "Charging View");
 
         test.addCard(new MaintenanceView(handler, sys, test, ip, 1).getPane(), "Maintenance View");
 
