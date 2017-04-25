@@ -32,6 +32,7 @@ public class DriveView2 extends JPanel {
     private Viewer viewer;
 
     private CustomDial c1;
+    private CustomDial c2;
 
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -47,17 +48,22 @@ public class DriveView2 extends JPanel {
 
 
         int panelWidth = screenWidth / 4;
-        int segmentWidth = panelWidth / 3;
+        int segmentWidth = panelWidth / 5;
         int segmentHeight = (screenHeight - 20) / 5;
 
 
-        currentBar = new ProgressBar(segmentWidth, segmentHeight, segmentWidth, segmentHeight * 3,
+        currentBar = new ProgressBar(segmentWidth, segmentHeight - 20, segmentWidth, segmentHeight * 3,
                 100, true, true, myFont, "Pack 1");
 
-        socBar = new ProgressBar(segmentWidth + (panelWidth * 3), segmentHeight, segmentWidth, segmentHeight * 3,
+        socBar = new ProgressBar(3 * (segmentWidth + panelWidth), segmentHeight - 20,
+                segmentWidth, segmentHeight * 3,
                 100, false, true, myFont, "Pack 1");
 
-        c1 = new CustomDial(300, 300, 200, 100, 135, 270, true);
+        c1 = new CustomDial(segmentWidth + panelWidth, (screenHeight-20-(3*segmentWidth))/2,
+                3*segmentWidth, 100, 135, 270, true);
+
+        c2 = new CustomDial(2*(segmentWidth + panelWidth), (screenHeight-20-(3*segmentWidth))/2,
+                3*segmentWidth, 100, 135, 270, true);
 
         timer.start();
     }
@@ -136,14 +142,14 @@ public class DriveView2 extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(2));
 
         drawBar(g, currentBar);
         drawBar(g, socBar);
 
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(3));
-
         drawDial(g, c1);
+        drawDial(g, c2);
     }
 
     class ProgressBar {
