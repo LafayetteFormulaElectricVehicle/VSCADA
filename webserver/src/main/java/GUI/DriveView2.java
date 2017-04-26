@@ -52,17 +52,17 @@ public class DriveView2 extends JPanel {
         int segmentHeight = (screenHeight - 20) / 5;
 
 
-        currentBar = new ProgressBar(segmentWidth, segmentHeight - 20, segmentWidth, segmentHeight * 3,
+        currentBar = new ProgressBar(segmentWidth, segmentHeight - 20, 3 * segmentWidth, segmentHeight * 3,
                 100, true, true, myFont, "Pack 1");
 
-        socBar = new ProgressBar(3 * (segmentWidth + panelWidth), segmentHeight - 20,
-                segmentWidth, segmentHeight * 3,
+        socBar = new ProgressBar(segmentWidth + (3 * panelWidth), segmentHeight - 20,
+                3 * segmentWidth, segmentHeight * 3,
                 100, false, true, myFont, "Pack 1");
 
-        c1 = new CustomDial(panelWidth - segmentWidth, (screenHeight - 20 - panelWidth) / 2,
+        c1 = new CustomDial(panelWidth - segmentWidth/2, (screenHeight - panelWidth),
                 panelWidth, 100, 135, 270, true);
 
-        c2 = new CustomDial(2 * panelWidth + segmentWidth, (screenHeight - 20 - panelWidth) / 2,
+        c2 = new CustomDial(2 * panelWidth + segmentWidth/2, (screenHeight - panelWidth),
                 panelWidth, 100, 135, 270, true);
 
         timer.start();
