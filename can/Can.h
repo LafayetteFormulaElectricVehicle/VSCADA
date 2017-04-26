@@ -34,9 +34,9 @@ JNIEXPORT void JNICALL Java_Can_send_1port
 /*
  * Class:     Can
  * Method:    read_port
- * Signature: ()V
+ * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT void JNICALL Java_Can_read_1port
+JNIEXPORT jstring JNICALL Java_Can_read_1port
   (JNIEnv *, jobject);
 
 /*

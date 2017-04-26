@@ -9,7 +9,7 @@
         jstring can_read(JNIEnv *env);
         int can_open_port(const char *port);
         void can_send_port();
-        void can_read_port();
+        jstring can_read_port(JNIEnv *env);
         int can_close_port();
         int can_init();
 

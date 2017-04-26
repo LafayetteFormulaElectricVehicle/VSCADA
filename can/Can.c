@@ -19,9 +19,9 @@ JNIEXPORT void JNICALL Java_Can_send_1port(JNIEnv *env, jobject thisObj) {
     return;
 }
 
-JNIEXPORT void JNICALL Java_Can_read_1port(JNIEnv *env, jobject thisObj) {
-    can_read_port();
-    return;
+JNIEXPORT jstring JNICALL Java_Can_read_1port(JNIEnv *env, jobject thisObj) {
+    
+    return can_read_port(env);;
 }
 
 JNIEXPORT jint JNICALL Java_Can_close_1port(JNIEnv *env, jobject thisObj) {
