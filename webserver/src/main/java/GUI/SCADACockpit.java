@@ -6,20 +6,21 @@ import cockpit.database.SCADASystem;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.MatteBorder;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
+import oracle.jrockit.jfr.JFR;
 import server.SparkServer;
 
-public class SCADAViewer implements Viewer {
+public class SCADACockpit implements Viewer{
+
+    private int currentView = 0;
 
     public int frameWidth;
     public int frameHeight;
 
-    private int currentView = 0;
     private JPanel cards;
     private Container pane;
     private JComboBox<String> comboBox;
@@ -32,11 +33,11 @@ public class SCADAViewer implements Viewer {
     private SCADASystem system;
     private boolean savingData = true;
 
-    public SCADAViewer(SCADASystem sys) {
+    public SCADACockpit(SCADASystem sys) {
         system = sys;
 
         JFrame frame = new JFrame("SCADA Viewer");
-        frame.setPreferredSize(new Dimension(850, 600));
+        frame.setPreferredSize(new Dimension(800, 480));
         frame.setMinimumSize(new Dimension(300, 300));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -46,26 +47,25 @@ public class SCADAViewer implements Viewer {
         addComponentsToPane();
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        Dimension dims = Toolkit.getDefaultToolkit().getScreenSize();
-        frameWidth = dims.width;
-        frameHeight = dims.height;
+        frame.setUndecorated(true);
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frameWidth = dim.width;
+        frameHeight = dim.height;
+
         frame.pack();
         frame.setVisible(true);
 
     }
 
+    public int getCurrentView(){
+        return currentView;
+    }
+
     public static void main(String[] args) {
 
-        String ip;
-
-        int dialogButton = JOptionPane.OK_CANCEL_OPTION;
-        ip = JOptionPane.showInputDialog(null, "What is the IP of the server?", "IP Info", dialogButton);
-        if (ip == null || ip.equals("")) {
-            System.exit(0);
-        }
-
         try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -75,11 +75,9 @@ public class SCADAViewer implements Viewer {
             // If Nimbus is not available, you can set the GUI to another look and feel.
         }
 
-//        String ip = "139.147.195.196";
-//        String ip = "";
+        String ip = "";
 
-//        String file = System.getProperty("user.home") + "/Desktop/output.txt";
-        String file = "";
+        String file = System.getProperty("user.home") + "/Desktop/output.txt";
         DBHandler handler = new DBHandler();
         SCADASystem sys = new SCADASystem(handler, file);
 
@@ -89,15 +87,16 @@ public class SCADAViewer implements Viewer {
         Thread thr = new Thread(sys);
         thr.start();
 
-        SCADAViewer test = new SCADAViewer(sys);
+        SCADACockpit test = new SCADACockpit(sys);
 
-        test.addCard(new MaintenanceView(handler, sys, test, ip, false, 0).getPane(), "Maintenance View");
+        test.addCard(new DriveView2(sys, test, test.frameWidth, test.frameHeight, 0), "Drive View");
+        test.addCard(new ChargingView(sys, test, test.frameWidth, ip, 1), "Charging View");
+
+        test.addCard(new MaintenanceView(handler, sys, test, ip, true, 2).getPane(), "Maintenance View");
+
         test.addCard(new QueryView(handler).getPane(), "Query View");
-        test.addCard(new CustomView(handler, sys, test, ip, 2).getPane(), "Custom View");
-        test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
         test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
         test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
-        test.addCard(new ChargingView(sys, test, test.frameWidth, ip, 6), "Charging View");
 
     }
 
@@ -180,16 +179,16 @@ public class SCADAViewer implements Viewer {
         }
 
 
-        JButton dataAq = new JButton("Saving Data: " + savingData);
-
-        dataAq.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                savingData = !savingData;
-                system.toggleDataSave(savingData);
-                dataAq.setText("Saving Data: " + savingData);
-            }
-        });
+//        JButton dataAq = new JButton("Saving Data: " + savingData);
+//
+//        dataAq.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                savingData = !savingData;
+//                system.toggleDataSave(savingData);
+//                dataAq.setText("Saving Data: " + savingData);
+//            }
+//        });
 
 
         comboBoxPane.add(new JLabel(ip));
@@ -200,8 +199,8 @@ public class SCADAViewer implements Viewer {
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(comboBox);
         comboBoxPane.add(new JLabel("      "));
-        comboBoxPane.add(dataAq);
-        comboBoxPane.add(new JLabel("      "));
+//        comboBoxPane.add(dataAq);
+//        comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(quit);
         comboBoxPane.setBorder(new MatteBorder(0, 0, 1, 0, Color.black));
 
@@ -213,10 +212,6 @@ public class SCADAViewer implements Viewer {
         comboBox.addItem(name);
         cards.add(card, name);
         comboBox.setMaximumRowCount(++count);
-    }
-
-    public int getCurrentView() {
-        return currentView;
     }
 }
 

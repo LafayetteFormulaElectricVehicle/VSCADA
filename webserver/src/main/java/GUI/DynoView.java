@@ -60,10 +60,10 @@ public class DynoView {
 
     private DBHandler handler;
 
-    private SCADAViewer viewer;
+    private Viewer viewer;
     private int view;
 
-    public DynoView(DBHandler DBH, SCADASystem scadaSys, SCADAViewer sViewer, int viewNumber) {
+    public DynoView(DBHandler DBH, SCADASystem scadaSys, Viewer sViewer, int viewNumber) {
         handler = DBH;
         viewer = sViewer;
         view = viewNumber;
@@ -331,7 +331,7 @@ public class DynoView {
 
     private void updateNow(HashMap<Integer, Sensor> sysMap) {
         Field f;
-        if (view == viewer.currentView) {
+        if (view == viewer.getCurrentView()) {
             for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
 //                System.out.println(entry.getKey());
                 f = fields.get("" + entry.getKey());

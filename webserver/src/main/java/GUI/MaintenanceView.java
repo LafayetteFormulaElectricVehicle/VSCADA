@@ -22,8 +22,8 @@ import com.google.gson.JsonElement;
 
 public class MaintenanceView {
 
-    private static final Boolean singleColumn = false;
     HTTPRequest request;
+    private boolean singleColumn;
     private GridBagLayout innerLayout;
     private GridBagConstraints innerConstraints;
     private JPanel innerPanel;
@@ -32,15 +32,15 @@ public class MaintenanceView {
     private DBHandler handler;
     private SCADASystem sys;
     private HashMap<Integer, JLabel> sensors;
-    private SCADAViewer viewer;
+    private Viewer viewer;
     private int view;
 
     private String ip;
     private boolean server;
 
-    public MaintenanceView(DBHandler dbHandler, SCADASystem scadaSys, SCADAViewer viewer, String ipAddr, int viewNumber) {
+    public MaintenanceView(DBHandler dbHandler, SCADASystem scadaSys, Viewer viewer, String ipAddr, boolean singleColumn, int viewNumber) {
         request = new HTTPRequest();
-
+        this.singleColumn = singleColumn;
         sys = scadaSys;
         handler = dbHandler;
 
@@ -73,7 +73,7 @@ public class MaintenanceView {
     }
 
     private void updateNow(HashMap<Integer, Sensor> sysMap) {
-        if (view == viewer.currentView) {
+        if (view == viewer.getCurrentView()) {
             if (server) {
                 try {
                     JsonElement j = request.sendGet("http://" + ip + ":3000/map");

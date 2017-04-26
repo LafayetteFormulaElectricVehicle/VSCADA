@@ -7,8 +7,13 @@ package GUI;
 import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 import cockpit.database.Sensor;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.json.HTTP;
+import server.HTTPRequest;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,14 +46,17 @@ public class CustomView {
     private ArrayList<JCheckBox> items;
     private ArrayList<Sensor> itemSensors;
 
-    private SCADAViewer viewer;
+    private Viewer viewer;
     private int view;
 
     private JPanel panelMain;
     private Boolean createLabels = true;
 
+    private boolean server;
+    private String ip;
+    private HTTPRequest request;
 
-    public CustomView(DBHandler dbHandler, SCADASystem scadaSys, SCADAViewer viewer, int viewNumber) {
+    public CustomView(DBHandler dbHandler, SCADASystem scadaSys, Viewer viewer, String ipAddr, int viewNumber) {
         panelMain = new JPanel(new BorderLayout());
         sensors = new HashMap<>();
 
@@ -56,6 +64,10 @@ public class CustomView {
         handler = dbHandler;
         this.viewer = viewer;
         view = viewNumber;
+
+        request = new HTTPRequest();
+        ip = ipAddr;
+        server = !ip.equals("");
 
         items = new ArrayList<JCheckBox>();
         itemSensors = new ArrayList<Sensor>();
@@ -96,10 +108,31 @@ public class CustomView {
     }
 
     private void updateNow(HashMap<Integer, Sensor> sysMap) {
-        if (view == viewer.currentView) {
-            for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
-//                System.out.println("sys "+entry.getKey());
-                sensors.get(entry.getKey()).setText(entry.getValue().getCalibValue());
+        if (view == viewer.getCurrentView()) {
+//            for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
+////                System.out.println("sys "+entry.getKey());
+//                sensors.get(entry.getKey()).setText(entry.getValue().getCalibValue());
+//            }
+
+            if (server) {
+                try {
+                    JsonElement j = request.sendGet("http://" + ip + ":3000/map");
+
+                    JsonObject obj = j.getAsJsonObject();
+                    for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
+
+                        sensors.get(Integer.parseInt(entry.getKey())).setText(getCalibValue(entry.getValue().toString()));
+                    }
+
+                } catch (Exception e) {
+//                System.out.println("No Connection");
+                }
+
+            } else {
+                for (Map.Entry<Integer, Sensor> entry : sysMap.entrySet()) {
+                    sensors.get(entry.getKey()).setText(entry.getValue().getCalibValue());
+                }
+
             }
         }
     }
@@ -260,6 +293,18 @@ public class CustomView {
 
         layout.setConstraints(comp, constraints);
         panel.add(comp);
+    }
+
+    private String getCalibValue(String json) {
+        int end = 0;
+
+        for (int i = json.length() - 1; i >= 0; i--) {
+            if (json.charAt(i) == '"') {
+                if (end == 0) end = i;
+                else return json.substring(i + 1, end);
+            }
+        }
+        return "";
     }
 
 }

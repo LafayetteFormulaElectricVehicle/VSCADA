@@ -70,6 +70,9 @@ public class SparkServer implements Runnable{
             return gson.toJson(sys.getMap());
         });
 
+        get("/cmap", (req, res) -> {
+            return gson.toJson(sys.getCustomMapping());
+        });
 
 //        get("/data", (req, res) -> {
 //            DataPacket packet = new DataPacket();

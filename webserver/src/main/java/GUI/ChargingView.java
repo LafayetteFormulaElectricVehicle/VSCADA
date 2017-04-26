@@ -7,12 +7,18 @@ package GUI;
 import cockpit.database.SCADASystem;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import cockpit.database.Sensor;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import server.HTTPRequest;
 
 public class ChargingView extends JPanel {
 
@@ -27,7 +33,12 @@ public class ChargingView extends JPanel {
     private int percentLabelOffset = getFontMetrics(myFont).stringWidth("100%") / 3;
 
     private int viewNumber;
-    private SCADAViewer viewer;
+    private Viewer viewer;
+
+    private String ip;
+    private boolean server;
+
+    private HTTPRequest request;
 
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -35,7 +46,8 @@ public class ChargingView extends JPanel {
         }
     });
 
-    public ChargingView(SCADASystem sys, SCADAViewer viewer, int screenWidth, int viewNumber) {
+    public ChargingView(SCADASystem sys, Viewer viewer, int screenWidth, String ipAddr, int viewNumber) {
+        request = new HTTPRequest();
 
         system = sys;
         this.viewer = viewer;
@@ -47,6 +59,9 @@ public class ChargingView extends JPanel {
         for (int i = 0; i < 4; i++) {
             progressBars[i] = new BatteryCircle(diameter / 5 + (diameter * 6 * i / 5), 20, diameter, myFont, "Pack " + (i + 1));
         }
+
+        ip = ipAddr;
+        server = !ip.equals("");
 
         timer.start();
     }
@@ -66,18 +81,38 @@ public class ChargingView extends JPanel {
 //    }
 
     private void updateDisplay() {
-        if (viewNumber == viewer.currentView) {
-            HashMap<String, Sensor> cMap = system.getCustomMapping();
+        if (viewNumber == viewer.getCurrentView()) {
 
             String coulVal;
             String socVal;
 
-            for (int i = 0; i < 4; i++) {
-                coulVal = cMap.get(couls[i]).getCalibValue();
-                socVal = cMap.get(socs[i]).getCalibValue();
+            if (server) {
+                try {
+                    JsonElement j = request.sendGet("http://" + ip + ":3000/cmap");
+                    JsonObject obj = j.getAsJsonObject();
 
-                progressBars[i].setCoulombs(coulVal.equals("NaN?") ? 0 : (int) Double.parseDouble(coulVal));
-                progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
+                    for (int i = 0; i < 4; i++) {
+                        System.out.println("Here");
+                        coulVal = getCalibValue(obj.get(couls[i]).toString());
+                        socVal = getCalibValue(obj.get(socs[i]).toString());
+
+                        progressBars[i].setCoulombs(coulVal.equals("NaN?") ? 0 : (int) Double.parseDouble(coulVal));
+                        progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
+                    }
+
+                } catch (Exception e) {
+//                System.out.println("No Connection");
+                }
+
+            } else {
+                HashMap<String, Sensor> cMap = system.getCustomMapping();
+                for (int i = 0; i < 4; i++) {
+                    coulVal = cMap.get(couls[i]).getCalibValue();
+                    socVal = cMap.get(socs[i]).getCalibValue();
+
+                    progressBars[i].setCoulombs(coulVal.equals("NaN?") ? 0 : (int) Double.parseDouble(coulVal));
+                    progressBars[i].setValue(socVal.equals("NaN?") ? 0 : (int) Double.parseDouble(socVal));
+                }
             }
 
             for (BatteryCircle circle : progressBars) {
@@ -92,6 +127,9 @@ public class ChargingView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         for (BatteryCircle circle : progressBars) {
+//            g.setColor(Color.black);
+//            g.drawArc(circle.x, circle.y, circle.diameter, circle.diameter, 0, 360);
+
             g.setColor(new Color(circle.red, circle.green, 0));
             int angle = -(int) (((float) circle.value / 100) * 360);
 
@@ -116,6 +154,18 @@ public class ChargingView extends JPanel {
 
             circle.update = false;
         }
+    }
+
+    private String getCalibValue(String json) {
+        int end = 0;
+
+        for (int i = json.length() - 1; i >= 0; i--) {
+            if (json.charAt(i) == '"') {
+                if (end == 0) end = i;
+                else return json.substring(i + 1, end);
+            }
+        }
+        return "";
     }
 
     class BatteryCircle {
