@@ -25,7 +25,7 @@ public class DriveView2 extends JPanel {
     private ProgressBar currentBar;
     private ProgressBar socBar;
 
-    private Font myFont = new Font("DialogInput", Font.BOLD, 18);
+    private Font myFont = new Font("DialogInput", Font.BOLD, 24);
     private int percentLabelOffset = getFontMetrics(myFont).stringWidth("100%") / 3;
 
     private int viewNumber;
@@ -33,6 +33,7 @@ public class DriveView2 extends JPanel {
 
     private CustomDial c1;
     private CustomDial c2;
+    private CustomDial c3;
 
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -59,11 +60,14 @@ public class DriveView2 extends JPanel {
                 3 * segmentWidth, segmentHeight * 3,
                 100, false, true, myFont, "Pack 1");
 
-        c1 = new CustomDial(panelWidth - segmentWidth/2, (screenHeight - panelWidth),
+        c1 = new CustomDial(panelWidth - segmentWidth / 2, (screenHeight - (5 * panelWidth / 3)),
                 panelWidth, 100, 135, 270, true);
 
-        c2 = new CustomDial(2 * panelWidth + segmentWidth/2, (screenHeight - panelWidth),
+        c2 = new CustomDial(2 * panelWidth + segmentWidth / 2, (screenHeight - (5 * panelWidth / 3)),
                 panelWidth, 100, 135, 270, true);
+
+        c3 = new CustomDial(2 * panelWidth - (5 * segmentWidth / 3), segmentHeight / 2,
+                2 * panelWidth / 3, 100, 135, 270, true);
 
         timer.start();
     }
@@ -112,7 +116,7 @@ public class DriveView2 extends JPanel {
     }
 
     private void drawBar(Graphics g, ProgressBar bar) {
-
+        g.setFont(myFont);
         g.setColor(Color.black);
         g.drawRect(bar.x, bar.y, bar.width, bar.height);
 
@@ -125,7 +129,7 @@ public class DriveView2 extends JPanel {
         if (bar.showPercent) g.drawString(bar.value + "%", bar.x + bar.width / 2 - percentLabelOffset, bar.y - 5);
 
         g.drawString(bar.label, bar.x + bar.width / 2 - bar.labelOffset,
-                bar.y + bar.height + 20);
+                bar.y + bar.height + 25);
 
         bar.update = false;
     }
@@ -137,7 +141,7 @@ public class DriveView2 extends JPanel {
 
         g.drawLine(dial.innerX, dial.innerY, dial.outerX, dial.outerY);
 
-        g.drawString("" + ((int) (dial.percent * 100)) + "%", dial.innerX - 10, dial.y + dial.diameter + 20);
+        g.drawString("" + ((int) (dial.percent * 100)) + "%", dial.innerX - 10, dial.y + dial.diameter + 25);
     }
 
     @Override
@@ -150,6 +154,7 @@ public class DriveView2 extends JPanel {
 
         drawDial(g, c1);
         drawDial(g, c2);
+        drawDial(g, c3);
     }
 
     class ProgressBar {
