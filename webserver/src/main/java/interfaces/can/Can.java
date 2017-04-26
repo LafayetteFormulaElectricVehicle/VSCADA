@@ -1,96 +1,29 @@
-/*
 package interfaces.can;
 
-import cockpit.database.SCADASystem;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-public class Can implements Runnable{
-
-    String file;
-    Boolean endReached;
-    SCADASystem sys;
-
-    ArrayList<String> ids;
-    ArrayList<String> values;
-    Scanner sc;
-
-    public Can(String fileName, SCADASystem system){
-        file = fileName;
-        endReached = false;
-        sys = system;
-        values = new ArrayList<String>();
-        ids = new ArrayList<String>();
-        sc = null;
+public class Can{
+    static{
+        System.loadLibrary("can");
     }
 
-    public void run(){
-        try{
-            BufferedReader in = new BufferedReader(new FileReader(file));
-
-            String line2;
-            while (true){
-                line2 = in.readLine();
-                if(line2 == null) endReached = true;
-                else if(endReached){
-                    parseLine(line2);
-                }
-            }
-        }
-        catch(java.io.FileNotFoundException e){
-            System.out.println("File not found!");
-        }
-        catch(java.io.IOException ex){
-            System.out.println("IO Error!");
-        }
-    }
-
-    public void parseLine(String line){
-        try{
-            sc = new Scanner(line);
-            sc.next();
-            String id = "" + new BigInteger(sc.next(), 16).intValue();
-            sc.next();
-            String totalVal = "";
-            while(sc.hasNext()) totalVal+= sc.next();
-            String value = "" + new BigInteger(totalVal, 16).intValue();
-            sys.updateValue(id, value);
-        }
-        catch(Exception e){
-            System.out.println("Bad format");
-        }
+    public Can(){
 
     }
-//
-//  public void writeToDB(){
-//    int len = values.size();
-//    if(len == 0) return;
-//
-//    String data = "";
-//
-//    for(int i=0; i<len; i++){
-//      data += "(" + ids.remove(0) + ", " + values.remove(0) + ")";
-//      if(i != len-1) data += ", ";
-//    }
-//    handler.insertData(data);
-//  }
 
-//  public void update(){
-//    int len = values.size();
-//    if(len == 0) return;
-//    System.out.println("chirp");
-//    String data = "";
-//
-//    for(int i=0; i<len; i++){
-//      data += ids.remove(0) + "," + values.remove(0);
-//      if(i != len-1) data += ",";
-//    }
-////    System.out.println(data);
-//    //HERE
-//    sys.updateValue(data);
-//  }
-}*/
+    //public native String read();
+    public native int open_port(String port);
+    public native void send_port();
+    public native String read_port();
+    public native int close_port();
+    public native int init();
+
+    public static void main(String[] args) {
+        Can can = new Can();
+        //String s = can.read();
+        //System.out.println(s);
+        can.open_port("can0");
+        while(true){
+            System.out.println(can.read_port());
+        }
+        //can.close_port();
+    }
+}

@@ -1,13 +1,7 @@
-package interfaces.can;
-
 public class Can{
     static{
         System.loadLibrary("can");
     }
-
-    // public Can(){
-
-    // }
 
     //public native String read();
     public native int open_port(String port);

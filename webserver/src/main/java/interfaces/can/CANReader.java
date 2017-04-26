@@ -18,7 +18,7 @@ public class CANReader implements Runnable {
     ArrayList<String> ids;
     ArrayList<String> values;
     Scanner sc;
-
+    Can can;
     public CANReader(String fileName, SCADASystem system) {
         file = fileName;
         endReached = false;
@@ -26,27 +26,33 @@ public class CANReader implements Runnable {
         values = new ArrayList<String>();
         ids = new ArrayList<String>();
         sc = null;
+        can = new Can();
+
     }
 
     public void run() {
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(file));
-
-            String line2;
-            while (true) {
-                line2 = in.readLine();
-                if (line2 == null || line2.equals("")) {
-                    endReached = true;
-                } else if (endReached) {
-                    newData = true;
-                    parseLine(line2);
-                }
-            }
-        } catch (java.io.FileNotFoundException e) {
-            System.out.println("File not found!");
-        } catch (java.io.IOException ex) {
-            System.out.println("IO Error!");
+        can.open_port("can0");
+        while(true) {
+            System.out.println(can.read_port());
         }
+//        try {
+//            BufferedReader in = new BufferedReader(new FileReader(file));
+//
+//            String line2;
+//            while (true) {
+//                line2 = in.readLine();
+//                if (line2 == null || line2.equals("")) {
+//                    endReached = true;
+//                } else if (endReached) {
+//                    newData = true;
+//                    parseLine(line2);
+//                }
+//            }
+//        } catch (java.io.FileNotFoundException e) {
+//            System.out.println("File not found!");
+//        } catch (java.io.IOException ex) {
+//            System.out.println("IO Error!");
+//        }
     }
 
     public void parseLine(String line) {
