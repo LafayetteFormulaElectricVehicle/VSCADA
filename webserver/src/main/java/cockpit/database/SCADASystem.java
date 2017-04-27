@@ -134,7 +134,7 @@ public class SCADASystem implements Runnable {
         CANReader tmp = new CANReader(file, this);
         Thread thr = new Thread(tmp);
 
-        Timer t = new Timer(1000, null);
+        Timer t = new Timer(250, null);
         t.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 if(tmp.newData){

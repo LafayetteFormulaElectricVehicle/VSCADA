@@ -18,7 +18,6 @@ public class CANReader implements Runnable {
     ArrayList<String> ids;
     ArrayList<String> values;
     Scanner sc;
-    Can can;
     public CANReader(String fileName, SCADASystem system) {
         file = fileName;
         endReached = false;
@@ -26,14 +25,16 @@ public class CANReader implements Runnable {
         values = new ArrayList<String>();
         ids = new ArrayList<String>();
         sc = null;
-        can = new Can();
 
     }
 
     public void run() {
-        can.open_port("can0");
+        Can.open_port("vcan0");
+        String data;
         while(true) {
-            System.out.println(can.read_port());
+            data = Can.read_port();
+            //System.out.println(data);
+            parseLine(data);
         }
 //        try {
 //            BufferedReader in = new BufferedReader(new FileReader(file));
@@ -58,13 +59,23 @@ public class CANReader implements Runnable {
     public void parseLine(String line) {
         ArrayList<String> out = new ArrayList<>();
         int id = -33;
+        int length = -1;
+        String iface = "";
         try {
             sc = new Scanner(line);
-            sc.next();
+            iface = sc.next();
             id = new BigInteger(sc.next(), 16).intValue();
-            sc.next();
+            String len_str = sc.next();
+            length = new BigInteger(len_str.replace("[","").replace("]",""), 16).intValue();
 
-            while (sc.hasNext()) out.add(sc.next());
+            System.out.println("interface: " + iface);
+            System.out.println("id: "+ id);
+            System.out.println("length: " + length);
+
+            while (sc.hasNext()) {
+                out.add(sc.next());
+                System.out.println(out.get(out.size()-1));
+            }
             sys.updateData(id, out);
         } catch (Exception e) {
             System.out.println(line);

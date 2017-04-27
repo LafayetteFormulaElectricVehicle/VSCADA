@@ -92,7 +92,7 @@ jstring can_read_port(JNIEnv *env) {
 			
 			//sprintf(buffer, "%.2X ", buffer, frame_rd.data[i]);
 		}
-		            //printf("can0\t%X\t[%d]\t%s\n", frame_rd.can_id, frame_rd.can_dlc, str.c_str());
+		            //printf("C: can0\t%X\t[%d]\t%s\n", frame_rd.can_id, frame_rd.can_dlc, str.c_str());
                     char* tmp = new char[200];
                     sprintf(tmp, "can0\t%X\t[%d]\t%s", frame_rd.can_id, frame_rd.can_dlc, str.c_str());
                     str = tmp;
