@@ -1,3 +1,6 @@
 javac Can.java
 javah Can
 gcc -o libcan.so Can.c CanImpl.cpp -shared -fpic -I "$JAVA_HOME/include" -I "$JAVA_HOME/include/linux" -lstdc++
+
+
+#gcc -o libcan.so interfaces_can_Can.c CanImpl.cpp -shared -fpic -I "$JAVA_HOME/include" -I "$JAVA_HOME/include/linux" -lstdc++

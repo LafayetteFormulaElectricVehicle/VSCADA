@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_Can_read
-  (JNIEnv *, jobject);
+  (JNIEnv *, jclass);
 
 /*
  * Class:     Can
@@ -21,7 +21,7 @@ JNIEXPORT jstring JNICALL Java_Can_read
  * Signature: (Ljava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_Can_open_1port
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     Can
@@ -29,7 +29,7 @@ JNIEXPORT jint JNICALL Java_Can_open_1port
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_Can_send_1port
-  (JNIEnv *, jobject);
+  (JNIEnv *, jclass);
 
 /*
  * Class:     Can
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_Can_send_1port
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_Can_read_1port
-  (JNIEnv *, jobject);
+  (JNIEnv *, jclass);
 
 /*
  * Class:     Can
@@ -45,7 +45,7 @@ JNIEXPORT jstring JNICALL Java_Can_read_1port
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_Can_close_1port
-  (JNIEnv *, jobject);
+  (JNIEnv *, jclass);
 
 /*
  * Class:     Can
@@ -53,7 +53,7 @@ JNIEXPORT jint JNICALL Java_Can_close_1port
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_Can_init
-  (JNIEnv *, jobject);
+  (JNIEnv *, jclass);
 
 #ifdef __cplusplus
 }
