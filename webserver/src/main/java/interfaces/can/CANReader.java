@@ -11,6 +11,8 @@ import cockpit.database.SCADASystem;
 
 public class CANReader implements Runnable {
 
+    private static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(CANReader.class.getName());
+
     public boolean endReached;
     public volatile boolean newData = false;
     String file;
@@ -29,12 +31,26 @@ public class CANReader implements Runnable {
     }
 
     public void run() {
-        Can.open_port("vcan0");
-        String data;
-        while(true) {
-            data = Can.read_port();
-            //System.out.println(data);
-            parseLine(data);
+        String iface = "can0";
+        try {
+            LOG.info("Opening port on interface: " +iface);
+            if(Can.open_port(iface)!=0) throw new Exception();
+        } catch (Exception e) {
+            LOG.error("Could not open interface: " + iface);
+            e.printStackTrace();
+        }
+        try {
+            String data;
+            while (true) {
+                data = Can.read_port();
+                //System.out.println(data);
+                parseLine(data);
+            }
+        } catch (Exception e) {
+            LOG.error("Could not read port or parse data");
+            LOG.error("Closing port on interface: " + iface);
+            Can.close_port();
+            e.printStackTrace();
         }
 //        try {
 //            BufferedReader in = new BufferedReader(new FileReader(file));
@@ -64,22 +80,22 @@ public class CANReader implements Runnable {
         try {
             sc = new Scanner(line);
             iface = sc.next();
-            id = new BigInteger(sc.next(), 16).intValue();
+            String id_hex = sc.next();
+            id = new BigInteger(id_hex, 16).intValue();
             String len_str = sc.next();
             length = new BigInteger(len_str.replace("[","").replace("]",""), 16).intValue();
+            while (sc.hasNext()) out.add(sc.next());
 
-            System.out.println("interface: " + iface);
-            System.out.println("id: "+ id);
-            System.out.println("length: " + length);
+//            System.out.print("interface: " + iface);
+//            System.out.print("\t\tid: "+ id +" (0x"+id_hex+")");
+//            System.out.print("\t\tlength: [" + length+"]\t\tdata: ");
+//            for(String s : out) System.out.print(s+" ");
+//            System.out.println();
 
-            while (sc.hasNext()) {
-                out.add(sc.next());
-                System.out.println(out.get(out.size()-1));
-            }
             sys.updateData(id, out);
         } catch (Exception e) {
-            System.out.println(line);
-            System.out.println("Bad format");
+            LOG.error("Bad format: " + line);
+            e.printStackTrace();
         }
 
     }

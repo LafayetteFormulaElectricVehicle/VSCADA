@@ -50,7 +50,7 @@ int can_open_port(const char *port) {
         return (-1);
     }
 
-    cout << "Open port: " << port << "\n";
+    //cout << "Open port: " << port << "\n";
     return 0;
 }
 
@@ -109,7 +109,7 @@ jstring can_read_port(JNIEnv *env) {
 
 int can_close_port() {
     close(soc);
-    cout << "Close port\n";
+    //cout << "Close port\n";
     return 0;
 }
 
