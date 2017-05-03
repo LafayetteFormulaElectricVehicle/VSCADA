@@ -8,6 +8,9 @@ import spark.QueryParamsMap;
 import spark.Request;
 
 import cockpit.database.*;
+import spark.Service;
+
+import java.net.InetAddress;
 
 import static spark.Spark.*;
 
@@ -17,6 +20,8 @@ public class SparkServer implements Runnable{
     Gson gson;
     DBHandler handler;
     SCADASystem sys;
+
+    public String ip;
 
     private static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SparkServer.class.getName());
 
@@ -28,6 +33,17 @@ public class SparkServer implements Runnable{
         handler = DBH;
         sys = system;
         t.start();
+
+        try {
+            InetAddress IP;
+            IP = InetAddress.getLocalHost();
+//            System.out.println("Ip: " + ip.toString());
+            ip = IP.getHostAddress().toString();
+        }
+        catch(Exception e){
+            ip = "";
+        }
+
     }
 
     public void run() {

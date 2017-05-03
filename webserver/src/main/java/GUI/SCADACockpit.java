@@ -33,6 +33,8 @@ public class SCADACockpit implements Viewer{
     private SCADASystem system;
     private boolean savingData = true;
 
+    public JLabel ipAddress;
+
     public SCADACockpit(SCADASystem sys) {
         system = sys;
 
@@ -82,12 +84,18 @@ public class SCADACockpit implements Viewer{
         SCADASystem sys = new SCADASystem(handler, file);
 
         SparkServer sparkServer;
-        if (ip.equals("")) sparkServer = new SparkServer(handler, sys);
+        SCADACockpit test = new SCADACockpit(sys);
+
+        if (ip.equals("")) {
+            sparkServer = new SparkServer(handler, sys);
+
+//            System.out.println(sparkServer.ip);
+            test.ipAddress.setText("IP: " + sparkServer.ip);
+        }
 
         Thread thr = new Thread(sys);
         thr.start();
 
-        SCADACockpit test = new SCADACockpit(sys);
 
         test.addCard(new DriveView2(sys, test, test.frameWidth, test.frameHeight, 0), "Drive View");
         test.addCard(new ChargingView(sys, test, test.frameWidth, ip, 1), "Charging View");
@@ -168,30 +176,9 @@ public class SCADACockpit implements Viewer{
             }
         });
 
-        Scanner sc;
-        String ip = "IP: ";
+        ipAddress = new JLabel("");
 
-
-        try {
-            sc = new Scanner(Runtime.getRuntime().exec("hostname -I").getInputStream());
-            ip += sc.nextLine();
-        } catch (Exception e) {
-        }
-
-
-//        JButton dataAq = new JButton("Saving Data: " + savingData);
-//
-//        dataAq.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                savingData = !savingData;
-//                system.toggleDataSave(savingData);
-//                dataAq.setText("Saving Data: " + savingData);
-//            }
-//        });
-
-
-        comboBoxPane.add(new JLabel(ip));
+        comboBoxPane.add(ipAddress);
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(temperature);
         comboBoxPane.add(new JLabel("      "));
@@ -199,8 +186,6 @@ public class SCADACockpit implements Viewer{
         comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(comboBox);
         comboBoxPane.add(new JLabel("      "));
-//        comboBoxPane.add(dataAq);
-//        comboBoxPane.add(new JLabel("      "));
         comboBoxPane.add(quit);
         comboBoxPane.setBorder(new MatteBorder(0, 0, 1, 0, Color.black));
 
