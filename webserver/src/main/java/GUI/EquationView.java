@@ -55,31 +55,6 @@ public class EquationView {
         panelMain.add(buttonPanel, BorderLayout.PAGE_START);
     }
 
-    public static void main(String[] args) {
-
-        JFrame frame = new JFrame("Testing");
-        frame.setPreferredSize(new Dimension(850, 600));
-        frame.setMinimumSize(new Dimension(300, 300));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        DBHandler h = new DBHandler();
-        String file = System.getProperty("user.home") + "/Desktop/output.txt";
-        SCADASystem s = new SCADASystem(h, file);
-
-        for(Equation e : s.getEquations()){
-            System.out.println(e.equation);
-
-        }
-
-        EquationView e = new EquationView(h, s);
-
-        frame.add(e.getPanel());
-
-        frame.pack();
-        frame.setVisible(true);
-
-    }
-
     public JPanel getPanel() {
         return panelMain;
     }

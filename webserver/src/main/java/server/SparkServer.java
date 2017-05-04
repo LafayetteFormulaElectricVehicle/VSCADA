@@ -37,7 +37,9 @@ public class SparkServer implements Runnable{
         try {
             InetAddress IP;
             IP = InetAddress.getLocalHost();
-//            System.out.println("Ip: " + ip.toString());
+            System.out.println("Ip: " + IP.getAddress());
+            IP = InetAddress.getLocalHost();
+            System.out.println("Ip: " + IP.getHostAddress());
             ip = IP.getHostAddress().toString();
         }
         catch(Exception e){

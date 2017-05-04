@@ -72,19 +72,6 @@ public class DriveView2 extends JPanel {
         timer.start();
     }
 
-    public static void main(String[] args) {
-
-        String file = System.getProperty("user.home") + "/Desktop/output.txt";
-        DBHandler handler = new DBHandler();
-        SCADASystem sys = new SCADASystem(handler, file);
-
-        Thread thr = new Thread(sys);
-        thr.start();
-
-        SCADAViewer test = new SCADAViewer(sys);
-        test.addCard(new DriveView2(sys, test, test.frameWidth, test.frameHeight, 0), "Drive View");
-    }
-
     private void updateDisplay() {
         if (viewNumber == viewer.getCurrentView()) {
             HashMap<String, Sensor> cMap = system.getCustomMapping();

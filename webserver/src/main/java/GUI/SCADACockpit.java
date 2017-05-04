@@ -4,14 +4,12 @@ import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
-import oracle.jrockit.jfr.JFR;
 import server.SparkServer;
 
 public class SCADACockpit implements Viewer{
@@ -81,7 +79,7 @@ public class SCADACockpit implements Viewer{
 
         String file = System.getProperty("user.home") + "/Desktop/output.txt";
         DBHandler handler = new DBHandler();
-        SCADASystem sys = new SCADASystem(handler, file);
+        SCADASystem sys = new SCADASystem(handler);
 
         SparkServer sparkServer;
         SCADACockpit test = new SCADACockpit(sys);

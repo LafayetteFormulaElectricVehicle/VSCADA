@@ -4,15 +4,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by CraigLombardo on 4/13/17.
+ * <h1>Equation</h1>
+ * This class serves to house the information about all of the Equations. Remember, the equations can be either
+ * tag based, number/decimal based, or both. Order of operations if <b>Left to right <i>not</i> PEMDAS</b>
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-04-13
  */
 public class Equation {
 
-    public String destination;
-    public String equation;
-    public ArrayList<String> tags;
-    public ArrayList<EquationOperation> operations;
+    public String destination; /** The destination of the Equation (tag) */
+    public String equation; /** The equation to be evaluated during execution*/
+    private ArrayList<String> tags;
+    private ArrayList<EquationOperation> operations;
 
+    /**
+     * The constructor for creating a new Equation
+     * @param dest The destination (as a tag) that you would like to store the evaluated result into the DB with.
+     * @param equation The equation to be evaluated by the device during runtime.
+     */
     public Equation(String dest, String equation) {
         destination = dest;
         this.equation = equation;
@@ -22,36 +33,11 @@ public class Equation {
         parseEquation(equation);
     }
 
-
-//    public static void server.main(String[] args) {
-//        HashMap<String, Double> map = new HashMap<>();
-//        map.put("v1", 20.0);
-//        map.put("v2", 25.0);
-//        map.put("a1", 6.0);
-//        map.put("a2", 4.0);
-//        map.put("random", 2.0);
-//        Equation e;
-//
-//        e = new Equation("p1", "v1*a1");
-////        System.out.println(e.evaluate(map));
-//        map.put(e.destination, e.evaluate(map));
-//
-//        e = new Equation("p2", "a2*v2");
-////        System.out.println(e.evaluate(map));
-//        map.put(e.destination, e.evaluate(map));
-//
-//        e = new Equation("avg_power", "p1+p2/2");
-////        System.out.println(e.evaluate(map));
-//        map.put(e.destination, e.evaluate(map));
-//
-//        e = new Equation("2*avg_power", "random*avg_power");
-////        System.out.println(e.evaluate(map));
-//        map.put(e.destination, e.evaluate(map));
-//
-//        System.out.println(map);
-//    }
-
-    //HashMap<String, Double> map
+    /**
+     * This method will evaluate the equation with the map information it is provided with.
+     * @param map A map containing Strings (tags) as it's keys and Sensors as it's values.
+     * @return The value of the evaluated expression
+     */
     public Double evaluate(HashMap<String, Sensor> map) {
         if (map == null) return null;
         int size = tags.size();
@@ -100,7 +86,7 @@ public class Equation {
 
     }
 
-    public void parseEquation(String equation) {
+    private void parseEquation(String equation) {
         int start = 0;
         boolean match;
 
@@ -129,6 +115,9 @@ public class Equation {
 
     }
 
+    /**
+     * The enumerations for Equation operations.
+     */
     public enum EquationOperation {
         ADD, SUBTRACT, MULTIPLY, DIVIDE
     }

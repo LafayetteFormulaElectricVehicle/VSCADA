@@ -79,9 +79,8 @@ public class SCADAViewer implements Viewer {
 //        String ip = "";
 
 //        String file = System.getProperty("user.home") + "/Desktop/output.txt";
-        String file = "";
         DBHandler handler = new DBHandler();
-        SCADASystem sys = new SCADASystem(handler, file);
+        SCADASystem sys = new SCADASystem(handler);
 
         SparkServer sparkServer;
         if (ip.equals("")) sparkServer = new SparkServer(handler, sys);

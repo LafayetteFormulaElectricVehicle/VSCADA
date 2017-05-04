@@ -6,6 +6,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * <h1>DBHandler</h1>
+ * This class will serve as the best means for accessing the DB without the need to know SQL
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-02-11
+ */
 public class DBHandler {
 
     private Connection c;
@@ -13,12 +21,15 @@ public class DBHandler {
 
     private String schemaPath = "SQLSchema/";
 
+    /**
+     * The general constructor for the DBHandler, looks for (or creates) SCADA.db
+     */
     public DBHandler() {
         c = null;
         connectDB();
     }
 
-    public void connectDB() {
+    private void connectDB() {
         c = null;
 
         try {
@@ -30,7 +41,7 @@ public class DBHandler {
         }
     }
 
-    public void checkDB() {
+    private void checkDB() {
         if (!checkExists("SensorLabels")) {
             readSQLFile(schemaPath + "SensorLabels.sql");
             readSQLFile(schemaPath + "SensorSetup.sql");
@@ -44,16 +55,16 @@ public class DBHandler {
         }
     }
 
-    public Boolean checkExists(String table) {
+    private Boolean checkExists(String table) {
         return getTable(table) != null;
     }
 
-    public ArrayList<ArrayList<String>> getTable(String table) {
+    private ArrayList<ArrayList<String>> getTable(String table) {
         String query = "select * from " + table;
         return runQuery(query);
     }
 
-    public void readSQLFile(String fileName) {
+    private void readSQLFile(String fileName) {
         Statement stmt = null;
         String sql = "";
 
@@ -70,7 +81,7 @@ public class DBHandler {
         }
     }
 
-    public ArrayList<String> getSchema(String fileName) {
+    private ArrayList<String> getSchema(String fileName) {
         ArrayList<String> out = new ArrayList<String>();
         try {
             Scanner sc = new Scanner(new File(fileName));
@@ -84,7 +95,7 @@ public class DBHandler {
         return out;
     }
 
-    public void closeDB() {
+    private void closeDB() {
         try {
             if (c.isClosed()) System.out.println("No open DB");
             else c.close();
@@ -93,7 +104,7 @@ public class DBHandler {
         }
     }
 
-    public void runSQL(String sql) {
+    private void runSQL(String sql) {
         Statement stmt = null;
         try {
             stmt = c.createStatement();
@@ -137,53 +148,6 @@ public class DBHandler {
         return output;
     }
 
-    //date in the form of 2017-02-05
-   /* public ArrayList<ArrayList<String>> getInfo(String IDs, String systems, String date1, String date2) {
-
-        String whereC;
-        String andC;
-        String and2C;
-
-        String sys;
-        String range;
-        String idRange;
-
-        whereC = (systems != null || date1 != null || date2 != null || IDs != null) ? " WHERE " : "";
-        andC = (IDs != null && systems != null) ? " AND " : "";
-        // andC = (IDs != null && (systems != null || date1 != null || date2 != null)) ? " AND " : "";
-        and2C = ((IDs != null || systems != null) && (date1 != null || date2 != null)) ? " AND " : "";
-
-        sys = parseSystems(systems);
-
-        if (IDs != null) idRange = "labels.ID IN (" + parseCSV(IDs) + ")";
-        else idRange = "";
-
-        if (date1 == null) {
-            if (date2 == null) range = "";
-            else range = "DATETIME(TimeStamp) = \"" + date2 + "\"";
-        } else {
-            if (date2 == null) range = "DATETIME(TimeStamp) = \"" + date1 + "\"";
-            else range = "DATETIME(TimeStamp) >= \"" + date1 + "\" " +
-                    "AND DATETIME(TimeStamp) <= \"" + date2 + "\"";
-        }
-
-        String query = "select " +
-                "labels.ID AS \"Sensor ID\", " +
-                "labels.sensorName AS \"Sensor\", " +
-                "labels.sensorUnits AS \"Units\", " +
-                "labels.dataType AS \"Data Type\", " +
-                "labels.system AS \"System\", " +
-                "data.value AS \"Value\", " +
-                "data.TimeStamp AS \"TimeStamp\" " +
-                "from SensorLabels AS labels " +
-                "INNER JOIN Data AS data ON labels.ID=data.sensorID" +
-                whereC + idRange + andC + sys + and2C + range + ";";
-
-        System.out.println(query + "\n\n");
-//    return null;
-        return runQuery(query);
-    }*/
-
     private String parseCSV(String csv) {
         String out = "";
         Scanner sc = new Scanner(csv);
@@ -207,21 +171,25 @@ public class DBHandler {
         return out + ")";
     }
 
+    /**
+     * This function will allow for insertion of a single data entry
+     * @param ID of the sensor
+     * @param value of the sensor
+     */
     public void insertData(String ID, String value) {
         String sql = "INSERT INTO Data (sensorID, value) VALUES (\"" + ID + "\",\"" + value + "\");";
 
         runSQL(sql);
     }
 
+    /**
+     * This function will allow for insertion of a multiple data entries. The format is as follows:
+     * (id1,val1), (id2, val2), ... (idn, valn)
+     * @param IDVals The data to be inserted into the DB
+     */
     public void insertData(String IDVals) {
         if (IDVals == null) return;
         String sql = "INSERT INTO Data (sensorID, value) VALUES " + IDVals + ";";
-        runSQL(sql);
-    }
-
-    public void insertDataTimes(String data) {
-        if (data == null) return;
-        String sql = "INSERT INTO Data (sensorID, value, TimeStamp) VALUES " + data + ";";
         runSQL(sql);
     }
 
@@ -229,11 +197,20 @@ public class DBHandler {
      * Configuration Functions
      *************************************************************************************************/
 
+    /**
+     * This function gets all information from the SensorLabels table.
+     * @return ArrayList&lt;ArrayList&lt;String&gt;&gt; All the information from the table.
+     */
     public ArrayList<ArrayList<String>> getSensorInfo() {
         String sql = "select * from SensorLabels ORDER BY tag ASC;";
         return runQuery(sql);
     }
 
+    /**
+     * This method returns imformation on tags that have previously been entered into the DB.
+     * @param tags the human readable tags that you would like to search for
+     * @return ID, description, units, tag in ascending order
+     */
     public ArrayList<ArrayList<String>> getIDDescUnitsTag(String[] tags) {
         String tagSearch = "";
 
@@ -249,24 +226,42 @@ public class DBHandler {
         return runQuery(sql);
     }
 
+    /**
+     * This method gets a list of all ID's in the DB
+     * @return ArrayList&lt;ArrayList&lt;String&gt;&gt; containing the ID's of all sensors (just IDs)
+     */
     public ArrayList<ArrayList<String>> getIDs() {
         String sql = "select ID from SensorLabels;";
         return runQuery(sql);
     }
 
-    //If you change the database this method will fail you
+    /**
+     * This method returns all information from the SensorLabels table.
+     * If you change the database this method will fail you as it was used directly by SCADASystem.createAllSensors()
+     * @return ArrayList&lt;ArrayList&lt;String&gt;&gt; of all info in SensorLabels table
+     */
     public ArrayList<ArrayList<String>> getSensorcharacterization() {
         String sql = "select * from SensorLabels;";
         return runQuery(sql);
     }
 
+    /**
+     * This method will remove a sensor from the DB.
+     * @param tag The tag of the sensor you would like to remove.
+     */
     public void removeSensor(String tag) {
         String sql = "DELETE FROM SensorLabels WHERE tag=\'" + tag + "\'";
         runSQL(sql);
     }
 
+    /**
+     * This method will update the information of the sensor selected. Format is as follows, data[0]-&gt;data[8] respectively:
+     * (tag, address, offset, byteLength, description, system, units, store, correction)
+     * @param isNew Whether or not this is a new entry or one to edit
+     * @param data THe data in the aforementioned format.
+     */
     public void updateSensor(Boolean isNew, String[] data) {
-        System.out.println(data.length);
+//        System.out.println(data.length);
         for (String s : data) System.out.println("'" + s + "'");
 
         if (data.length != 9) return;
@@ -293,12 +288,18 @@ public class DBHandler {
         }
 
 //        System.out.println(sql1);
-        System.out.println(sql1);
+//        System.out.println(sql1);
 
         runSQL(sql1);
 
     }
 
+    /**
+     * This method will return the most recent data put into the DB. The seconds parameter will allow a user to select
+     * the amount of time they want to go back for data. i.e. using 5 seconds will yield the last 5 seconds of data.
+     * @param seconds The number of seconds before the last data time.
+     * @return ArrayList&lt;ArrayList&lt;String&gt;&gt; tag, description, system, units, value, timestamp
+     */
     public ArrayList<ArrayList<String>> getLatestData(int seconds) {
 /*      tag
         description
@@ -323,7 +324,18 @@ public class DBHandler {
         return runQuery(query);
     }
 
-    //Dates in format of 2017-04-09 23:29:58
+    /**
+     * This method will return information from a date range (or all if you don't specify a start/end time. All
+     * parameters of the same type are OR based and those of different types are AND based so be cautious if
+     * you are looking for things across multiple criteria ranges. i.e. it returns items from any tag in the list
+     * which are from any of the selected systems which are within the date range. To specify you want <b>ANY</b>
+     * tag/system or date, simply input null.
+     * @param tags The tag(s) of the sensors we desire
+     * @param systems The system(s) of the sensors we want
+     * @param date1 Start date in same format as 2017-04-09 23:29:58
+     * @param date2 End date in same format as 2017-04-09 23:29:58
+     * @return ArrayList&lt;ArrayList&lt;String&gt;&gt; tag, description, system, units, value, timestamp
+     */
     public ArrayList<ArrayList<String>> getInfo(String tags, String systems, String date1, String date2) {
 
         String whereC;
@@ -368,11 +380,22 @@ public class DBHandler {
         return runQuery(query);
     }
 
+    /**
+     * This method returns all of the equations/destinations from the DB.
+     * @return ArrayList&lt;ArrayList&lt;String&gt;&gt; Each ArrayList is formattion as such: (destination,equation)
+     */
     public ArrayList<ArrayList<String>> getEquations() {
         String sql = "SELECT destination, equation FROM Equations ORDER BY equationOrder ASC;";
         return runQuery(sql);
     }
 
+    /**
+     * This method updates equations in the DB. REMEMBER, the equations follow a left to right order of
+     * operations <b>NOT PEMDAS</b>. You may use + - / * for normal functions and equations may contain
+     * a mixture of valid tags and numbers (decimals are cool).
+     * @param destinations The destination of the equation
+     * @param equations The equation to be used when evaluation
+     */
     public void updateEquations(ArrayList<JTextField> destinations, ArrayList<JTextField> equations) {
         String sql = "delete from Equations;";
         runSQL(sql);
@@ -393,7 +416,6 @@ public class DBHandler {
                 else sql += ";";
             }
         }
-//        System.out.println(sql);
         runSQL(sql);
     }
 
