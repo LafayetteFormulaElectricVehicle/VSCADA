@@ -6,24 +6,33 @@ import java.math.BigInteger;
 
 import cockpit.database.SCADASystem;
 
+/**
+ * <h1>SCADA Class</h1>
+ * This class provides an interface from CAN to Java
+ *
+ * @author Craig Lombardo & Austin Wiles
+ * @version 1.0
+ * @since 2017-03-01
+ */
+
 public class CANReader implements Runnable {
 
     private static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(CANReader.class.getName());
 
-    public boolean endReached;
+    /**
+     * Used to determine if no new data has arrived
+     */
     public volatile boolean newData = false;
-    String file;
-    SCADASystem sys;
-    ArrayList<String> ids;
-    ArrayList<String> values;
-    Scanner sc;
-    public CANReader(SCADASystem system) {
-        endReached = false;
-        sys = system;
-        values = new ArrayList<String>();
-        ids = new ArrayList<String>();
-        sc = null;
+    private SCADASystem sys;
+    private Scanner sc;
 
+    /**
+     * This constructor creates a new CANReader for use in a SCADASystem
+     * @param system The SCADASystem that is using the CAN and linked to the SCADA.db
+     */
+    public CANReader(SCADASystem system) {
+        sys = system;
+        sc = null;
     }
 
     public void run() {
@@ -50,20 +59,20 @@ public class CANReader implements Runnable {
         }
     }
 
-    public void parseLine(String line) {
+    private void parseLine(String line) {
         ArrayList<String> out = new ArrayList<>();
         int id = -33;
-        int length = -1;
-        String iface = "";
+//        int length = -1;
+//        String iface = "";
         try {
             sc = new Scanner(line);
-            iface = sc.next();
+            sc.next();
             String id_hex = sc.next();
             id = new BigInteger(id_hex, 16).intValue();
             String len_str = sc.next();
-            length = new BigInteger(len_str.replace("[","").replace("]",""), 16).intValue();
+//            length = new BigInteger(len_str.replace("[","").replace("]",""), 16).intValue();
             while (sc.hasNext()) out.add(sc.next());
-
+            newData = true;
             sys.updateData(id, out);
         } catch (Exception e) {
             LOG.error("Bad format: " + line);
