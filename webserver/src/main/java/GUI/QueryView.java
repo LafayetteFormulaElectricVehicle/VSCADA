@@ -1,21 +1,23 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 3/14/17.
- */
-
 import cockpit.database.DBHandler;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.awt.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+/**
+ * <h1>Query View</h1>
+ * This class will serve as a means to view all data acquired by the car as well as the ability to export it
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-14
+ */
 
 public class QueryView {
 
@@ -37,6 +39,10 @@ public class QueryView {
 
     private boolean working = false;
 
+    /**
+     * This creates a means for acquiring data from the DB without any need to know SQL
+     * @param DBH The DBHandler associated with SCADA.db
+     */
     public QueryView(DBHandler DBH) {
         handler = DBH;
         panelMain = new JPanel(new BorderLayout());
@@ -49,11 +55,15 @@ public class QueryView {
         panelMain.add(resultsScroll, BorderLayout.CENTER);
     }
 
+    /**
+     * This method returns the panel that the view was drawn on
+     * @return The panel
+     */
     public JPanel getPane() {
         return panelMain;
     }
 
-    public void addSearchComp(int x, int y, int wx, Component comp) {
+    private void addSearchComp(int x, int y, int wx, Component comp) {
         searchConstraints.gridx = x;
         searchConstraints.gridy = y;
 
@@ -63,7 +73,7 @@ public class QueryView {
         searchPanel.add(comp);
     }
 
-    public void createSearchPanel() {
+    private void createSearchPanel() {
         createSearchConstraints();
 
         JLabel tag = new JLabel("ID(s)");
@@ -165,7 +175,7 @@ public class QueryView {
         panelMain.add(searchPanel, BorderLayout.PAGE_START);
     }
 
-    public void execute() {
+    private void execute() {
         if (working) return;
         working = true;
         checkDateFormat();

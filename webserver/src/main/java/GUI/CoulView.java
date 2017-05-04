@@ -1,14 +1,5 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 4/17/17.
- * <p>
- * Created by CraigLombardo on 3/14/17.
- */
-
-/**
- * Created by CraigLombardo on 3/14/17.
- */
 
 import cockpit.database.SCADASystem;
 import cockpit.database.Sensor;
@@ -26,6 +17,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+
+/**
+ * <h1>CoulView</h1>
+ * This class will serve as the best means for accessing the DB without the need to know SQL
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-04-17
+ */
 
 public class CoulView {
 
@@ -47,6 +47,10 @@ public class CoulView {
         }
     });
 
+    /**
+     * This method creates a new Coul View for direct graph views
+     * @param sys The SCADASystem containing all of the information about sensors
+     */
     public CoulView(SCADASystem sys) {
 
         system = sys;
@@ -64,20 +68,10 @@ public class CoulView {
 
     }
 
-//    public static void main(String[] args) {
-//
-//        JFrame window = new JFrame("Test");
-//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        window.setSize(800, 400);
-//        window.setMinimumSize(new Dimension(300, 300));
-//
-//        CoulView demo = new CoulView();
-//        window.getContentPane().add(demo.getPanel(), BorderLayout.CENTER);
-//
-//        window.setVisible(true);
-//
-//    }
-
+    /**
+     * This method returns the panel which the view was put on
+     * @return THe panel with the view
+     */
     public JPanel getPanel() {
         return content;
     }
@@ -112,7 +106,7 @@ public class CoulView {
         return result;
     }
 
-    public void updateChart() {
+    private void updateChart() {
 
         HashMap<String, Sensor> cMap = system.getCustomMapping();
 
@@ -127,7 +121,7 @@ public class CoulView {
 
     }
 
-    public void updateGraphsPane() {
+    private void updateGraphsPane() {
         content.remove(graphsPanel);
         graphsPanel = new JPanel(new GridLayout());
 
@@ -138,7 +132,7 @@ public class CoulView {
         content.repaint();
     }
 
-    public void createNewGraphPane() {
+    private void createNewGraphPane() {
 
         for (int i = 0; i < 4; i++) {
             series[i] = new TimeSeries("");

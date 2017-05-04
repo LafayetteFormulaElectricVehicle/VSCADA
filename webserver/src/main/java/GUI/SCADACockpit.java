@@ -12,14 +12,28 @@ import java.util.Scanner;
 
 import server.SparkServer;
 
-public class SCADACockpit implements Viewer{
+/**
+ * <h1>SCADA Cockpit</h1>
+ * This class will serve as a means to view all data as if one were in the cockpit/launch a server
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-20
+ */
 
-    private int currentView = 0;
+public class SCADACockpit implements Viewer {
 
-    public int frameWidth;
+
+    /**
+     * The height of the screen
+     */
     public int frameHeight;
-
+    /**
+     * The width of the screen
+     */
+    public int frameWidth;
     private JPanel cards;
+    private int currentView = 0;
     private Container pane;
     private JComboBox<String> comboBox;
     private int count = 0;
@@ -28,14 +42,13 @@ public class SCADACockpit implements Viewer{
     private int seconds = 0;
     private int minutes = 0;
     private int hours = 0;
-    private SCADASystem system;
-    private boolean savingData = true;
 
-    public JLabel ipAddress;
+    private JLabel ipAddress;
 
-    public SCADACockpit(SCADASystem sys) {
-        system = sys;
-
+    /**
+     * This constructor creates a new SCADA System and launches a server
+     */
+    public SCADACockpit() {
         JFrame frame = new JFrame("SCADA Viewer");
         frame.setPreferredSize(new Dimension(800, 480));
         frame.setMinimumSize(new Dimension(300, 300));
@@ -56,54 +69,38 @@ public class SCADACockpit implements Viewer{
         frame.pack();
         frame.setVisible(true);
 
-    }
-
-    public int getCurrentView(){
-        return currentView;
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            // If Nimbus is not available, you can set the GUI to another look and feel.
-        }
-
-        String ip = "";
-
-        String file = System.getProperty("user.home") + "/Desktop/output.txt";
         DBHandler handler = new DBHandler();
-        SCADASystem sys = new SCADASystem(handler);
+        SCADASystem sys = new SCADASystem(handler, false);
 
-        SparkServer sparkServer;
-        SCADACockpit test = new SCADACockpit(sys);
-
-        if (ip.equals("")) {
-            sparkServer = new SparkServer(handler, sys);
-
-//            System.out.println(sparkServer.ip);
-            test.ipAddress.setText("IP: " + sparkServer.ip);
-        }
+        SparkServer sparkServer = new SparkServer(handler, sys);
 
         Thread thr = new Thread(sys);
         thr.start();
 
+        addCard(new DriveView(sys, this, frameWidth, frameHeight, 0), "Drive View");
+        addCard(new ChargingView(sys, this, frameWidth, "", 1), "Charging View");
 
-        test.addCard(new DriveView2(sys, test, test.frameWidth, test.frameHeight, 0), "Drive View");
-        test.addCard(new ChargingView(sys, test, test.frameWidth, ip, 1), "Charging View");
+        addCard(new MaintenanceView(handler, sys, this, "", true, 2).getPane(), "Maintenance View");
 
-        test.addCard(new MaintenanceView(handler, sys, test, ip, true, 2).getPane(), "Maintenance View");
+        addCard(new QueryView(handler).getPane(), "Query View");
+        addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
+        addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
 
-        test.addCard(new QueryView(handler).getPane(), "Query View");
-        test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
-        test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
+    }
 
+    public static void main(String[] args) {
+
+        SCADACockpit test = new SCADACockpit();
+
+    }
+
+    /**
+     * Returns the index of the currently selected view
+     *
+     * @return The integer index of the current view (0 is first, 1 is second etc)
+     */
+    public int getCurrentView() {
+        return currentView;
     }
 
     private void getTemperature() {
@@ -117,7 +114,7 @@ public class SCADACockpit implements Viewer{
         }
     }
 
-    public void addComponentsToPane() {
+    private void addComponentsToPane() {
         cTime = new JLabel("Runtime: 0:00:00");
 
         temperature = new JLabel();
@@ -174,7 +171,16 @@ public class SCADACockpit implements Viewer{
             }
         });
 
-        ipAddress = new JLabel("");
+        Scanner sc;
+        String ip = "IP: ";
+
+        try {
+            sc = new Scanner(Runtime.getRuntime().exec("hostname -I").getInputStream());
+            ip += sc.nextLine();
+        } catch (Exception e) {
+        }
+
+        ipAddress = new JLabel(ip);
 
         comboBoxPane.add(ipAddress);
         comboBoxPane.add(new JLabel("      "));
@@ -191,7 +197,7 @@ public class SCADACockpit implements Viewer{
         pane.add(cards, BorderLayout.CENTER);
     }
 
-    public void addCard(JComponent card, String name) {
+    private void addCard(JComponent card, String name) {
         comboBox.addItem(name);
         cards.add(card, name);
         comboBox.setMaximumRowCount(++count);

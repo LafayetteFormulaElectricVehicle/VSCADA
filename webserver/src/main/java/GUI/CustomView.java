@@ -1,25 +1,29 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 3/14/17.
- */
-
 import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 import cockpit.database.Sensor;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.json.HTTP;
 import server.HTTPRequest;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * <h1>Custom View</h1>
+ * This class will serve as a means to view the sensors you want rather than all of them
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-14
+ */
+
 
 public class CustomView {
 
@@ -56,6 +60,14 @@ public class CustomView {
     private String ip;
     private HTTPRequest request;
 
+    /**
+     * This creates a new instance of CustomView
+     * @param dbHandler The DBHandler to be used with the SCADA.db
+     * @param scadaSys The SCADASystem that is linked with the same DBHandler
+     * @param viewer The viewer which will display views
+     * @param ipAddr The IP address of the server ("" if not applicable)
+     * @param viewNumber The view number on the viewer (0 if first, 1 if second, etc.)
+     */
     public CustomView(DBHandler dbHandler, SCADASystem scadaSys, Viewer viewer, String ipAddr, int viewNumber) {
         panelMain = new JPanel(new BorderLayout());
         sensors = new HashMap<>();
@@ -137,7 +149,7 @@ public class CustomView {
         }
     }
 
-    public void createItems(ArrayList<ArrayList<String>> info) {
+    private void createItems(ArrayList<ArrayList<String>> info) {
 
         int row = 2;
         String id;
@@ -171,7 +183,7 @@ public class CustomView {
         }
     }
 
-    public void createButtons() {
+    private void createButtons() {
         JPanel buttons = new JPanel(new GridLayout());
 
         JButton sAll = new JButton("Select All");
@@ -210,7 +222,7 @@ public class CustomView {
         panelMain.add(buttons, BorderLayout.PAGE_START);
     }
 
-    public void createNewSelectedInfo() {
+    private void createNewSelectedInfo() {
         Sensor s;
 
         for (int i = 0; i < items.size(); i++) {
@@ -232,7 +244,7 @@ public class CustomView {
         scrollPanelSelect.getVerticalScrollBar().setUnitIncrement(20);
     }
 
-    public void updateSelection() {
+    private void updateSelection() {
         innerPanel.remove(scrollPanelSelect);
         createNewSelectedPane();
 
@@ -244,11 +256,15 @@ public class CustomView {
         panelMain.repaint();
     }
 
+    /**
+     * This method returns the panel that the view was drawn on
+     * @return The panel
+     */
     public JPanel getPane() {
         return panelMain;
     }
 
-    public void createNewSelectedPane() {
+    private void createNewSelectedPane() {
         selectedLayout = new GridBagLayout();
         selectedConstraints = new GridBagConstraints();
 
@@ -264,7 +280,7 @@ public class CustomView {
 
     }
 
-    public void createConstraints() {
+    private void createConstraints() {
         createNewSelectedPane();
         ////
         itemsLayout = new GridBagLayout();
@@ -287,7 +303,7 @@ public class CustomView {
         ////
     }
 
-    public void addComp(int x, int y, Component comp, JPanel panel, GridBagConstraints constraints, GridBagLayout layout) {
+    private void addComp(int x, int y, Component comp, JPanel panel, GridBagConstraints constraints, GridBagLayout layout) {
         constraints.gridx = x;
         constraints.gridy = y;
 

@@ -1,9 +1,5 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 3/30/17.
- */
-
 import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 import cockpit.database.Sensor;
@@ -25,6 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.*;
+/**
+ * <h1>Dyno View</h1>
+ * This class will serve as a means to view what the dyno is doing
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-30
+ */
 
 public class DynoView {
 
@@ -63,6 +67,13 @@ public class DynoView {
     private Viewer viewer;
     private int view;
 
+    /**
+     *
+     * @param DBH The DBHandler that will interact with SCADA.db
+     * @param scadaSys The SCADASystem that is linked with the DBHandler
+     * @param sViewer The viewer which will display views
+     * @param viewNumber The view number on the viewer (0 if first, 1 if second, etc.)
+     */
     public DynoView(DBHandler DBH, SCADASystem scadaSys, Viewer sViewer, int viewNumber) {
         handler = DBH;
         viewer = sViewer;
@@ -83,11 +94,15 @@ public class DynoView {
         displayTimer.start();
     }
 
+    /**
+     * This method returns the panel that the view was drawn on
+     * @return The panel
+     */
     public JPanel getPanel() {
         return panelMain;
     }
 
-    public void createControlPanel() {
+    private void createControlPanel() {
         //Overall Panel
         controlLayout = new GridBagLayout();
         controlConstraints = new GridBagConstraints();
@@ -124,7 +139,7 @@ public class DynoView {
         createHeader();
     }
 
-    public void createHeader() {
+    private void createHeader() {
         createTopControls();
         createBottomControls();
 
@@ -134,7 +149,7 @@ public class DynoView {
         panelMain.add(controlPanel, BorderLayout.PAGE_START);
     }
 
-    public void createTopControls() {
+    private void createTopControls() {
         JSlider throttleSlider = new JSlider(0, 100, 0);
         JSpinner throttleSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 
@@ -251,7 +266,7 @@ public class DynoView {
         controlPanel.add(comp);
     }
 
-    public void addTopControlsComp(int x, int y, int wx, int wy, boolean resize, Component comp) {
+    private void addTopControlsComp(int x, int y, int wx, int wy, boolean resize, Component comp) {
         topControlConstraints.gridx = x;
         topControlConstraints.gridy = y;
 
@@ -264,7 +279,7 @@ public class DynoView {
         topControlPanel.add(comp);
     }
 
-    public void addBottomControlsComp(int x, int y, boolean resize, Component comp) {
+    private void addBottomControlsComp(int x, int y, boolean resize, Component comp) {
         bottomControlConstraints.gridx = x;
         bottomControlConstraints.gridy = y;
 
@@ -278,7 +293,7 @@ public class DynoView {
         System.out.println("Throttle: " + throttlePos + "%  -  Torque: " + torquePos + "%");
     }
 
-    public void createGraphPanel() {
+    private void createGraphPanel() {
         JFreeChart chart = createChart(dataset, dataUnits);
         chart.setBackgroundPaint(Color.WHITE);
 

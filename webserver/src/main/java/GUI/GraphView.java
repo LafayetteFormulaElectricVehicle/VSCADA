@@ -1,9 +1,5 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 3/14/17.
- */
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -18,9 +14,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * <h1>Graph View</h1>
+ * This class will serve as a means to view what the driver will see in the cockpit
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-14
+ */
+
 public class GraphView {
 
-    int graphCount = 0;
+    private int graphCount = 0;
     private JPanel graphsPanel;
     private JComboBox<String>[] graphOptions;
     private String[] selection = {"", "", "", ""};
@@ -37,6 +42,10 @@ public class GraphView {
         }
     });
 
+    /**
+     * This creates a new GraphView. Note it is not set to work with the SCADASystem so I would advise using carefully.
+     * Additionally it should not be expected that you will get useful results as this is an incomplete/concept view.
+     */
     public GraphView() {
 
         content = new JPanel(new BorderLayout());
@@ -55,20 +64,25 @@ public class GraphView {
 
     }
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
+//
+//        JFrame window = new JFrame("Test");
+//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        window.setSize(800, 400);
+//        window.setMinimumSize(new Dimension(300, 300));
+//
+//        GraphView demo = new GraphView();
+//        window.getContentPane().add(demo.getPanel(), BorderLayout.CENTER);
+//
+//        window.setVisible(true);
+//
+//    }
 
-        JFrame window = new JFrame("Test");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(800, 400);
-        window.setMinimumSize(new Dimension(300, 300));
-
-        GraphView demo = new GraphView();
-        window.getContentPane().add(demo.getPanel(), BorderLayout.CENTER);
-
-        window.setVisible(true);
-
-    }
-
+    /**
+     * This method returns the panel that the view was drawn on
+     *
+     * @return The panel
+     */
     public JPanel getPanel() {
         return content;
     }
@@ -103,7 +117,7 @@ public class GraphView {
         return result;
     }
 
-    public void createHeader() {
+    private void createHeader() {
         JPanel boxes = new JPanel(new GridLayout(1, 3));
 
         JButton update = new JButton("Update Graph View");
@@ -125,7 +139,7 @@ public class GraphView {
         content.add(boxes, BorderLayout.PAGE_START);
     }
 
-    public void updateChart() {
+    private void updateChart() {
 
         lastValue1 = lastValue1 * (0.9 + 0.2 * Math.random());
         lastValue2 = lastValue1 * (0.9 + 0.2 * Math.random());
@@ -140,7 +154,7 @@ public class GraphView {
 
     }
 
-    public int getGraphCount() {
+    private int getGraphCount() {
         int out = 0;
         out += graphOptions[0].getSelectedIndex() != 0 ? 1 : 0;
         out += graphOptions[1].getSelectedIndex() != 0 ? 1 : 0;
@@ -164,16 +178,15 @@ public class GraphView {
         content.repaint();
     }
 
-    public void createNewGraphPane() {
+    private void createNewGraphPane() {
 
         for (int i = 0; i < 4; i++) {
             System.out.println(seriesMove[i]);
-            if (seriesMove[i] != 4){
+            if (seriesMove[i] != 4) {
                 series[i] = series[seriesMove[i]];
                 series[seriesMove[i]] = new TimeSeries("");
                 seriesMove[i] = 4;
-            }
-            else if (!selection[i].equals((String) graphOptions[i].getSelectedItem())) {
+            } else if (!selection[i].equals((String) graphOptions[i].getSelectedItem())) {
                 series[i] = new TimeSeries("");
             }
         }
@@ -208,7 +221,7 @@ public class GraphView {
                 option = graphOptions[j].getSelectedIndex();
                 if (option != 0) {
                     indexes[i] = option;
-                    if(i != j) seriesMove[i] = j;
+                    if (i != j) seriesMove[i] = j;
                     graphOptions[j].setSelectedIndex(0);
                     break;
                 }

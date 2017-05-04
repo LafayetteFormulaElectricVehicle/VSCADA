@@ -1,9 +1,5 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 3/14/17.
- */
-
 import cockpit.database.DBHandler;
 import cockpit.database.Sensor;
 
@@ -13,6 +9,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
+/**
+ * <h1>Configuration View</h1>
+ * This class serves as a means for editing the backend DB without any knowledge of SQL
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-17
+ */
 public class ConfigurationView {
 
     private static int ROW_START = 2;
@@ -109,6 +113,10 @@ public class ConfigurationView {
         addInnerComp(1, 0, scrollPanelNewItems);
     }
 
+    /**
+     * This method returns the panel that the view was put on
+     * @return The panel with the view
+     */
     public JPanel getPanel() {
         return panelMain;
     }

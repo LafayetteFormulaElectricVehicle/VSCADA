@@ -15,14 +15,18 @@ import com.google.gson.JsonObject;
 import server.HTTPRequest;
 import com.google.gson.JsonElement;
 
-
 /**
- * Created by CraigLombardo on 3/12/17.
+ * <h1>Maintenance View</h1>
+ * This class will serve as a means to view all data from the car in one location/ list view
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-12
  */
 
 public class MaintenanceView {
 
-    HTTPRequest request;
+    private HTTPRequest request;
     private boolean singleColumn;
     private GridBagLayout innerLayout;
     private GridBagConstraints innerConstraints;
@@ -38,6 +42,15 @@ public class MaintenanceView {
     private String ip;
     private boolean server;
 
+    /**
+     * This creates a new view with connected to the DB and minor aesthetic options
+     * @param dbHandler The DBHandler associated with SCADA.db
+     * @param scadaSys The SCADASystem linked with the DBHandler
+     * @param viewer The The viewer which will display views
+     * @param ipAddr The IP Address of the server
+     * @param singleColumn True if single column (geared for cockpit) false for 2
+     * @param viewNumber The view number on the viewer (0 if first, 1 if second, etc.)
+     */
     public MaintenanceView(DBHandler dbHandler, SCADASystem scadaSys, Viewer viewer, String ipAddr, boolean singleColumn, int viewNumber) {
         request = new HTTPRequest();
         this.singleColumn = singleColumn;
@@ -68,6 +81,10 @@ public class MaintenanceView {
         displayTimer.start();
     }
 
+    /**
+     * This method returns the panel that the view was drawn on
+     * @return The panel
+     */
     public JScrollPane getPane() {
         return scrollPanel;
     }
@@ -109,7 +126,7 @@ public class MaintenanceView {
         return "";
     }
 
-    public void createHeader() {
+    private void createHeader() {
 
         if (singleColumn) {
             addComp(0, 0, 30, new JLabel(""));
@@ -131,7 +148,7 @@ public class MaintenanceView {
         }
     }
 
-    public void createMapping(ArrayList<ArrayList<String>> info) {
+    private void createMapping(ArrayList<ArrayList<String>> info) {
         innerLayout = new GridBagLayout();
         innerConstraints = new GridBagConstraints();
         innerPanel = new JPanel(innerLayout);
@@ -180,7 +197,7 @@ public class MaintenanceView {
         updateNow(m);
     }
 
-    public void addComp(int x, int y, int wx, Component comp) {
+    private void addComp(int x, int y, int wx, Component comp) {
         innerConstraints.gridx = x;
         innerConstraints.gridy = y;
 

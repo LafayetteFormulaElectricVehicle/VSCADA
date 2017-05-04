@@ -20,28 +20,29 @@ import java.util.Map;
  * @since 2017-03-01
  */
 public class SCADASystem implements Runnable {
+    //Timeout
+    private static final int MAX_TIME = 3;
     //sensorID, Sensor --- Contains actual data
     private HashMap<Integer, Sensor> sensors;
     //ADDR, <sensorIDS> -- Purely for mapping purposes
     private HashMap<Integer, ArrayList<Integer>> mappings;
-
     //Tag, sensorID
     private HashMap<String, Sensor> customMapping;
-
     private DBHandler handler;
     private ArrayList<Equation> equations;
-
-    //Timeout
-    private static final int MAX_TIME = 3;
     private int seconds = MAX_TIME;
 
     private boolean storeData = true;
+    private boolean desktopApp;
 
     /**
      * The constructor will create a new instance of a SCADASystem
-     * @param dbhandler The database handler that is connected to the SCADA.db
+     *
+     * @param dbhandler  The database handler that is connected to the SCADA.db
+     * @param desktopApp True if desktop, false if not
      */
-    public SCADASystem(DBHandler dbhandler) {
+    public SCADASystem(DBHandler dbhandler, boolean desktopApp) {
+        this.desktopApp = desktopApp;
         handler = dbhandler;
         createAllSensors();
         createAllEquations();
@@ -65,9 +66,10 @@ public class SCADASystem implements Runnable {
 
     /**
      * This method returns all of the equations found in the DB
+     *
      * @return Arraylist containing all of the Equations (class Equation)
      */
-    public ArrayList<Equation> getEquations(){
+    public ArrayList<Equation> getEquations() {
         return equations;
     }
 
@@ -94,6 +96,7 @@ public class SCADASystem implements Runnable {
      * This method updates the values of all of the sensors in the system. Typical can formats are like:
      * can0  500   [8]  06 00 B3 00 00 00 3F 31 where in this case the input params would be:
      * (500, {06, 00, B3, 00, 00, 00, 3F, 31})
+     *
      * @param address The can address that was received
      * @param packets The data received over the can
      */
@@ -118,7 +121,7 @@ public class SCADASystem implements Runnable {
     }
 
     private void writeToDB() {
-        if(!storeData) return;
+        if (!storeData) return;
         String data = "";
         String val = "";
 
@@ -139,6 +142,7 @@ public class SCADASystem implements Runnable {
 
     /**
      * This method returns the mapping of the sensors for use in other applications
+     *
      * @return The Hashmap containing all key value pairs of Integer and Sensor
      */
     public HashMap<Integer, Sensor> getMap() {
@@ -148,40 +152,44 @@ public class SCADASystem implements Runnable {
     /**
      * This method returns the mapping of the sensors for use in other applications, effectively the same as getMap
      * however this method returns tag based instead of backend ID based.
+     *
      * @return The Hashmap containing all key value pairs of Integer and Sensor
      */
-    public HashMap<String, Sensor> getCustomMapping(){ return customMapping;}
+    public HashMap<String, Sensor> getCustomMapping() {
+        return customMapping;
+    }
 
     /**
      * Used by the thread runners.
      */
     public void run() {
-        CANReader tmp = new CANReader(this);
-        Thread thr = new Thread(tmp);
+        if (!desktopApp) {
+            CANReader tmp = new CANReader(this);
+            Thread thr = new Thread(tmp);
 
-        Timer t = new Timer(250, null);
-        t.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                if(tmp.newData){
-                    seconds = MAX_TIME;
-                    tmp.newData = false;
-                    writeToDB();
+            Timer t = new Timer(250, null);
+            t.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    if (tmp.newData) {
+                        seconds = MAX_TIME;
+                        tmp.newData = false;
+                        writeToDB();
+                    } else if (seconds > 0) {
+                        seconds--;
+                        writeToDB();
+                    }
                 }
-                else if(seconds > 0) {
-                    seconds--;
-                    writeToDB();
-                }
+            });
+            t.start();
+
+            thr.start();
+            while (true) {
             }
-        });
-        t.start();
-
-        thr.start();
-        while (true) {
         }
     }
 
-    private void updateCustomSensors(){
-        for(Equation e : equations){
+    private void updateCustomSensors() {
+        for (Equation e : equations) {
             String destTag = e.destination;
             Sensor destSensor = customMapping.get(destTag);
             Double value = e.evaluate(customMapping);
@@ -190,7 +198,7 @@ public class SCADASystem implements Runnable {
 //            System.out.println(sensors.get(destSensor.id).getDescription());
 //            if(value != null) destSensor.setRawValue("" + e.evaluate(customMapping));
 
-            if(value != null){
+            if (value != null) {
                 sensors.get(destSensor.getID()).setCalibValue("" + value);
                 customMapping.get(destTag).setCalibValue("" + value);
             }
@@ -199,9 +207,10 @@ public class SCADASystem implements Runnable {
 
     /**
      * Sets whether or not the system shoulk store data into the db
+     *
      * @param bool True for store false for view only
      */
-    public void toggleDataSave(Boolean bool){
+    public void toggleDataSave(Boolean bool) {
         storeData = bool;
     }
 

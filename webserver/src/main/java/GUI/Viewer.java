@@ -1,10 +1,16 @@
 package GUI;
 
 /**
- * Created by CraigLombardo on 4/24/17.
+ * <h1>Viewer Interface</h1>
+ * This Interface will allow for a generic  Viewer to be created.
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-04-17
  */
+
 public interface Viewer {
 
-    public int getCurrentView();
+    int getCurrentView();
 
 }

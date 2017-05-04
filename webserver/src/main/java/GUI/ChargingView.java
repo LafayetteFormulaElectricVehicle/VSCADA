@@ -1,25 +1,26 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 3/14/17.
- */
-
 import cockpit.database.SCADASystem;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import cockpit.database.Sensor;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import server.HTTPRequest;
 
+/**
+ * <h1>Charging View</h1>
+ * This class creates a view to show Charging of packs.
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-14
+ */
 public class ChargingView extends JPanel {
 
     private SCADASystem system;
@@ -46,6 +47,14 @@ public class ChargingView extends JPanel {
         }
     });
 
+    /**
+     * This constructor creates a new Charging view
+     * @param sys The SCADASystem used for grabbing information
+     * @param viewer The Viewer object that will be running this
+     * @param screenWidth The max width of the screen (for auto-formatting)
+     * @param ipAddr The IP Address of the server (if remote use "")
+     * @param viewNumber The view number of the viewer (if it's first view it's 0, second 1, etc.)
+     */
     public ChargingView(SCADASystem sys, Viewer viewer, int screenWidth, String ipAddr, int viewNumber) {
         request = new HTTPRequest();
 
@@ -65,20 +74,6 @@ public class ChargingView extends JPanel {
 
         timer.start();
     }
-
-//    public static void main(String[] args) {
-//
-//        JFrame window = new JFrame("Test");
-//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        window.setSize(1000, 400);
-//        window.setMinimumSize(new Dimension(300, 300));
-//
-//        ChargingView demo = new ChargingView(1000);
-//        window.getContentPane().add(demo, BorderLayout.CENTER);
-//
-//        window.setVisible(true);
-//
-//    }
 
     private void updateDisplay() {
         if (viewNumber == viewer.getCurrentView()) {
@@ -101,7 +96,6 @@ public class ChargingView extends JPanel {
                     }
 
                 } catch (Exception e) {
-//                System.out.println("No Connection");
                 }
 
             } else {
@@ -170,21 +164,21 @@ public class ChargingView extends JPanel {
 
     class BatteryCircle {
 
-        public int x;
-        public int y;
-        public int diameter;
-        public int red;
+        private int x;
+        private int y;
+        private int diameter;
+        private int red;
 
-        public String label;
-        public int labelOffset;
+        private String label;
+        private int labelOffset;
 
-        public int green;
-        public int value = 0;
+        private int green;
+        private int value = 0;
 
-        public int coulombs = 0;
+        private int coulombs = 0;
 
-        public boolean update = false;
-        public boolean charging = false;
+        private boolean update = false;
+        private boolean charging = false;
 
         private BatteryCircle(int x, int y, int diameter, Font font, String label) {
             this.x = x;
@@ -205,7 +199,7 @@ public class ChargingView extends JPanel {
             coulombs = c;
         }
 
-        public void setValue(int val) {
+        private void setValue(int val) {
             if (val != value) {
                 value = val;
                 update = true;

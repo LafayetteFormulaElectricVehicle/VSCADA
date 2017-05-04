@@ -1,10 +1,6 @@
 package GUI;
 
-/**
- * Created by CraigLombardo on 3/14/17.
- */
 
-import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 
 import javax.swing.*;
@@ -15,7 +11,16 @@ import java.util.HashMap;
 
 import cockpit.database.Sensor;
 
-public class DriveView2 extends JPanel {
+/**
+ * <h1>Drive View</h1>
+ * This class will serve as a means to view what the driver will see in the cockpit
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-14
+ */
+
+public class DriveView extends JPanel {
 
     private SCADASystem system;
 
@@ -41,7 +46,15 @@ public class DriveView2 extends JPanel {
         }
     });
 
-    public DriveView2(SCADASystem sys, Viewer viewer, int screenWidth, int screenHeight, int viewNumber) {
+    /**
+     * The constructor creates a new DriveView
+     * @param sys The SCADASystem that is linked with the DBHandler
+     * @param viewer The viewer which will display views
+     * @param screenWidth Width of the display screen for auto-formatting
+     * @param screenHeight Height of the display screen for auto-formatting
+     * @param viewNumber The view number on the viewer (0 if first, 1 if second, etc.)
+     */
+    public DriveView(SCADASystem sys, Viewer viewer, int screenWidth, int screenHeight, int viewNumber) {
 
         system = sys;
         this.viewer = viewer;
@@ -146,24 +159,24 @@ public class DriveView2 extends JPanel {
 
     class ProgressBar {
 
-        public int x;
-        public int y;
-        public int width;
-        public int height;
+        private int x;
+        private int y;
+        private int width;
+        private int height;
 
-        public int red;
-        public int green;
+        private int red;
+        private int green;
 
-        public String label;
+        private String label;
 
-        public int labelOffset;
-        public int value = 0;
-        public int max;
+        private int labelOffset;
+        private int value = 0;
+        private int max;
 
-        public boolean update = false;
+        private boolean update = false;
 
-        public boolean deplete;
-        public boolean showPercent;
+        private boolean deplete;
+        private boolean showPercent;
 
         private ProgressBar(int x, int y, int width, int height, int max, boolean deplete, boolean showPercent, Font font, String label) {
             this.x = x;

@@ -4,9 +4,7 @@ import cockpit.database.DBHandler;
 import cockpit.database.SCADASystem;
 
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.MatteBorder;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,11 +12,18 @@ import java.util.Scanner;
 
 import server.SparkServer;
 
+/**
+ * <h1>SCADA Viewer</h1>
+ * This class will serve as a means to view all data from a desktop, via a wireless connection
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-03-25
+ */
 public class SCADAViewer implements Viewer {
 
-    public int frameWidth;
-    public int frameHeight;
-
+    private int frameWidth;
+    private int frameHeight;
     private int currentView = 0;
     private JPanel cards;
     private Container pane;
@@ -29,11 +34,13 @@ public class SCADAViewer implements Viewer {
     private int seconds = 0;
     private int minutes = 0;
     private int hours = 0;
-    private SCADASystem system;
+    private SCADASystem sys;
     private boolean savingData = true;
 
-    public SCADAViewer(SCADASystem sys) {
-        system = sys;
+    /**
+     * This constructor creates a new SCADAViewer for use as a desktop application.
+     */
+    public SCADAViewer() {
 
         JFrame frame = new JFrame("SCADA Viewer");
         frame.setPreferredSize(new Dimension(850, 600));
@@ -52,10 +59,6 @@ public class SCADAViewer implements Viewer {
         frame.pack();
         frame.setVisible(true);
 
-    }
-
-    public static void main(String[] args) {
-
         String ip;
 
         int dialogButton = JOptionPane.OK_CANCEL_OPTION;
@@ -64,23 +67,8 @@ public class SCADAViewer implements Viewer {
             System.exit(0);
         }
 
-        try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            // If Nimbus is not available, you can set the GUI to another look and feel.
-        }
-
-//        String ip = "139.147.195.196";
-//        String ip = "";
-
-//        String file = System.getProperty("user.home") + "/Desktop/output.txt";
         DBHandler handler = new DBHandler();
-        SCADASystem sys = new SCADASystem(handler);
+        sys = new SCADASystem(handler, true);
 
         SparkServer sparkServer;
         if (ip.equals("")) sparkServer = new SparkServer(handler, sys);
@@ -88,15 +76,20 @@ public class SCADAViewer implements Viewer {
         Thread thr = new Thread(sys);
         thr.start();
 
-        SCADAViewer test = new SCADAViewer(sys);
 
-        test.addCard(new MaintenanceView(handler, sys, test, ip, false, 0).getPane(), "Maintenance View");
-        test.addCard(new QueryView(handler).getPane(), "Query View");
-        test.addCard(new CustomView(handler, sys, test, ip, 2).getPane(), "Custom View");
-        test.addCard(new DynoView(handler, sys, test, 3).getPanel(), "Dyno Control");
-        test.addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
-        test.addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
-        test.addCard(new ChargingView(sys, test, test.frameWidth, ip, 6), "Charging View");
+        addCard(new MaintenanceView(handler, sys, this, ip, false, 0).getPane(), "Maintenance View");
+        addCard(new QueryView(handler).getPane(), "Query View");
+        addCard(new CustomView(handler, sys, this, ip, 2).getPane(), "Custom View");
+        addCard(new DynoView(handler, sys, this, 3).getPanel(), "Dyno Control");
+        addCard(new ConfigurationView(handler).getPanel(), "Configuration View");
+        addCard(new EquationView(handler, sys).getPanel(), "Equation Viewer");
+        addCard(new ChargingView(sys, this, frameWidth, ip, 6), "Charging View");
+
+    }
+
+    public static void main(String[] args) {
+
+        SCADAViewer test = new SCADAViewer();
 
     }
 
@@ -111,7 +104,7 @@ public class SCADAViewer implements Viewer {
         }
     }
 
-    public void addComponentsToPane() {
+    private void addComponentsToPane() {
         cTime = new JLabel("Runtime: 0:00:00");
 
         temperature = new JLabel();
@@ -185,7 +178,7 @@ public class SCADAViewer implements Viewer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 savingData = !savingData;
-                system.toggleDataSave(savingData);
+                sys.toggleDataSave(savingData);
                 dataAq.setText("Saving Data: " + savingData);
             }
         });
@@ -208,12 +201,16 @@ public class SCADAViewer implements Viewer {
         pane.add(cards, BorderLayout.CENTER);
     }
 
-    public void addCard(JComponent card, String name) {
+    private void addCard(JComponent card, String name) {
         comboBox.addItem(name);
         cards.add(card, name);
         comboBox.setMaximumRowCount(++count);
     }
 
+    /**
+     * This method returns the index of the current view
+     * @return 0 if the first view, 1 if second etc.
+     */
     public int getCurrentView() {
         return currentView;
     }

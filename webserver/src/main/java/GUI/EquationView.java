@@ -11,8 +11,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by CraigLombardo on 4/14/17.
+ * <h1>Equation View</h1>
+ * This class will serve as a means to view what Equations are in the DB
+ *
+ * @author Craig Lombardo
+ * @version 1.0
+ * @since 2017-04-14
  */
+
 public class EquationView {
 
     private GridBagLayout innerLayout;
@@ -32,6 +38,11 @@ public class EquationView {
     private ArrayList<JTextField> destinations;
     private ArrayList<JTextField> equations;
 
+    /**
+     * The constructor for an Equation View Panel
+     * @param DBH The DBHandler associated with the SCADA.db
+     * @param SS The SCADASystem associated with the DBHandler
+     */
     public EquationView(DBHandler DBH, SCADASystem SS) {
 
         panelMain = new JPanel(new BorderLayout());
@@ -55,11 +66,15 @@ public class EquationView {
         panelMain.add(buttonPanel, BorderLayout.PAGE_START);
     }
 
+    /**
+     * This method returns the panel that the view was drawn on
+     * @return The panel
+     */
     public JPanel getPanel() {
         return panelMain;
     }
 
-    public void createInnerComponents() {
+    private void createInnerComponents() {
         ArrayList<Equation> eqs = sys.getEquations();
 
         addInnerComp(0, 0, 30, new JLabel(""));
@@ -94,7 +109,7 @@ public class EquationView {
         }
     }
 
-    public void createButtonComponents() {
+    private void createButtonComponents() {
         JButton quit = new JButton("Quit");
 
         quit.addActionListener(new ActionListener() {
@@ -127,7 +142,7 @@ public class EquationView {
         addButtonComp(4, 0, 20, new JLabel(" "));
     }
 
-    public void addInnerComp(int x, int y, int wx, Component comp) {
+    private void addInnerComp(int x, int y, int wx, Component comp) {
         innerConstraints.gridx = x;
         innerConstraints.gridy = y;
 
@@ -147,7 +162,7 @@ public class EquationView {
     }
 
 
-    public void addButtonComp(int x, int y, int wx, Component comp) {
+    private void addButtonComp(int x, int y, int wx, Component comp) {
         buttonConstraints.gridx = x;
         buttonConstraints.gridy = y;
 
