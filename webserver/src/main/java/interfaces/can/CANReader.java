@@ -10,7 +10,7 @@ import cockpit.database.SCADASystem;
  * <h1>SCADA Class</h1>
  * This class provides an interface from CAN to Java
  *
- * @author Craig Lombardo & Austin Wiles
+ * @author Craig Lombardo &amp; Austin Wiles
  * @version 1.0
  * @since 2017-03-01
  */
