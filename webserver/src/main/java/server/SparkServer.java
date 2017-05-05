@@ -25,6 +25,11 @@ public class SparkServer implements Runnable{
 
     private static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SparkServer.class.getName());
 
+    /**
+     * Initializes the Java Spark webserver on port 3000
+     * @param DBH DBHandler for SCADA.db
+     * @param system Data container for car's generic subsystems
+     */
     public SparkServer(DBHandler DBH, SCADASystem system) {
         port(3000);
         t = new Thread(this, "server.SparkServer");
@@ -48,15 +53,18 @@ public class SparkServer implements Runnable{
 
     }
 
+    /**
+     * Starts the webserver and sets endpoints.
+     * Endpoints:
+     * /dbquery             Can query based on id, system (sys), startDate or endDate
+     * /dbquery/recent      Returns last 5 seconds of data from all subsystems
+     * /map                 Returns a map of the SCADASystem
+     * /cmap                Returns a Custom Map of the SCADASystem
+     */
     public void run() {
         staticFiles.location("/");
         LOG.info("server.Server started on port 3000");
 
-        get("/",(req,res) -> {
-            res.redirect("/app/home.html");
-            res.header("Access-Control-Allow-Origin","*");
-            return null;
-        });
 
         get("/dbquery", (req, res) -> {
             QueryParamsMap q = req.queryMap();
@@ -77,12 +85,6 @@ public class SparkServer implements Runnable{
             return gson.toJson(handler.getLatestData(5));
         });
 
-        get("/api/name", (req, res) -> {
-            System.out.println("IN NAME");
-            System.out.println(req.queryMap().get("name").value());
-//            printReq(req);
-            return "in name";
-        });
 
         get("/map", (req, res) -> {
             return gson.toJson(sys.getMap());
@@ -92,20 +94,9 @@ public class SparkServer implements Runnable{
             return gson.toJson(sys.getCustomMapping());
         });
 
-//        get("/data", (req, res) -> {
-//            DataPacket packet = new DataPacket();
-//            System.out.println(gson.toJson(packet));
-//            res.type("text/json");
-//            res.header("Access-Control-Allow-Origin","*");
-//            return gson.toJson(packet);
-//        });
-
-
 
         notFound((req,res) -> {
             System.out.println("IN NOT FOUND");
-            //System.out.println(req.queryMap().get("name").value());
-//            printReq(req);
             return "Not found";
         });
     }
