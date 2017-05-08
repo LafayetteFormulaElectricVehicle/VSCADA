@@ -120,6 +120,7 @@ public class ChargingView extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         for (BatteryCircle circle : progressBars) {
 //            g.setColor(Color.black);
 //            g.drawArc(circle.x, circle.y, circle.diameter, circle.diameter, 0, 360);
