@@ -253,7 +253,7 @@ public class QueryView {
     private void exportData() {
         try {
             JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")));
-            System.out.println("¯\\_(ツ)_/¯");
+//            System.out.println("¯\\_(ツ)_/¯");
             if (fc.showOpenDialog(panelMain) == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 //This is where a real application would open the file.

@@ -302,6 +302,9 @@ public class DriveView extends JPanel {
         public void setValue(int val) {
             value = val;
 
+            if(value < 0) value = 0;
+            if(value > maxValue) value = maxValue;
+
             percent = ((float) value / maxValue);
 
             angle = (int) (percent * maxAngle);

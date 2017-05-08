@@ -87,7 +87,7 @@ public class ChargingView extends JPanel {
                     JsonObject obj = j.getAsJsonObject();
 
                     for (int i = 0; i < 4; i++) {
-                        System.out.println("Here");
+//                        System.out.println("Here");
                         coulVal = getCalibValue(obj.get(couls[i]).toString());
                         socVal = getCalibValue(obj.get(socs[i]).toString());
 
@@ -125,7 +125,10 @@ public class ChargingView extends JPanel {
 //            g.drawArc(circle.x, circle.y, circle.diameter, circle.diameter, 0, 360);
 
             g.setColor(new Color(circle.red, circle.green, 0));
-            int angle = -(int) (((float) circle.value / 100) * 360);
+            float val = ((float) circle.value / 100);
+            if(val > 1.0) val = 1f;
+            if(val < 0.0) val = 0f;
+            int angle = -(int) (val * 360);
 
             g.fillArc(circle.x, circle.y, circle.diameter, circle.diameter, 90, angle);
 
