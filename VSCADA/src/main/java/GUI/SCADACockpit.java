@@ -76,8 +76,8 @@ public class SCADACockpit implements Viewer {
 
         Thread thr = new Thread(sys);
         thr.start();
-
-        addCard(new DriveView(sys, this, frameWidth, frameHeight, 0), "Drive View");
+        addCard(new DriveView(sys, this, 800, 400, 0), "Drive View");
+//        addCard(new DriveView(sys, this, frameWidth, frameHeight, 0), "Drive View");
         addCard(new ChargingView(sys, this, frameWidth, "", 1), "Charging View");
 
         addCard(new MaintenanceView(handler, sys, this, "", true, 2).getPane(), "Maintenance View");

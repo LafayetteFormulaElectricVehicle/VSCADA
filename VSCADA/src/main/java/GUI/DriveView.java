@@ -24,21 +24,26 @@ public class DriveView extends JPanel {
 
     private SCADASystem system;
 
-    private String[] currents = {"PA1", "PA2", "PA3", "PA4"};
+    private String[] temperatures = {"PCT1AVG", "PCT2AVG", "PCT3AVG", "PCT4AVG"};
     private String[] socs = {"PSOC1", "PSOC1", "PSOC3", "PSOC4"};
+    private String[] currents = {"PA1", "PA2", "PA3", "PA4"};
 
-    private ProgressBar currentBar;
+    private ProgressBar temperatureBar;
     private ProgressBar socBar;
 
     private Font myFont = new Font("DialogInput", Font.BOLD, 24);
+
     private int percentLabelOffset = getFontMetrics(myFont).stringWidth("100%") / 3;
 
     private int viewNumber;
     private Viewer viewer;
 
-    private CustomDial c1;
-    private CustomDial c2;
-    private CustomDial c3;
+    private CustomDial currentDial;
+    private CustomDial RPMDial;
+
+    private int panelWidth;
+    private int segmentWidth;
+    private int segmentHeight;
 
     private Timer timer = new Timer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -60,27 +65,22 @@ public class DriveView extends JPanel {
         this.viewer = viewer;
         this.viewNumber = viewNumber;
 
+        panelWidth = screenWidth / 4;
+        segmentWidth = panelWidth / 5;
+        segmentHeight = (screenHeight - 20) / 5;
 
-        int panelWidth = screenWidth / 4;
-        int segmentWidth = panelWidth / 5;
-        int segmentHeight = (screenHeight - 20) / 5;
-
-
-        currentBar = new ProgressBar(segmentWidth, segmentHeight - 20, 3 * segmentWidth, segmentHeight * 3,
-                100, true, true, myFont, "Pack 1");
+        temperatureBar = new ProgressBar(segmentWidth, segmentHeight - 20, 3 * segmentWidth, segmentHeight * 3,
+                60, true, true, myFont, "Temperature", " C");
 
         socBar = new ProgressBar(segmentWidth + (3 * panelWidth), segmentHeight - 20,
                 3 * segmentWidth, segmentHeight * 3,
-                100, false, true, myFont, "Pack 1");
+                100, false, true, myFont, "SOC", " %");
 
-        c1 = new CustomDial(panelWidth - segmentWidth / 2, (screenHeight - (5 * panelWidth / 3)),
-                panelWidth, 100, 135, 270, true);
+        currentDial = new CustomDial(panelWidth - segmentWidth / 2, (screenHeight - (5 * panelWidth / 3)),
+                panelWidth, 200, 135, 270, true, myFont, "A", true);
 
-        c2 = new CustomDial(2 * panelWidth + segmentWidth / 2, (screenHeight - (5 * panelWidth / 3)),
-                panelWidth, 100, 135, 270, true);
-
-        c3 = new CustomDial(2 * panelWidth - (5 * segmentWidth / 3), segmentHeight / 3,
-                2 * panelWidth / 3, 100, 135, 270, true);
+        RPMDial = new CustomDial(2 * panelWidth + segmentWidth / 2, (screenHeight - (5 * panelWidth / 3)),
+                panelWidth, 4000, 135, 270, true, myFont, "RPM", false);
 
         timer.start();
     }
@@ -92,6 +92,23 @@ public class DriveView extends JPanel {
             String str;
             double val;
             double maxVal = 0.0;
+            double minVal = 1000000000;
+
+            for (int i = 0; i < 4; i++) {
+                str = cMap.get(temperatures[i]).getCalibValue();
+                val = str.equals("NaN?") ? 0.0 : Double.parseDouble(str);
+                if (val > maxVal) maxVal = val;
+            }
+
+            temperatureBar.setValue((int) maxVal);
+
+            for (int i = 0; i < 4; i++) {
+                str = cMap.get(socs[i]).getCalibValue();
+                val = str.equals("NaN?") ? 0.0 : Double.parseDouble(str);
+                if (val < minVal) minVal = val;
+            }
+
+            socBar.setValue((int) minVal);
 
             for (int i = 0; i < 4; i++) {
                 str = cMap.get(currents[i]).getCalibValue();
@@ -99,17 +116,12 @@ public class DriveView extends JPanel {
                 if (val > maxVal) maxVal = val;
             }
 
-            currentBar.setValue((int) maxVal);
+            currentDial.setValue((int) maxVal);
 
-            maxVal = 0.0;
-            for (int i = 0; i < 4; i++) {
-                str = cMap.get(socs[i]).getCalibValue();
-                val = str.equals("NaN?") ? 0.0 : Double.parseDouble(str);
-                if (val > maxVal) maxVal = val;
-            }
+            str = cMap.get("MRPM").getCalibValue();
+            val = str.equals("NaN?") ? 0.0 : Double.parseDouble(str);
 
-            socBar.setValue((int) maxVal);
-            c1.setValue((int) maxVal);
+            RPMDial.setValue((int) val);
 
             repaint();
         }
@@ -126,7 +138,7 @@ public class DriveView extends JPanel {
         g.fillRect(bar.x, bar.y + (bar.height - fillHeight), bar.width, fillHeight);
 
         g.setColor(Color.BLACK);
-        if (bar.showPercent) g.drawString(bar.value + "%", bar.x + bar.width / 2 - percentLabelOffset, bar.y - 5);
+        if (bar.showPercent) g.drawString(bar.value + bar.over, bar.x + bar.width / 2 - percentLabelOffset, bar.y - 5);
 
         g.drawString(bar.label, bar.x + bar.width / 2 - bar.labelOffset,
                 bar.y + bar.height + 25);
@@ -141,7 +153,12 @@ public class DriveView extends JPanel {
 
         g.drawLine(dial.innerX, dial.innerY, dial.outerX, dial.outerY);
 
-        g.drawString("" + ((int) (dial.percent * 100)) + "%", dial.innerX - 10, dial.y + dial.diameter + 25);
+//        g.drawString("" + ((int) (dial.percent * 100)) + "%", dial.innerX - 10, dial.y + dial.diameter + 25);
+
+        if(dial.printVal) g.drawString("" + dial.value + " " + dial.label, dial.x + dial.diameter / 2 - dial.labelOffset,
+                dial.y + dial.diameter + 25);
+        else g.drawString("" + dial.label, dial.x + dial.diameter / 2 - dial.labelOffset,
+                dial.y + dial.diameter + 25);
     }
 
     @Override
@@ -149,12 +166,14 @@ public class DriveView extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(2));
 
-        drawBar(g, currentBar);
+        drawBar(g, temperatureBar);
         drawBar(g, socBar);
 
-        drawDial(g, c1);
-        drawDial(g, c2);
-        drawDial(g, c3);
+        drawDial(g, currentDial);
+        drawDial(g, RPMDial);
+
+        g.drawString("X mph", 2 * panelWidth - segmentWidth/3 - getFontMetrics(myFont).stringWidth("000") / 2, segmentHeight/2);
+
     }
 
     class ProgressBar {
@@ -173,12 +192,13 @@ public class DriveView extends JPanel {
         private int value = 0;
         private int max;
 
+        private String over;
         private boolean update = false;
 
         private boolean deplete;
         private boolean showPercent;
 
-        private ProgressBar(int x, int y, int width, int height, int max, boolean deplete, boolean showPercent, Font font, String label) {
+        private ProgressBar(int x, int y, int width, int height, int max, boolean deplete, boolean showPercent, Font font, String label, String over) {
             this.x = x;
             this.y = y;
             this.width = width;
@@ -187,8 +207,9 @@ public class DriveView extends JPanel {
             this.max = max;
             this.showPercent = showPercent;
 
+            this.over = over;
             this.label = label;
-            labelOffset = getFontMetrics(font).stringWidth(label) / 3;
+            labelOffset = getFontMetrics(font).stringWidth(label) / 2;
         }
 
         public void setValue(int val) {
@@ -250,7 +271,12 @@ public class DriveView extends JPanel {
         public float percent;
         private int radius;
 
-        private CustomDial(int x, int y, int diameter, int maxValue, int startAngle, int maxAngle, boolean clockwise) {
+        private String label;
+        private int labelOffset;
+
+        private boolean printVal;
+
+        private CustomDial(int x, int y, int diameter, int maxValue, int startAngle, int maxAngle, boolean clockwise, Font font, String label, boolean printVal) {
             this.x = x;
             this.y = y;
             this.diameter = diameter;
@@ -266,6 +292,11 @@ public class DriveView extends JPanel {
             this.radius = diameter / 2 - 2;
 
             setValue(0);
+
+            this.label = label;
+            labelOffset = getFontMetrics(font).stringWidth(label) / 2;
+
+            this.printVal = printVal;
         }
 
         public void setValue(int val) {
