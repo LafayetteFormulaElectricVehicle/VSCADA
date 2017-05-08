@@ -76,7 +76,7 @@ public class ChargingView extends JPanel {
     }
 
     private void updateDisplay() {
-        if (viewNumber == viewer.getCurrentView()) {
+//        if (viewNumber == viewer.getCurrentView()) {
 
             String coulVal;
             String socVal;
@@ -115,7 +115,7 @@ public class ChargingView extends JPanel {
                     break;
                 }
             }
-        }
+//        }
     }
 
     @Override

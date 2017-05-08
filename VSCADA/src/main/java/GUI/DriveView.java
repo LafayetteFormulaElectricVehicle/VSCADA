@@ -86,7 +86,7 @@ public class DriveView extends JPanel {
     }
 
     private void updateDisplay() {
-        if (viewNumber == viewer.getCurrentView()) {
+//        if (viewNumber == viewer.getCurrentView()) {
             HashMap<String, Sensor> cMap = system.getCustomMapping();
 
             String str;
@@ -124,7 +124,7 @@ public class DriveView extends JPanel {
             RPMDial.setValue((int) val);
 
             repaint();
-        }
+//        }
     }
 
     private void drawBar(Graphics g, ProgressBar bar) {
